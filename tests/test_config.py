@@ -1,4 +1,3 @@
-import os
 from rag.config import load_config, Config
 
 

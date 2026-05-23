@@ -2,8 +2,6 @@ import os
 from dataclasses import dataclass
 from dotenv import load_dotenv
 
-load_dotenv()
-
 
 @dataclass
 class Config:
@@ -20,6 +18,7 @@ class Config:
 
 
 def load_config() -> Config:
+    load_dotenv()
     return Config(
         embedding_base_url=os.getenv("EMBEDDING_BASE_URL", "https://api.siliconflow.cn/v1"),
         embedding_api_key=os.getenv("EMBEDDING_API_KEY", ""),
