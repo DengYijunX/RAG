@@ -1,5 +1,4 @@
 import os
-import tempfile
 from rag.config import load_config, Config
 
 
