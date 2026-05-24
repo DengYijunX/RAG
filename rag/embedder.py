@@ -1,10 +1,11 @@
 from typing import List
 from openai import OpenAI
+from rag.config import Config
 
 _client = None
 
 
-def _get_client(config):
+def _get_client(config: Config):
     global _client
     if _client is None:
         _client = OpenAI(
@@ -14,7 +15,7 @@ def _get_client(config):
     return _client
 
 
-def embed(texts: List[str], config) -> List[List[float]]:
+def embed(texts: List[str], config: Config) -> List[List[float]]:
     client = _get_client(config)
     response = client.embeddings.create(
         model=config.embedding_model,
@@ -23,5 +24,5 @@ def embed(texts: List[str], config) -> List[List[float]]:
     return [d.embedding for d in response.data]
 
 
-def embed_single(text: str, config) -> List[float]:
+def embed_single(text: str, config: Config) -> List[float]:
     return embed([text], config)[0]
