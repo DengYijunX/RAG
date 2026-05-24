@@ -1,9 +1,11 @@
+"""生成模块 —— 调用 DeepSeek API，将检索到的 chunks 作为上下文拼入 prompt 生成回答。"""
+
 from typing import List
 from openai import OpenAI
 from rag.config import Config
 from rag.splitter import Chunk
 
-
+# 全局单例 client，首次调用时懒加载
 _client = None
 
 

@@ -1,10 +1,12 @@
+"""向量存储模块 —— ChromaDB PersistentClient 封装，负责 collection 管理和读写。"""
+
 from typing import List
 import chromadb
 from chromadb.config import Settings
 
 from rag.splitter import Chunk
 
-
+# ChromaDB 全局单例，collection 名固定为 rag_documents
 _client = None
 _collection = None
 COLLECTION_NAME = "rag_documents"

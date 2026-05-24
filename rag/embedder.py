@@ -1,7 +1,10 @@
+"""向量化模块 —— 调用硅基流动 BGE-M3 API，OpenAI 兼容接口。"""
+
 from typing import List
 from openai import OpenAI
 from rag.config import Config
 
+# 全局单例 client，首次调用时懒加载
 _client = None
 
 

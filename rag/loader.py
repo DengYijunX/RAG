@@ -1,3 +1,5 @@
+"""文档加载模块 —— 支持 .md / .txt / .pdf，按文件后缀派发加载器。"""
+
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
@@ -5,6 +7,7 @@ from typing import List
 
 @dataclass
 class Document:
+    """加载后的原始文档，content 为全文，metadata 包含来源路径等信息。"""
     content: str
     metadata: dict
 
@@ -13,6 +16,7 @@ SUPPORTED_SUFFIXES = {".md", ".txt", ".pdf"}
 
 
 def load_file(file_path: Path) -> Document:
+    """根据文件后缀加载单个文件，PDF 走 PyPDF2，其余按 UTF-8 文本读取。"""
     suffix = file_path.suffix.lower()
     if suffix == ".pdf":
         return _load_pdf(file_path)
@@ -21,6 +25,7 @@ def load_file(file_path: Path) -> Document:
 
 
 def load_from_dir(dir_path: str, glob_pattern: str = "*") -> List[Document]:
+    """递归扫描目录，加载所有支持格式的文件。不支持的文件跳过并警告。"""
     path = Path(dir_path)
     if not path.is_dir():
         raise NotADirectoryError(f"{dir_path} is not a directory")

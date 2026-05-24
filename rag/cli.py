@@ -1,3 +1,5 @@
+"""CLI 命令行入口 —— 提供 index（索引文档）和 query（检索问答）两个子命令。"""
+
 import argparse
 import sys
 
@@ -5,7 +7,7 @@ from rag.config import load_config
 
 
 def main():
-    # Windows stdout 缓冲修复
+    # Windows 下 stdout 默认块缓冲，导致 print 不立即显示
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(line_buffering=True)
     config = load_config()
