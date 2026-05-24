@@ -1,8 +1,13 @@
 import argparse
+import sys
+
 from rag.config import load_config
 
 
 def main():
+    # Windows stdout 缓冲修复
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(line_buffering=True)
     config = load_config()
 
     parser = argparse.ArgumentParser(
