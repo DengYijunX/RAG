@@ -1,12 +1,13 @@
 from typing import List
 from openai import OpenAI
+from rag.config import Config
 from rag.splitter import Chunk
 
 
 _client = None
 
 
-def _get_client(config):
+def _get_client(config: Config):
     global _client
     if _client is None:
         _client = OpenAI(
@@ -16,7 +17,7 @@ def _get_client(config):
     return _client
 
 
-def generate(query: str, chunks: List[Chunk], config) -> str:
+def generate(query: str, chunks: List[Chunk], config: Config) -> str:
     client = _get_client(config)
 
     context = "\n\n---\n\n".join(
