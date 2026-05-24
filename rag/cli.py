@@ -65,8 +65,6 @@ def _cmd_query(args, config):
     from rag.retriever import retrieve
     from rag.generator import generate
 
-    top_k = args.top_k if args.top_k is not None else config.top_k
-
     print(f"正在检索: {args.question}")
     chunks = retrieve(args.question, config, top_k=args.top_k)
 
