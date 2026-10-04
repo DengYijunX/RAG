@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "split": "dev",
+  "selection": "targeted diagnostic sample; not population accuracy",
+  "knowledge_bases": {
+    "smart-home": ["Q008", "Q040", "Q043", "Q047", "Q051", "Q055", "Q056", "Q057", "Q058", "Q072"],
+    "accounting": ["ACC-Q041", "ACC-Q059", "ACC-Q098", "ACC-Q114", "ACC-Q116", "ACC-Q118", "ACC-Q122", "ACC-Q132", "ACC-Q134", "ACC-Q153"]
+  }
+}
