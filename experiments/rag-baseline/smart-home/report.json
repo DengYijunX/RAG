@@ -1,0 +1,33 @@
+{
+  "documents": 5,
+  "evidence_sections": 83,
+  "questions": 60,
+  "categories": {
+    "single": 36,
+    "multi": 8,
+    "ambiguous": 8,
+    "unanswerable": 6,
+    "conflict": 2
+  },
+  "splits": {
+    "dev": {
+      "single": 25,
+      "multi": 5,
+      "ambiguous": 5,
+      "unanswerable": 5
+    },
+    "test": {
+      "single": 11,
+      "multi": 3,
+      "ambiguous": 3,
+      "unanswerable": 1,
+      "conflict": 2
+    }
+  },
+  "split_policy": "all shared FAQ evidence, including clarification cases, grouped; scenario coverage is uneven",
+  "source_defects": [
+    "X2 battery one-year quality-defect warranty conflicts with general three-month policy",
+    "X2 no Zigbee/WiFi interference statement conflicts with G2 2.4GHz interference guidance"
+  ],
+  "annotation_status": "draft_needs_domain_review"
+}

@@ -1,0 +1,31 @@
+{
+  "completed_questions": 43,
+  "retrieval_scored_questions": 30,
+  "coverage_recall_at_4": 0.9722222222222222,
+  "all_evidence_coverage_rate": 0.9333333333333333,
+  "coverage_mrr_at_4": 0.9055555555555556,
+  "by_category": {
+    "ambiguous": {
+      "retrieval_scored_count": 0,
+      "coverage_recall_at_4": null
+    },
+    "multi": {
+      "retrieval_scored_count": 5,
+      "coverage_recall_at_4": 0.8333333333333334
+    },
+    "single": {
+      "retrieval_scored_count": 25,
+      "coverage_recall_at_4": 1.0
+    },
+    "unanswerable": {
+      "retrieval_scored_count": 0,
+      "coverage_recall_at_4": null
+    }
+  },
+  "total_seconds_p50": 1.4068731050000167,
+  "total_seconds_p95": 1.9026728560000095,
+  "latency_conditions": "serial, no warmup, includes network/API retries; not production load testing",
+  "semantic_answer_accuracy": null,
+  "refusal_accuracy": null,
+  "review_required": true
+}

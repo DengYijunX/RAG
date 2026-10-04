@@ -1,0 +1,10 @@
+{
+  "embedding": "passed",
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "embedding_dimension": 1024,
+  "embedding_base_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+  "llm": "passed",
+  "llm_model": "deepseek-chat",
+  "secret_target": "llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com",
+  "credentials_stored": false
+}

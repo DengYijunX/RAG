@@ -1,0 +1,42 @@
+{
+  "questions": 141,
+  "categories": {
+    "article_lookup": 59,
+    "semantic": 32,
+    "calculation": 4,
+    "version_comparison": 16,
+    "multi_evidence": 10,
+    "clarification": 10,
+    "unanswerable": 10
+  },
+  "splits": {
+    "dev": {
+      "total": 82,
+      "categories": {
+        "article_lookup": 37,
+        "semantic": 16,
+        "calculation": 1,
+        "version_comparison": 8,
+        "multi_evidence": 5,
+        "clarification": 6,
+        "unanswerable": 9
+      }
+    },
+    "test": {
+      "total": 59,
+      "categories": {
+        "article_lookup": 22,
+        "semantic": 16,
+        "calculation": 3,
+        "version_comparison": 8,
+        "multi_evidence": 5,
+        "clarification": 4,
+        "unanswerable": 1
+      }
+    }
+  },
+  "coverage_documents": 59,
+  "annotation_status": "draft_needs_domain_review",
+  "split_policy": "whole standard-family connected components, all versions and cross-standard questions in same split",
+  "benchmark_scope": "synthetic corpus-derived development dataset; not independently human-authored or an untouched external benchmark"
+}

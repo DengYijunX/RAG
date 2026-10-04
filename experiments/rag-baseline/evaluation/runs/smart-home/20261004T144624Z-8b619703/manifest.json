@@ -1,0 +1,40 @@
+{
+  "status": "completed",
+  "kind": "real_api_baseline",
+  "knowledge_base": "smart-home",
+  "split": "dev",
+  "question_count": 43,
+  "full_split": true,
+  "config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "chunk_size": 500,
+  "chunk_overlap": 50,
+  "top_k": 4,
+  "distance": "l2",
+  "coverage_threshold": 0.8,
+  "question_sha256": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+  "source_files": {
+    "smart-home/corpus/Doc1-X1智能门锁FAQ(1).md": "a593dba4430534fa076576f687489d4824c47d9c87b2d2db49e518bec7395da4",
+    "smart-home/corpus/Doc2-X2智能门锁FAQ.md": "e3461020a9b9afb7196641aeec3405ffe1544efa71b068ce2415399fe124b5cb",
+    "smart-home/corpus/Doc3-C1智能摄像头FAQ.md": "e611d7da3c7a734cdffab77bd19bc0d3d4e29f8cdcb44a241b79f292ae0d5245",
+    "smart-home/corpus/Doc4-G2智能网关FAQ(1).md": "8a1e340f520bc97ddc35df7cd84f7c0acaa3e20b4b32967b50bbe72b367a2237",
+    "smart-home/corpus/Doc5-售后与保修政策.md": "e3712ef0f1f764b05d8408e6604592a77a5fdf14708b52b1d737c34da4402219"
+  },
+  "runner_sha256": "dab3d32a18440f440ed781a1b012a8e9d83adbaa53f88ae55db624c174be05c1",
+  "generate": true,
+  "answers_manually_scored": false,
+  "repository_commit": "17943aadd3149034bf061dc0c8a5c5e2850d87f5",
+  "dependency_versions": {
+    "chromadb": "0.6.3",
+    "numpy": "1.26.4",
+    "openai": "3.24.0",
+    "langchain-text-splitters": "1.1.3"
+  },
+  "python_version": "3.12.14",
+  "index_seconds": 1.5950077680000163,
+  "indexed_chunks": 26
+}

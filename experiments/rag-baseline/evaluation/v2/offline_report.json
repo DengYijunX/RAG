@@ -1,0 +1,24 @@
+{
+  "kind": "offline_mapping_validation",
+  "model_calls": 0,
+  "knowledge_bases": {
+    "smart-home": {
+      "documents": 5,
+      "chunks": 26,
+      "evidence": 83,
+      "questions": 72,
+      "all_evidence_mapped": true,
+      "full_corpus_covers_all_evidence": true,
+      "long_evidence_top4_warnings": []
+    },
+    "accounting": {
+      "documents": 59,
+      "chunks": 749,
+      "evidence": 1859,
+      "questions": 153,
+      "all_evidence_mapped": true,
+      "full_corpus_covers_all_evidence": true,
+      "long_evidence_top4_warnings": []
+    }
+  }
+}

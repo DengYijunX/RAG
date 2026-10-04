@@ -1,0 +1,94 @@
+{
+  "offline_mapping": "passed",
+  "baseline_tool_tests": {
+    "passed": 11,
+    "failed": 0
+  },
+  "actual_model_baseline": "completed_dev_both_knowledge_bases",
+  "embedding_probe": "passed_1024_dimensions",
+  "missing": [],
+  "generation_additionally_requires": [],
+  "network_observation": "Authenticated embedding and LLM requests passed",
+  "configuration_draft": "saved; existing EMBEDDING_API_KEY target must be edited in settings; save then publish",
+  "human_domain_review": "pending; qualitative spot review saved separately",
+  "performance_metrics": {
+    "smart-home": {
+      "completed_questions": 43,
+      "retrieval_scored_questions": 30,
+      "coverage_recall_at_4": 0.9722222222222222,
+      "all_evidence_coverage_rate": 0.9333333333333333,
+      "coverage_mrr_at_4": 0.9055555555555556,
+      "by_category": {
+        "ambiguous": {
+          "retrieval_scored_count": 0,
+          "coverage_recall_at_4": null
+        },
+        "multi": {
+          "retrieval_scored_count": 5,
+          "coverage_recall_at_4": 0.8333333333333334
+        },
+        "single": {
+          "retrieval_scored_count": 25,
+          "coverage_recall_at_4": 1.0
+        },
+        "unanswerable": {
+          "retrieval_scored_count": 0,
+          "coverage_recall_at_4": null
+        }
+      },
+      "total_seconds_p50": 1.4068731050000167,
+      "total_seconds_p95": 1.9026728560000095,
+      "latency_conditions": "serial, no warmup, includes network/API retries; not production load testing",
+      "semantic_answer_accuracy": null,
+      "refusal_accuracy": null,
+      "review_required": true
+    },
+    "accounting": {
+      "completed_questions": 85,
+      "retrieval_scored_questions": 67,
+      "coverage_recall_at_4": 0.9228855721393036,
+      "all_evidence_coverage_rate": 0.8955223880597015,
+      "coverage_mrr_at_4": 0.859452736318408,
+      "by_category": {
+        "article_lookup": {
+          "retrieval_scored_count": 37,
+          "coverage_recall_at_4": 0.9459459459459459
+        },
+        "calculation": {
+          "retrieval_scored_count": 1,
+          "coverage_recall_at_4": 1.0
+        },
+        "clarification": {
+          "retrieval_scored_count": 0,
+          "coverage_recall_at_4": null
+        },
+        "multi_evidence": {
+          "retrieval_scored_count": 5,
+          "coverage_recall_at_4": 0.5666666666666667
+        },
+        "semantic": {
+          "retrieval_scored_count": 16,
+          "coverage_recall_at_4": 0.96875
+        },
+        "unanswerable": {
+          "retrieval_scored_count": 0,
+          "coverage_recall_at_4": null
+        },
+        "version_comparison": {
+          "retrieval_scored_count": 8,
+          "coverage_recall_at_4": 0.9375
+        }
+      },
+      "total_seconds_p50": 1.7684200180000005,
+      "total_seconds_p95": 3.3734709510000016,
+      "latency_conditions": "serial, no warmup, includes network/API retries; not production load testing",
+      "semantic_answer_accuracy": null,
+      "refusal_accuracy": null,
+      "review_required": true
+    }
+  },
+  "configuration_observation": "Published EMBEDDING_API_KEY destination now matches user Aliyun endpoint",
+  "llm_preflight": "passed: nonempty response to minimal chat completion request",
+  "blocking_action": null,
+  "completed_questions": 128
+}

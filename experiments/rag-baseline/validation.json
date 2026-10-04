@@ -1,0 +1,21 @@
+{
+  "smart_home": {
+    "questions": 60,
+    "evidence": 83,
+    "splits": {
+      "test": 20,
+      "dev": 40
+    },
+    "checks": "unique IDs/questions, references, exact excerpts, evidence/family split isolation, split files"
+  },
+  "accounting": {
+    "questions": 141,
+    "evidence": 1859,
+    "splits": {
+      "test": 59,
+      "dev": 82
+    },
+    "checks": "unique IDs/questions, references, exact excerpts, evidence/family split isolation, split files"
+  },
+  "corpus_checks": "file hashes, markdown prose preservation, continuous article numbers, exact source text and source lines"
+}

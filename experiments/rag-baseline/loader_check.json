@@ -1,0 +1,14 @@
+{
+  "smart_home": {
+    "documents": 5,
+    "chunks_500_overlap_50": 26,
+    "loader_check": "passed",
+    "embedding_retrieval_generation": "not run"
+  },
+  "accounting": {
+    "documents": 59,
+    "chunks_500_overlap_50": 749,
+    "loader_check": "passed",
+    "embedding_retrieval_generation": "not run"
+  }
+}

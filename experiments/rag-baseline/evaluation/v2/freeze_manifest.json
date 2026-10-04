@@ -1,0 +1,12 @@
+{
+  "version": "2.0-review-candidate",
+  "status": "snapshot_created_human_review_pending",
+  "sha256": {
+    "v2/accounting/questions.test.jsonl": "8514554b96c73727a0f608971086694e0d4204d4501a7e1f97fd3fcb2143cf60",
+    "v2/accounting/questions.jsonl": "65286aff8d1b5fd48f09a5999246e410bb7fa871ad26fb5b659069230fa85482",
+    "v2/accounting/questions.dev.jsonl": "f4bacabae72bd9f02c83bd3c72d0d098738e8ae72d718604344801217dddf898",
+    "v2/smart-home/questions.test.jsonl": "32a76cc46b447cf754b1ca047c4b237289116ad187eb7e5dc188e8215f0251a9",
+    "v2/smart-home/questions.jsonl": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+    "v2/smart-home/questions.dev.jsonl": "9908d7f356ec2c85988d1b5f279f2f7a3f7c266c42e1520b8f98ef5cdab072f1"
+  }
+}

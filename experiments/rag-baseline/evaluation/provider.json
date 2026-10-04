@@ -1,0 +1,9 @@
+{
+  "embedding_base_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "secrets_stored": false,
+  "runtime_network_status": "authenticated_embedding_passed",
+  "draft_status": "published_binding_verified",
+  "embedding_model_status": "present_in_runtime",
+  "llm_preflight": "passed"
+}

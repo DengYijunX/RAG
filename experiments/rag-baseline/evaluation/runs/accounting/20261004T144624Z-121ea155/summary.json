@@ -1,0 +1,43 @@
+{
+  "completed_questions": 85,
+  "retrieval_scored_questions": 67,
+  "coverage_recall_at_4": 0.9228855721393036,
+  "all_evidence_coverage_rate": 0.8955223880597015,
+  "coverage_mrr_at_4": 0.859452736318408,
+  "by_category": {
+    "article_lookup": {
+      "retrieval_scored_count": 37,
+      "coverage_recall_at_4": 0.9459459459459459
+    },
+    "calculation": {
+      "retrieval_scored_count": 1,
+      "coverage_recall_at_4": 1.0
+    },
+    "clarification": {
+      "retrieval_scored_count": 0,
+      "coverage_recall_at_4": null
+    },
+    "multi_evidence": {
+      "retrieval_scored_count": 5,
+      "coverage_recall_at_4": 0.5666666666666667
+    },
+    "semantic": {
+      "retrieval_scored_count": 16,
+      "coverage_recall_at_4": 0.96875
+    },
+    "unanswerable": {
+      "retrieval_scored_count": 0,
+      "coverage_recall_at_4": null
+    },
+    "version_comparison": {
+      "retrieval_scored_count": 8,
+      "coverage_recall_at_4": 0.9375
+    }
+  },
+  "total_seconds_p50": 1.7684200180000005,
+  "total_seconds_p95": 3.3734709510000016,
+  "latency_conditions": "serial, no warmup, includes network/API retries; not production load testing",
+  "semantic_answer_accuracy": null,
+  "refusal_accuracy": null,
+  "review_required": true
+}

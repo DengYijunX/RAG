@@ -1,0 +1,65 @@
+{
+  "version": "2.0-review-candidate",
+  "source_v1_sha256": {
+    "smart-home": "4c0037dcf6e4e4ba65de1f6eddc23ce3a9720cd5d0acee835befdd5ecccac5dc",
+    "accounting": "6fb051dbdab2731c2dc174c7d3327e3391172c6b2142d26df185d7624b17812b"
+  },
+  "human_review_completed": false,
+  "review_scope": "source-groundedness and explicit conditions; not official legal effectiveness or expert signoff",
+  "findings": [
+    {
+      "id": "home-Q012",
+      "change": "Explicitly separate runtime battery life from time since purchase; no free-replacement promise"
+    },
+    {
+      "id": "accounting-version-pairs",
+      "change": "Same-number article comparisons remain scoped; no assumption of same subject or present legal effect"
+    },
+    {
+      "id": "negative-sample-coverage",
+      "change": "Added 12 distinct corpus/tool-boundary questions per knowledge base, 9 test and 3 dev; existing v1 splits preserved"
+    }
+  ],
+  "smart-home": {
+    "questions": 72,
+    "categories": {
+      "single": 36,
+      "multi": 8,
+      "ambiguous": 8,
+      "unanswerable": 18,
+      "conflict": 2
+    },
+    "splits": {
+      "dev": {
+        "count": 43,
+        "abstain": 8
+      },
+      "test": {
+        "count": 29,
+        "abstain": 10
+      }
+    }
+  },
+  "accounting": {
+    "questions": 153,
+    "categories": {
+      "article_lookup": 59,
+      "semantic": 32,
+      "calculation": 4,
+      "version_comparison": 16,
+      "multi_evidence": 10,
+      "clarification": 10,
+      "unanswerable": 22
+    },
+    "splits": {
+      "dev": {
+        "count": 85,
+        "abstain": 12
+      },
+      "test": {
+        "count": 68,
+        "abstain": 10
+      }
+    }
+  }
+}
