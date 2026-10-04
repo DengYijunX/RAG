@@ -1,0 +1,20 @@
+{
+  "status": "completed",
+  "knowledge_base": "accounting",
+  "selected_question_ids": [
+    "ACC-Q041",
+    "ACC-Q059",
+    "ACC-Q114",
+    "ACC-Q116",
+    "ACC-Q118"
+  ],
+  "selection_bias": true,
+  "overall_accuracy_estimated": false,
+  "model_config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "script_sha256": "edc1ceac79dc2feae10a54c9775c8d417d2f7b953fbaccfe093934adf605aedb"
+}

@@ -1,0 +1,180 @@
+{
+  "baseline": {
+    "questions": 85,
+    "scored_count": 67,
+    "coverage_recall": 0.9228855721393036,
+    "all_evidence_coverage": 0.8955223880597015,
+    "context_chars_mean": 1695.9882352941177,
+    "context_chars_p95": 1940,
+    "by_category": {
+      "article_lookup": {
+        "scored_count": 37,
+        "coverage_recall": 0.9459459459459459
+      },
+      "calculation": {
+        "scored_count": 1,
+        "coverage_recall": 1.0
+      },
+      "clarification": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi_evidence": {
+        "scored_count": 5,
+        "coverage_recall": 0.5666666666666667
+      },
+      "semantic": {
+        "scored_count": 16,
+        "coverage_recall": 0.96875
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "version_comparison": {
+        "scored_count": 8,
+        "coverage_recall": 0.9375
+      }
+    }
+  },
+  "structural": {
+    "questions": 85,
+    "scored_count": 67,
+    "coverage_recall": 0.6293532338308457,
+    "all_evidence_coverage": 0.582089552238806,
+    "context_chars_mean": 360.50588235294117,
+    "context_chars_p95": 747,
+    "by_category": {
+      "article_lookup": {
+        "scored_count": 37,
+        "coverage_recall": 0.5405405405405406
+      },
+      "calculation": {
+        "scored_count": 1,
+        "coverage_recall": 1.0
+      },
+      "clarification": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi_evidence": {
+        "scored_count": 5,
+        "coverage_recall": 0.6333333333333333
+      },
+      "semantic": {
+        "scored_count": 16,
+        "coverage_recall": 0.9375
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "version_comparison": {
+        "scored_count": 8,
+        "coverage_recall": 0.375
+      }
+    }
+  },
+  "expanded": {
+    "questions": 85,
+    "scored_count": 67,
+    "coverage_recall": 0.6442786069651741,
+    "all_evidence_coverage": 0.5970149253731343,
+    "context_chars_mean": 369.3411764705882,
+    "context_chars_p95": 836,
+    "by_category": {
+      "article_lookup": {
+        "scored_count": 37,
+        "coverage_recall": 0.5675675675675675
+      },
+      "calculation": {
+        "scored_count": 1,
+        "coverage_recall": 1.0
+      },
+      "clarification": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi_evidence": {
+        "scored_count": 5,
+        "coverage_recall": 0.6333333333333333
+      },
+      "semantic": {
+        "scored_count": 16,
+        "coverage_recall": 0.9375
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "version_comparison": {
+        "scored_count": 8,
+        "coverage_recall": 0.375
+      }
+    }
+  },
+  "changes_vs_baseline": {
+    "structural": {
+      "improved": [
+        "ACC-Q084",
+        "ACC-Q116"
+      ],
+      "regressed": [
+        "ACC-Q005",
+        "ACC-Q007",
+        "ACC-Q014",
+        "ACC-Q015",
+        "ACC-Q018",
+        "ACC-Q019",
+        "ACC-Q024",
+        "ACC-Q026",
+        "ACC-Q028",
+        "ACC-Q038",
+        "ACC-Q039",
+        "ACC-Q040",
+        "ACC-Q042",
+        "ACC-Q049",
+        "ACC-Q050",
+        "ACC-Q075",
+        "ACC-Q099",
+        "ACC-Q101",
+        "ACC-Q102",
+        "ACC-Q105",
+        "ACC-Q106",
+        "ACC-Q108"
+      ]
+    },
+    "expanded": {
+      "improved": [
+        "ACC-Q059",
+        "ACC-Q084",
+        "ACC-Q116"
+      ],
+      "regressed": [
+        "ACC-Q005",
+        "ACC-Q007",
+        "ACC-Q014",
+        "ACC-Q015",
+        "ACC-Q018",
+        "ACC-Q019",
+        "ACC-Q024",
+        "ACC-Q026",
+        "ACC-Q028",
+        "ACC-Q038",
+        "ACC-Q039",
+        "ACC-Q040",
+        "ACC-Q042",
+        "ACC-Q049",
+        "ACC-Q050",
+        "ACC-Q075",
+        "ACC-Q099",
+        "ACC-Q101",
+        "ACC-Q102",
+        "ACC-Q105",
+        "ACC-Q106",
+        "ACC-Q108"
+      ]
+    }
+  },
+  "generation_quality": "not measured by retrieval coverage; targeted answer checks separate"
+}

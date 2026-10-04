@@ -1,0 +1,99 @@
+{
+  "baseline": {
+    "questions": 43,
+    "scored_count": 30,
+    "coverage_recall": 0.9722222222222222,
+    "all_evidence_coverage": 0.9333333333333333,
+    "context_chars_mean": 1645.7906976744187,
+    "context_chars_p95": 1860,
+    "by_category": {
+      "ambiguous": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi": {
+        "scored_count": 5,
+        "coverage_recall": 0.8333333333333334
+      },
+      "single": {
+        "scored_count": 25,
+        "coverage_recall": 1.0
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      }
+    }
+  },
+  "structural": {
+    "questions": 43,
+    "scored_count": 30,
+    "coverage_recall": 0.9694444444444444,
+    "all_evidence_coverage": 0.9333333333333333,
+    "context_chars_mean": 484.27906976744185,
+    "context_chars_p95": 760,
+    "by_category": {
+      "ambiguous": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi": {
+        "scored_count": 5,
+        "coverage_recall": 0.8166666666666667
+      },
+      "single": {
+        "scored_count": 25,
+        "coverage_recall": 1.0
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      }
+    }
+  },
+  "expanded": {
+    "questions": 43,
+    "scored_count": 30,
+    "coverage_recall": 0.9694444444444444,
+    "all_evidence_coverage": 0.9333333333333333,
+    "context_chars_mean": 518.4186046511628,
+    "context_chars_p95": 900,
+    "by_category": {
+      "ambiguous": {
+        "scored_count": 0,
+        "coverage_recall": null
+      },
+      "multi": {
+        "scored_count": 5,
+        "coverage_recall": 0.8166666666666667
+      },
+      "single": {
+        "scored_count": 25,
+        "coverage_recall": 1.0
+      },
+      "unanswerable": {
+        "scored_count": 0,
+        "coverage_recall": null
+      }
+    }
+  },
+  "changes_vs_baseline": {
+    "structural": {
+      "improved": [
+        "Q040"
+      ],
+      "regressed": [
+        "Q043"
+      ]
+    },
+    "expanded": {
+      "improved": [
+        "Q040"
+      ],
+      "regressed": [
+        "Q043"
+      ]
+    }
+  },
+  "generation_quality": "not measured by retrieval coverage; targeted answer checks separate"
+}

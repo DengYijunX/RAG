@@ -1,0 +1,43 @@
+{
+  "status": "completed",
+  "kind": "structural_chunk_ablation",
+  "knowledge_base": "smart-home",
+  "split": "dev",
+  "question_count": 43,
+  "model_config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "child_max_chars": 500,
+  "child_overlap": 50,
+  "top_k_children": 4,
+  "parents": 83,
+  "children": 85,
+  "gold_used_for_retrieval": false,
+  "baseline_manifest": "evaluation/runs/smart-home/20261004T144624Z-8b619703/manifest.json",
+  "baseline_manifest_sha256": "c0c782e5ec9243340cab49ade668120bd389d25c0234f5c3bc94ade71c8ab7a6",
+  "source_files": {
+    "smart-home/corpus/Doc1-X1智能门锁FAQ(1).md": "a593dba4430534fa076576f687489d4824c47d9c87b2d2db49e518bec7395da4",
+    "smart-home/corpus/Doc2-X2智能门锁FAQ.md": "e3461020a9b9afb7196641aeec3405ffe1544efa71b068ce2415399fe124b5cb",
+    "smart-home/corpus/Doc3-C1智能摄像头FAQ.md": "e611d7da3c7a734cdffab77bd19bc0d3d4e29f8cdcb44a241b79f292ae0d5245",
+    "smart-home/corpus/Doc4-G2智能网关FAQ(1).md": "8a1e340f520bc97ddc35df7cd84f7c0acaa3e20b4b32967b50bbe72b367a2237",
+    "smart-home/corpus/Doc5-售后与保修政策.md": "e3712ef0f1f764b05d8408e6604592a77a5fdf14708b52b1d737c34da4402219"
+  },
+  "questions_sha256": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+  "script_sha256": "bab24de76e5caf679697ce664ab7b0888a176f2c93a332f3e3eab1d686fb2342",
+  "baseline_helper_sha256": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+  "repository_commit": "9dfa4bf599b3fe38ac00d98547d2243ab7e6d356",
+  "changes": "Index independent FAQ/article bodies; split long bodies with original 500/50; no title prefix, no version filter, no reranker. Parent expansion changes only post-retrieval context. Preambles/chapter headings not indexed as separate units. For contextual ablation only, prepend source title/year and parent heading to embedding inputs; returned source text and Top-4 rules unchanged.",
+  "baseline_reused": true,
+  "contextual_embedding": true,
+  "scoring_threshold": 0.8,
+  "latency_scope": "structural query timings exclude batched query embedding; cached baseline timing not compared directly",
+  "index_seconds": 4.614090971999985,
+  "index_tokens": 9014,
+  "query_vectors_reused_from": "evaluation/experiments/smart-home/20261004T150646Z-3cf4138c",
+  "query_embedding_seconds": 0.0008989810000912257,
+  "query_embedding_tokens": 0,
+  "completed_questions": 43
+}
