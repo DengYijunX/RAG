@@ -349,6 +349,21 @@
     .search-row, .path-row { flex-direction: column; }
     .answer-card { padding: 24px 20px; }
   }
+  .knowledge-picker { margin-bottom: 24px; }
+  .knowledge-picker label { display: block; margin-bottom: 8px; }
+  .knowledge-picker select { width: 100%; padding: 12px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 8px; font: inherit; }
+  .knowledge-note { color: var(--text-dim); font-size: .88rem; margin-top: 10px; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+  .examples button, .source-link { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--accent); cursor: pointer; font: inherit; font-size: .85rem; }
+  .answer-card, .chunk-content { white-space: pre-wrap; overflow-wrap: anywhere; }
+  .citation-card { margin-top: 12px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+  .citation-card summary { cursor: pointer; color: var(--accent); }
+  .chunk-content { margin: 14px 0; font-size: .9rem; }
+  dialog { margin: auto; width: min(900px, 94vw); max-height: 88vh; padding: 24px; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 12px; }
+  dialog::backdrop { background: rgba(0,0,0,.7); }
+  dialog pre { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; margin-top: 20px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
@@ -357,18 +372,30 @@
   <header>
     <div class="logo">RAG · Knowledgebase</div>
     <h1>文档检索问答</h1>
-    <p class="subtitle">基于本地知识库的智能检索与生成</p>
+    <p class="subtitle">选择知识库提问，逐条核对回答依据</p>
   </header>
+
+  <div class="knowledge-picker">
+    <label for="knowledgeBase">知识库</label>
+    <select id="knowledgeBase" onchange="changeKnowledge()">
+      <option value="smart-home">智能家居售后</option>
+      <option value="accounting">企业会计准则</option>
+      <option value="custom">自定义文档（原入口）</option>
+    </select>
+    <p id="knowledgeNote" class="knowledge-note">正在读取知识库状态…</p>
+    <div class="examples" id="examples"></div>
+    <button class="source-link" type="button" onclick="loadKnowledge()">刷新状态</button>
+  </div>
 
   <div class="tabs">
     <button class="tab active" onclick="switchTab('query')">检索问答</button>
-    <button class="tab" onclick="switchTab('index')">文档索引</button>
+    <button class="tab" id="indexTab" onclick="switchTab('index')" hidden>自定义文档索引</button>
   </div>
 
   <!-- Query Panel -->
   <div class="query-panel" id="queryPanel">
     <div class="search-row">
-      <input class="search-input" id="questionInput" placeholder="输入你想查询的问题…" autofocus
+      <input class="search-input" id="questionInput" aria-label="问题" maxlength="2000" placeholder="输入你想查询的问题…" autofocus
              onkeydown="if(event.key==='Enter') doQuery()">
       <button class="btn btn-primary" id="queryBtn" onclick="doQuery()">搜索</button>
     </div>
@@ -383,7 +410,7 @@
     </div>
   </div>
 
-  <div class="status" id="status"></div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
 
   <!-- Results -->
   <div id="results"></div>
@@ -391,11 +418,83 @@
   <!-- Empty State -->
   <div class="empty-state" id="emptyState">
     <div class="icon">&#x25A1;</div>
-    <p>输入问题，从已索引的文档中检索相关片段，由 AI 生成回答</p>
+    <p>选择知识库后输入问题。回答下方可展开参考片段，并查看对应原文。</p>
   </div>
 </div>
 
+<dialog id="sourceDialog" aria-labelledby="sourceTitle">
+  <form method="dialog"><button class="source-link">关闭原文</button></form>
+  <h2 id="sourceTitle">来源原文</h2>
+  <pre id="sourceText"></pre>
+</dialog>
+
 <script>
+let knowledgeCatalog = [];
+let busy = false;
+let sourceRequest = 0;
+const examples = {
+  'smart-home': ['X1 换手机后怎样恢复控制？', '门锁开始滴滴响，是不是快没电了？'],
+  'accounting': ['分别依据2006年与2017年收入准则第四条，收入确认的核心表述有何差别？', '请引用2014年职工薪酬准则第二条。'],
+  'custom': []
+};
+
+async function loadKnowledge() {
+  try {
+    const response = await fetch('/knowledge-bases');
+    if (!response.ok) throw new Error('知识库状态读取失败');
+    knowledgeCatalog = await response.json();
+    updateKnowledgeNote();
+  } catch (error) {
+    document.getElementById('knowledgeNote').textContent = error.message;
+  }
+}
+
+function updateKnowledgeNote() {
+  const kb = document.getElementById('knowledgeBase').value;
+  const entry = knowledgeCatalog.find(item => item.id === kb);
+  document.getElementById('knowledgeNote').textContent = kb === 'custom'
+    ? '使用原有自定义索引；与上面的两个知识库分别查询。'
+    : entry ? `${entry.documents} 份文档 · ${entry.ready ? '可查询' : '知识库暂不可用'}。${entry.scope_note}` : '知识库状态尚未就绪。';
+}
+
+function changeKnowledge() {
+  const kb = document.getElementById('knowledgeBase').value;
+  document.getElementById('indexTab').hidden = kb !== 'custom';
+  document.getElementById('results').replaceChildren();
+  document.getElementById('questionInput').value = '';
+  document.getElementById('emptyState').style.display = '';
+  document.getElementById('sourceDialog').close();
+  sourceRequest += 1;
+  setStatus('', '');
+  switchTab('query');
+  updateKnowledgeNote();
+  const container = document.getElementById('examples');
+  container.replaceChildren();
+  examples[kb].forEach(question => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = question;
+    button.addEventListener('click', () => {
+      if (!busy) { document.getElementById('questionInput').value = question; document.getElementById('questionInput').focus(); }
+    });
+    container.append(button);
+  });
+}
+
+async function viewSource(citation) {
+  const requestId = ++sourceRequest;
+  const dialog = document.getElementById('sourceDialog');
+  document.getElementById('sourceTitle').textContent = citation.title;
+  document.getElementById('sourceText').textContent = '正在读取原文…';
+  dialog.showModal();
+  try {
+    const response = await fetch(citation.url);
+    if (!response.ok) throw new Error('原文读取失败');
+    const source = await response.json();
+    if (requestId === sourceRequest) document.getElementById('sourceText').textContent = source.content;
+  } catch (error) { if (requestId === sourceRequest) document.getElementById('sourceText').textContent = error.message; }
+}
+
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', i === (tab === 'query' ? 0 : 1));
@@ -442,45 +541,61 @@ async function doIndex() {
 async function doQuery() {
   const input = document.getElementById('questionInput');
   const question = input.value.trim();
-  if (!question) return;
+  if (!question || busy) return;
 
   const btn = document.getElementById('queryBtn');
+  const selector = document.getElementById('knowledgeBase');
+  const kb = selector.value;
+  busy = true;
+  selector.disabled = true;
   btn.disabled = true;
   setStatus('检索中…', 'loading');
+  document.getElementById('results').replaceChildren();
   document.getElementById('emptyState').style.display = 'none';
 
   try {
-    const r = await fetch('/query', {
+    const r = await fetch(kb === 'custom' ? '/query' : `/knowledge-bases/${kb}/query`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question: question })
     });
     const data = await r.json();
+    if (!r.ok) throw new Error(typeof data.detail === 'string' ? data.detail : '请检查问题后重试');
 
-    setStatus(`检索到 ${data.sources.length} 篇相关文档`, 'success');
+    const citations = data.citations || (data.chunks || []).map((c, index) => ({...c, citation: index+1, title: c.source, article_labels: []}));
+    const status = data.status === 'clarify' ? '需要补充信息' : data.status === 'insufficient_evidence' ? '资料不足' : `返回 ${citations.length} 个参考片段`;
+    setStatus(status, data.status === 'answer' || kb === 'custom' ? 'success' : '');
 
     const results = document.getElementById('results');
-    let html = '<div class="result">';
-
-    // Answer card
-    html += '<div class="answer-card">' + data.answer.replace(/\n/g, '<br>') + '</div>';
-
-    // Sources
-    html += '<div class="sources-heading">引用来源</div>';
-    data.sources.forEach(s => { html += `<span class="source-tag">${escHtml(s)}</span>`; });
-
-    // Chunk previews
-    html += '<div style="margin-top:20px">';
-    data.chunks.forEach(c => {
-      html += `<div class="chunk-preview"><div class="chunk-source">${escHtml(c.source)}</div>${escHtml(c.content)}</div>`;
+    results.replaceChildren();
+    const answer = document.createElement('div');
+    answer.className = 'answer-card';
+    answer.textContent = data.answer;
+    results.append(answer);
+    if (data.scope_note) {
+      const note = document.createElement('p'); note.className = 'knowledge-note'; note.textContent = data.scope_note; results.append(note);
+    }
+    citations.forEach(citation => {
+      const detail = document.createElement('details'); detail.className = 'citation-card';
+      const summary = document.createElement('summary');
+      const version = citation.version_year ? ` · ${citation.version_year} 年版` : '';
+      summary.textContent = `[${citation.citation}] ${citation.title}${version}`;
+      detail.append(summary);
+      if (citation.article_labels.length) {
+        const labels = document.createElement('p'); labels.className = 'knowledge-note'; labels.textContent = '片段涉及：' + citation.article_labels.join('、'); detail.append(labels);
+      }
+      const content = document.createElement('div'); content.className = 'chunk-content'; content.textContent = citation.content; detail.append(content);
+      if (citation.url) {
+        const button = document.createElement('button'); button.className = 'source-link'; button.textContent = '查看完整原文'; button.addEventListener('click', () => viewSource(citation)); detail.append(button);
+      }
+      results.append(detail);
     });
-    html += '</div></div>';
-
-    results.innerHTML = html;
   } catch (e) {
     setStatus('查询失败: ' + e.message, 'error');
     document.getElementById('emptyState').style.display = '';
   } finally {
+    busy = false;
+    selector.disabled = false;
     btn.disabled = false;
   }
 }
@@ -490,6 +605,8 @@ function escHtml(s) {
   div.textContent = s;
   return div.innerHTML;
 }
+changeKnowledge();
+loadKnowledge();
 </script>
 </body>
 </html>
