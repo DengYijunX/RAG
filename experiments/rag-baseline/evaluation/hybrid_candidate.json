@@ -1,0 +1,29 @@
+{
+  "status": "dev_candidate_not_integrated_or_test_validated",
+  "knowledge_bases": {
+    "smart-home": {
+      "strategy": "original_dense",
+      "dev_evidence_coverage": 0.9722222222222222
+    },
+    "accounting": {
+      "strategy": "exact_then_dense",
+      "dev_evidence_coverage": 0.9676616915422885
+    }
+  },
+  "parameters": {
+    "bm25_k1": 1.5,
+    "bm25_b": 0.75,
+    "rrf_k": 60,
+    "candidate_depth": 20,
+    "max_hits": 4,
+    "body_char_budget": 2000
+  },
+  "rationale": "Same accounting dev coverage as broad RRF with narrower behavior; smart-home fusion regressed. Not an answer-accuracy claim.",
+  "retrieval_script_sha256": "f4fed7b1aa54b89b6be959954d3b911d5e56a3e3637525fe4c74f7b3ad8eb57b",
+  "latest_manifests": {
+    "smart-home": "hybrid_runs/smart-home/20261004T155449Z-c21cb8b8/manifest.json",
+    "accounting": "hybrid_runs/accounting/20261004T155449Z-35487740/manifest.json"
+  },
+  "test_split_evaluated": false,
+  "human_domain_review": "pending"
+}

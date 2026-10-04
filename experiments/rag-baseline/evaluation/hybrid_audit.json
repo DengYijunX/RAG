@@ -1,0 +1,122 @@
+{
+  "test_split_evaluated": false,
+  "reviewer": "assistant",
+  "human_domain_review": "pending",
+  "runs": [
+    {
+      "knowledge_base": "smart-home",
+      "directory": "hybrid_runs/smart-home/20261004T155046Z-d054d50c",
+      "script": "provenance/hybrid-67b979670d4e.py",
+      "completed_questions": 43,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "6de3a6a59a84d041b2e91e27e86a95e4bbc8611ad354ad607a5a5859b1d3e44b",
+        "results.jsonl": "3b0a9c512c854b4ff9dcdc1b9fb6d662c62b89638332cad76c8977f7705b1619",
+        "summary.json": "9ff6ff1595039c5bc8581106c660f0e2ecdf7b444389aa03f35e1afa1057f2ba"
+      }
+    },
+    {
+      "knowledge_base": "smart-home",
+      "directory": "hybrid_runs/smart-home/20261004T155132Z-7f88633d",
+      "script": "provenance/hybrid-9e7f02e6be60.py",
+      "completed_questions": 43,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "abf12edba80df67590736eb499b9649184e71e2feb7f4cef182eb1dd0c184f56",
+        "results.jsonl": "0f842eb4fca5586cc1ab79d4837ea3e29611f15135392a2e179f8f5068792a18",
+        "summary.json": "6383bed0692797ca72389d994ba1fa6fcad98fc1f7d8b0f589b11b6c34bba0f4",
+        "diagnostic_answers.jsonl": "1e0ff33ed74cbf8adc824d43d1398778a3d325f3c265b8c3dfe419f0c0b56860",
+        "diagnostic_manifest.json": "58efe58a27aea03ce5f4ed54356b993bf5bdd405c7ed20f2b07203254c72a0c2"
+      },
+      "diagnostic_script": "provenance/check_hybrid_answers-d0c60717bc95.py",
+      "actual_generation_calls": 2
+    },
+    {
+      "knowledge_base": "smart-home",
+      "directory": "hybrid_runs/smart-home/20261004T155343Z-d0ba212e",
+      "script": "provenance/hybrid_experiment-75d8286a547c.py",
+      "completed_questions": 43,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "5b975315b2285b1db18c49bb829a560c5de97be92a6d8d7f69abcb0d9e079436",
+        "results.jsonl": "e1734a7e9c12f5014fd6f12445d4722d2745c2271b4ec193372809879871c1f4",
+        "summary.json": "6383bed0692797ca72389d994ba1fa6fcad98fc1f7d8b0f589b11b6c34bba0f4"
+      }
+    },
+    {
+      "knowledge_base": "smart-home",
+      "directory": "hybrid_runs/smart-home/20261004T155449Z-c21cb8b8",
+      "script": "hybrid_experiment.py",
+      "completed_questions": 43,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "fbe4db468a9d853ff94c18f7f3ee8e0c20bb66b5c1830a112fb212fb66454f7d",
+        "results.jsonl": "5ca3c691854247d655f61d4ce29941bbc8be1b96acd032d44d75f9f171bee337",
+        "summary.json": "6383bed0692797ca72389d994ba1fa6fcad98fc1f7d8b0f589b11b6c34bba0f4",
+        "diagnostic_answers.jsonl": "acbe66d4c6eb77896f29277e2add0fc46f6a1208701dbce095cb5feb70d638d5",
+        "diagnostic_manifest.json": "40f87c4ac599ccc60650a060d979f467e50feb3b82f2720071a7f3f710d75a2d"
+      },
+      "diagnostic_script": "check_hybrid_answers.py",
+      "actual_generation_calls": 0
+    },
+    {
+      "knowledge_base": "accounting",
+      "directory": "hybrid_runs/accounting/20261004T155046Z-cdc0c93e",
+      "script": "provenance/hybrid-67b979670d4e.py",
+      "completed_questions": 85,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "60ed25b88c9a4b5b04c88c8347bb961e93da839a567b5d070bddeea35ba00c77",
+        "results.jsonl": "5888123e716dd75a46201b3e1966a404f1101b58019669ef692a25bd87796ade",
+        "summary.json": "d72fb1256feaddd88a44113653ca702e86812c902bf8b0fb51f685d116a4e449"
+      }
+    },
+    {
+      "knowledge_base": "accounting",
+      "directory": "hybrid_runs/accounting/20261004T155132Z-7715de02",
+      "script": "provenance/hybrid-9e7f02e6be60.py",
+      "completed_questions": 85,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "981693e0481659dd46022a78bc18aa4603225211a0da4e0e5bc1b39fa969a718",
+        "results.jsonl": "c11ccaeca0722c6505f637cd61f7000e40e25c688df96d6d20dc58fec8f93e1d",
+        "summary.json": "e1d52c7b68d5d8f64d1cd3073abffba33613af0b297d6b0d96738003e970e811",
+        "diagnostic_answers.jsonl": "afaf249d7914ee8eb53ba8e33d186f4580b4db58a74b0f3c196b17a8581c528f",
+        "diagnostic_manifest.json": "4c91ae4512fdd94e13dea3159c0fef1a40090aae1997a1cef52aa588062441b4"
+      },
+      "diagnostic_script": "provenance/check_hybrid_answers-d0c60717bc95.py",
+      "actual_generation_calls": 8
+    },
+    {
+      "knowledge_base": "accounting",
+      "directory": "hybrid_runs/accounting/20261004T155344Z-89951bec",
+      "script": "provenance/hybrid_experiment-75d8286a547c.py",
+      "completed_questions": 85,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "d74137a45ecbee86c1bd7433747beb5458e1eb47b9678c31228e74e30ce4329b",
+        "results.jsonl": "62a9087eddfebccfcaed8977ccdb9c97f1a81ff3ea53d12eb916a9799bc233c2",
+        "summary.json": "e1d52c7b68d5d8f64d1cd3073abffba33613af0b297d6b0d96738003e970e811"
+      }
+    },
+    {
+      "knowledge_base": "accounting",
+      "directory": "hybrid_runs/accounting/20261004T155449Z-35487740",
+      "script": "hybrid_experiment.py",
+      "completed_questions": 85,
+      "variant_metrics_recomputed": true,
+      "hashes": {
+        "manifest.json": "c64654957216f95b55818b36e8163b3d00028b011816545d9125995503f394d2",
+        "results.jsonl": "620a416a4071437140a196d3abfd501d4f0d780daea1f90981d5b17b459b93a6",
+        "summary.json": "1d9d6ed0c06950596555abfedb3a01b24a1e7276383fbb2fa3c06dafa28d7c3d",
+        "diagnostic_answers.jsonl": "e9743c5b44a6c0f8abc4c5ed59e3402e26a453293a3a978b477e32b32da3033c",
+        "diagnostic_manifest.json": "845729910a8c2f08d947be1522fe791190c65d2ae3cc0c7398cd345539007838"
+      },
+      "diagnostic_script": "check_hybrid_answers.py",
+      "actual_generation_calls": 1
+    }
+  ],
+  "total_new_generation_calls": 11,
+  "total_prompt_tokens": 10152,
+  "total_completion_tokens": 3681
+}

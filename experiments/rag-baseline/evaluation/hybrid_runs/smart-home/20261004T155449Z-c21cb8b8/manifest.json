@@ -1,0 +1,41 @@
+{
+  "status": "completed",
+  "kind": "hybrid_ablation",
+  "knowledge_base": "smart-home",
+  "split": "dev",
+  "revision": "v4_prefer_explicit_standard_name_over_incidental_title_mention",
+  "parameters": {
+    "bm25_k1": 1.5,
+    "bm25_b": 0.75,
+    "rrf_k": 60,
+    "candidate_depth": 20,
+    "max_hits": 4,
+    "body_char_budget": 2000
+  },
+  "model_config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "question_count": 43,
+  "questions_sha256": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+  "source_files": {
+    "smart-home/corpus/Doc1-X1智能门锁FAQ(1).md": "a593dba4430534fa076576f687489d4824c47d9c87b2d2db49e518bec7395da4",
+    "smart-home/corpus/Doc2-X2智能门锁FAQ.md": "e3461020a9b9afb7196641aeec3405ffe1544efa71b068ce2415399fe124b5cb",
+    "smart-home/corpus/Doc3-C1智能摄像头FAQ.md": "e611d7da3c7a734cdffab77bd19bc0d3d4e29f8cdcb44a241b79f292ae0d5245",
+    "smart-home/corpus/Doc4-G2智能网关FAQ(1).md": "8a1e340f520bc97ddc35df7cd84f7c0acaa3e20b4b32967b50bbe72b367a2237",
+    "smart-home/corpus/Doc5-售后与保修政策.md": "e3712ef0f1f764b05d8408e6604592a77a5fdf14708b52b1d737c34da4402219"
+  },
+  "baseline_manifest": "evaluation/runs/smart-home/20261004T144624Z-8b619703/manifest.json",
+  "baseline_manifest_sha256": "c0c782e5ec9243340cab49ade668120bd389d25c0234f5c3bc94ade71c8ab7a6",
+  "query_cache_manifest": "evaluation/experiments/smart-home/20261004T150914Z-4dccfbaf/manifest.json",
+  "query_vectors_sha256": "6fa2d0e9c2c4fc75f36de17ec38779b90d0d9e03a0e599ee09c744811e5184a6",
+  "script_sha256": "f4fed7b1aa54b89b6be959954d3b911d5e56a3e3637525fe4c74f7b3ad8eb57b",
+  "baseline_helper_sha256": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+  "structure_helper_sha256": "bab24de76e5caf679697ce664ab7b0888a176f2c93a332f3e3eab1d686fb2342",
+  "retrieval_api_calls": 0,
+  "gold_used_for_retrieval": false,
+  "latency_scope": "local replay; excludes embedding/network and is not production latency",
+  "completed_questions": 43
+}

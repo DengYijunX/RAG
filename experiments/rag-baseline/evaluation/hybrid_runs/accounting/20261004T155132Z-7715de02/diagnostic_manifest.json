@@ -1,0 +1,53 @@
+{
+  "status": "completed",
+  "knowledge_base": "accounting",
+  "split": "dev",
+  "selection": [
+    [
+      "ACC-Q041",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q059",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q098",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q114",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q085",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q116",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q118",
+      "exact_then_dense"
+    ],
+    [
+      "ACC-Q085",
+      "routed_rrf"
+    ]
+  ],
+  "selection_bias": true,
+  "overall_accuracy_estimated": false,
+  "model_config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "script_sha256": "d0c60717bc95a86cbad71ea315d8b84234ebd7b1f885cbce30342e815357bebd",
+  "retrieval_manifest_sha256": "981693e0481659dd46022a78bc18aa4603225211a0da4e0e5bc1b39fa969a718",
+  "retrieval_results_sha256": "c11ccaeca0722c6505f637cd61f7000e40e25c688df96d6d20dc58fec8f93e1d",
+  "selection_reason": "known fixes, new regressions and unresolved multi-evidence cases in dev",
+  "actual_generation_calls": 8,
+  "answers_sha256": "afaf249d7914ee8eb53ba8e33d186f4580b4db58a74b0f3c196b17a8581c528f"
+}

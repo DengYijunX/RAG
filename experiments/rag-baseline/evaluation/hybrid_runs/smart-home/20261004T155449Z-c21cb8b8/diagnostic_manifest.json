@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "knowledge_base": "smart-home",
+  "split": "dev",
+  "selection": [
+    [
+      "Q039",
+      "diverse_rrf"
+    ],
+    [
+      "Q040",
+      "diverse_rrf"
+    ]
+  ],
+  "selection_bias": true,
+  "overall_accuracy_estimated": false,
+  "model_config": {
+    "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    "embedding_model": "qwen3.7-text-embedding-flash",
+    "llm_url": "https://api.deepseek.com/v1",
+    "llm_model": "deepseek-chat"
+  },
+  "script_sha256": "c266d0ad02b0dde0fb6f58f15e4608773abc1742b4486514aa60cfae4e1ed55d",
+  "retrieval_manifest_sha256": "fbe4db468a9d853ff94c18f7f3ee8e0c20bb66b5c1830a112fb212fb66454f7d",
+  "retrieval_results_sha256": "5ca3c691854247d655f61d4ce29941bbc8be1b96acd032d44d75f9f171bee337",
+  "selection_reason": "known fixes, new regressions and unresolved multi-evidence cases in dev",
+  "completed_records": 2,
+  "actual_generation_calls": 0,
+  "answers_sha256": "acbe66d4c6eb77896f29277e2add0fc46f6a1208701dbce095cb5feb70d638d5"
+}
