@@ -1,0 +1,42 @@
+{
+  "review_date": "2026-10-05",
+  "timezone": "Asia/Shanghai",
+  "verification_scope": "Read selected official source files and documentation; no upstream deployment or performance validation",
+  "sources": [
+    {
+      "repository": "run-llama/llama_index",
+      "commit": "962940ddc079cc21701d28d1237c84c82a7c5164",
+      "path": "llama-index-core/llama_index/core/ingestion/pipeline.py",
+      "url": "https://github.com/run-llama/llama_index/blob/962940ddc079cc21701d28d1237c84c82a7c5164/llama-index-core/llama_index/core/ingestion/pipeline.py",
+      "sha256": "00a1de638af05f7cf8bfa068f24f8f6b4037fa5849896ebfab0e2edbe165695d"
+    },
+    {
+      "repository": "deepset-ai/haystack",
+      "commit": "87dba65f8c8b1f3906a36625615618ba29505971",
+      "path": "haystack/components/joiners/document_joiner.py",
+      "url": "https://github.com/deepset-ai/haystack/blob/87dba65f8c8b1f3906a36625615618ba29505971/haystack/components/joiners/document_joiner.py",
+      "sha256": "e47bdc6ac28e096d597982d366559e80ebe9bd81f395100804572595ff2f4af8"
+    },
+    {
+      "repository": "infiniflow/ragflow",
+      "commit": "2400ca8eb51432b1d304266d0de9ca232d9b53fa",
+      "path": "docs/guides/dataset/dataset_list_and_creation.md",
+      "url": "https://github.com/infiniflow/ragflow/blob/2400ca8eb51432b1d304266d0de9ca232d9b53fa/docs/guides/dataset/dataset_list_and_creation.md",
+      "sha256": "04c4e67b62f56207dc042c3959584ab88526e39d979b45f9ec54afee025a4c4d"
+    },
+    {
+      "repository": "infiniflow/ragflow",
+      "commit": "2400ca8eb51432b1d304266d0de9ca232d9b53fa",
+      "path": "docs/guides/dataset/files_dataset_document_management.md",
+      "url": "https://github.com/infiniflow/ragflow/blob/2400ca8eb51432b1d304266d0de9ca232d9b53fa/docs/guides/dataset/files_dataset_document_management.md",
+      "sha256": "08afe01199fa146835d7b0c949d41f83c02e1422aaddabcde5a51f3e2144ea4f"
+    },
+    {
+      "repository": "infiniflow/ragflow",
+      "commit": "2400ca8eb51432b1d304266d0de9ca232d9b53fa",
+      "path": "README.md",
+      "url": "https://github.com/infiniflow/ragflow/blob/2400ca8eb51432b1d304266d0de9ca232d9b53fa/README.md",
+      "sha256": "df66638493e541745e68e1bd4afa1298eca5b9c0b425c1d34efaf2b1ae565787"
+    }
+  ]
+}
