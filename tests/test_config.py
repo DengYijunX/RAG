@@ -1,8 +1,11 @@
 from rag.config import load_config, Config
 
 
-def test_load_config_defaults():
+def test_load_config_defaults(monkeypatch):
     """测试默认值"""
+    for key in ('EMBEDDING_MODEL', 'LLM_MODEL', 'CHUNK_SIZE', 'CHUNK_OVERLAP', 'TOP_K', 'PERSIST_DIR'):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setattr('rag.config.load_dotenv', lambda: None)
     config = load_config()
     assert isinstance(config, Config)
     assert config.embedding_model == "BAAI/bge-m3"

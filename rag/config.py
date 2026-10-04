@@ -23,8 +23,11 @@ class Config:
 def load_config() -> Config:
     """加载 .env 并返回 Config 实例，缺失字段使用默认值。"""
     load_dotenv()
+    embedding_url = os.getenv("EMBEDDING_BASE_URL", "https://api.siliconflow.cn/v1")
+    if embedding_url == "llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com":
+        embedding_url = "https://" + embedding_url + "/compatible-mode/v1"
     return Config(
-        embedding_base_url=os.getenv("EMBEDDING_BASE_URL", "https://api.siliconflow.cn/v1"),
+        embedding_base_url=embedding_url,
         embedding_api_key=os.getenv("EMBEDDING_API_KEY", ""),
         embedding_model=os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3"),
         llm_base_url=os.getenv("LLM_BASE_URL", "https://api.deepseek.com/v1"),

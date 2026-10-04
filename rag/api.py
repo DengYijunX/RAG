@@ -7,15 +7,56 @@
 """
 
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from rag.config import load_config
+from rag.knowledge import KnowledgeService, IndexUnavailable
 
 app = FastAPI(title="RAG API", description="文档索引与检索问答")
 
 config = load_config()
 STATIC_DIR = Path(__file__).parent / "static"
+knowledge = KnowledgeService(config)
+
+
+class KnowledgeQuery(BaseModel):
+    question: str = Field(min_length=1, max_length=2000)
+
+    @field_validator('question')
+    @classmethod
+    def meaningful_question(cls, value):
+        if not value.strip():
+            raise ValueError('请输入问题')
+        return value.strip()
+
+
+@app.get('/knowledge-bases')
+def knowledge_bases():
+    return knowledge.catalog()
+
+
+@app.get('/knowledge-bases/{kb}/sources/{source_id}')
+def knowledge_source(kb: str, source_id: str):
+    try:
+        return knowledge.source(kb, source_id)
+    except KeyError:
+        raise HTTPException(404, '未找到该知识库或来源') from None
+
+
+@app.post('/knowledge-bases/{kb}/query')
+def knowledge_query(kb: str, req: KnowledgeQuery):
+    try:
+        knowledge.corpus(kb)
+    except KeyError:
+        raise HTTPException(404, '未知知识库') from None
+    try:
+        return knowledge.query(kb, req.question)
+    except IndexUnavailable as exc:
+        raise HTTPException(503, str(exc)) from None
+    except Exception:
+        # Provider exceptions may contain request credentials; never echo them.
+        raise HTTPException(502, '问答服务暂时不可用，请稍后重试。') from None
 
 
 class IndexRequest(BaseModel):
