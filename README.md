@@ -2,10 +2,35 @@
 
 基于本地知识库的智能检索问答系统，支持 CLI 命令行和 HTTP 服务两种使用方式。
 
+## 双知识库演示
+
+页面现在可分别查询**智能家居售后**（5 份文档）与**企业会计准则**（59 份文档），展示编号引用、文件年份、涉及条号，并打开完整原文。两库使用独立索引；原来的自定义文档入口仍可使用。
+
+会计问题明确给出准则、年份和单一条号时，优先完整条文；其他问题使用原 500/50、L2 Top-4 向量检索。未知型号、未收录年份及部分不明确的问题会返回澄清或资料不足。开发集候选检索实验见 [混合检索报告](experiments/rag-baseline/evaluation/HYBRID_REPORT.md)；96.77% 是会计开发集证据覆盖率，不是本页面的答案准确率。
+
+从仓库根目录运行（需在环境或 `.env` 中设置 Embedding / LLM URL、模型名及密钥）：
+
+```bash
+# 安装现有依赖；本云环境已有 .venv
+uv pip install --python .venv/bin/python -r requirements.txt
+# 首次或变更语料/Embedding 模型后建立索引，会调用 Embedding API
+.venv/bin/python -m rag.knowledge index --kb all
+# 检查索引状态；不调用外部模型
+.venv/bin/python -m rag.knowledge status
+# 启动 HTTP 服务
+.venv/bin/python -m uvicorn rag.api:app --host 127.0.0.1 --port 8080
+```
+
+支持 `--kb smart-home` 或 `--kb accounting` 单库重建。默认索引保存在 `chroma_db/knowledge-bases/<知识库>/<版本>/`，不提交 Git；新索引全部成功后才切换，失败时旧索引仍可用。更换模型或语料时旧索引会被拒绝使用，需重建。完整启动与验证说明见 [云环境启动文档](docs/CLOUD_STARTUP.md)。
+
+新增接口：`GET /knowledge-bases`、`POST /knowledge-bases/{kb}/query`（JSON 字段 `question`）和 `GET /knowledge-bases/{kb}/sources/{source_id}`。新问答接口返回 `status`、`answer`、`citations`，每个引用包含正文、标题、年份、涉及条号和原文 URL。`answer` 状态表示已生成回答，不表示所有结论已经独立核验。
+
+本次验证：30 项应用测试通过，真实 Embedding 索引 26 / 749 个片段，两库 HTTP 问答与原文访问通过；浏览器切库、原文弹窗、移动端布局及文本安全展示通过。见 [验证记录](docs/KNOWLEDGE_VALIDATION.md)。保留测试集未运行；当前生成提示词增加了引用及证据不足约束，端到端质量需要后续单独评测。
+
 ## 功能
 
 - **多格式文档索引**：支持 `.md`、`.txt`、`.pdf`
-- **向量化存储**：硅基流动 BGE-M3 Embedding + ChromaDB 本地持久化
+- **向量化存储**：可配置 OpenAI 兼容 Embedding + ChromaDB 本地持久化；当前云环境使用阿里云 qwen3.7-text-embedding-flash
 - **LLM 问答生成**：DeepSeek 结合检索上下文生成回答
 - **CLI 工具**：终端直接使用
 - **Web 界面**：浏览器可视化操作
