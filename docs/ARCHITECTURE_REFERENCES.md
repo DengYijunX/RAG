@@ -12,6 +12,8 @@
 
 来源固定到 Git commit；文件 SHA256 见 [reference_sources.json](reference_sources.json)。HEAD 会变化，下面链接的版本不会随主分支移动。
 
+用户指定的 Tencent/WeKnora 已另行分析，重点是插件化问答步骤、召回与重排分离、分阶段评测记录和指标局限，见 [RAG 流程与评测路线](RAG_FLOW_AND_EVALUATION.md)。这部分来源固定版本和哈希在 `weknora_sources.json`。
+
 1. **LlamaIndex：摄取流水线与文档身份管理。**
    [IngestionPipeline 源码](https://github.com/run-llama/llama_index/blob/962940ddc079cc21701d28d1237c84c82a7c5164/llama-index-core/llama_index/core/ingestion/pipeline.py)。`run_transformations` 按变换与输入生成缓存键；`DocstoreStrategy` 区分去重、更新、更新并删除；文档 ID / hash 与文档存储参与更新判断。
 2. **Haystack：检索结果融合的组件边界。**

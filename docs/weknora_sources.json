@@ -1,0 +1,63 @@
+{
+  "review_date": "2026-10-05",
+  "timezone": "Asia/Shanghai",
+  "scope": "Selected official source/doc inspection only; no deployment or upstream benchmark reproduction",
+  "sources": [
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "README.md",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/README.md",
+      "sha256": "63733f25438fec7493a0ef3f87da9047ddc9f0534e95c332d4db02460fa2eef6"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/chat_pipeline/chat_pipeline.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/chat_pipeline.go",
+      "sha256": "f4544f797e89ea62fd08cadf0ec626783300c467eec3084f4103ed9da676578f"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/chat_pipeline/rerank.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/rerank.go",
+      "sha256": "e2b5d2952d8f45557736fab3e02cf940158c9db9702dbce7786338129ece9b1f"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/chat_pipeline/search.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/search.go",
+      "sha256": "c0bbe7616806d76ef41aaef0df695f793b2d3a147d08bcced08691fe72e4f1b7"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/evaluation.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/evaluation.go",
+      "sha256": "7b312416c047b9e96fb7b738b5b676be52284e0459f60eb4d119b7f4d4db1b3a"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/knowledge_index_content.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/knowledge_index_content.go",
+      "sha256": "8191889d4ddb405e76ab1ab0908e331f1387dd710fc1f8441df5f469ec41b092"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/application/service/metric_hook.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/metric_hook.go",
+      "sha256": "e80d019f67ec2da05dce8422aeccc4f6462c6c283f06d08f412137aa2a487bca"
+    },
+    {
+      "repository": "Tencent/WeKnora",
+      "commit": "bccb4b151bae403508da77fbb174efc79dc47c1a",
+      "path": "internal/types/evaluation.go",
+      "url": "https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/types/evaluation.go",
+      "sha256": "9f2cfcbc5f4dc75385e960954dcbbd9c11d79f47c2c767f61ce1803136909862"
+    }
+  ]
+}
