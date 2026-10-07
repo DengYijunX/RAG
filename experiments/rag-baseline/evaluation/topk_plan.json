@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "split": "dev",
+  "top_k": [4, 8, 12],
+  "retrieval_scope": "all dev questions in each existing corpus, pure dense L2; application domain routing disabled",
+  "generation_sample": {
+    "smart-home": ["Q008", "Q040", "Q043"],
+    "accounting": ["ACC-Q041", "ACC-Q059", "ACC-Q098", "ACC-Q114", "ACC-Q116", "ACC-Q118"]
+  },
+  "selection": "All answer/flag_conflict cases from the previously committed quality_sample.json; targeted diagnostic sample, not an accuracy estimate",
+  "controls": "Existing unchanged indexes, same query vector for independent K queries, same application generate method and model; no rerank, keyword search, gold routing or context truncation",
+  "generation_order": "Rotate K order by question index to reduce systematic request-order effects; one generation per condition, no stability estimate",
+  "metrics": ["evidence-unit coverage at 80% normalized source-span overlap", "all required evidence covered", "per-category and paired per-question changes", "context characters", "generated-answer semantic review", "generation tokens and latency"],
+  "decision": "Do not change application default from a single case. Review both corpora, omissions, noise, token growth and targeted answers first. Held-out test remains unused."
+}
