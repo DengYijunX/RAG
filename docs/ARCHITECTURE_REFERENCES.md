@@ -86,3 +86,9 @@
 目前是可复用核心模块，尚未接入应用默认生成路径。10 项结构测试及全部 40 项应用测试通过。下一步固定已有九题检索正文，以新生成的对照组验证结构提示；模型可见标题只引用已选正文中的文字，防止元数据额外带入答案。收益及开销以实测报告为准。
 
 实践五已完成，见 [SECTION_REPORT.md](../experiments/rag-baseline/evaluation/SECTION_REPORT.md)：64 份原文 / 775 个片段定位验证、九题 18 次生成，结构提示改善局部归属和截断说明，但产生漏答及片段外常识，输入 Token 为边界组 3.15 倍。实际生成适配器位于 `evaluation/structure_context.py`，运行入口为 `section_experiment.py`；旧 `structure_experiment.py` 保留原结构检索实验。40 项应用测试、44 项评测工具测试通过。尚未晋升应用默认；下一步优先精简模型可见字段，并在通用导入阶段保存完整审计结构。
+
+### ADR-006：审计结构与模型提示分离
+
+2026-10-08，延续 ADR-005 的原文结构模型及 WeKnora [metric_hook.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/metric_hook.go) 的分阶段指标参考，在 [rag/context_structure.py](../rag/context_structure.py) 新增精简提示视图。完整 hash、位置和路径保留在实验审计记录；模型侧对章节去重、使用请求内短 ID，只保留可见标题、父节关系、片段归属及完整性。具体压缩格式由本项目设计，不宣称来自 WeKnora。
+
+取舍：数组格式更短但需要字段解释，可能增加模型误读；必须以固定正文的真实生成对照验证，不能只看序列化大小。按文档身份隔离短 ID，保留未知状态与加粗启发式标记，不偷偷裁掉正文或截断标记。超出完整 messages 的 UTF-8 字节预算则调用前失败；没有官方模型 tokenizer 时不将该上限称为精确 Token 预算。服务端实际 Token 用量另行记录。默认应用暂不接入。
