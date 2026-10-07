@@ -76,3 +76,11 @@
 2026-10-07，参考 WeKnora [rerank.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/rerank.go) 的召回后独立重排和故障回退边界，在 [rerank_context.py](../experiments/rag-baseline/evaluation/rerank_context.py) / [rerank_experiment.py](../experiments/rag-baseline/evaluation/rerank_experiment.py) 实现实验原型。未使用其具体排序模型或移植算法：本项目用已有 LLM 输出候选标签的精确排列，非法结果或调用异常回退原顺序，记录额外 Token 与耗时。
 
 同一候选池与 2000 字符预算下，把排序和生成的边界提示分为四组条件；提示格式仅保留原文标题并增加片段标记，不声称已解析完整章节结构。验证包括 128 题离线候选覆盖、固定九题的 9 次排序 / 36 次生成、27 项测试，以及实际请求与指标审计。结果见 [RERANK_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_REPORT.md)：九题上下文覆盖改善，但存在实质生成错误、续段结构缺失和明显额外用量，暂不接入应用默认策略。全开发集重排、专用模型与通用结构元数据均待后续验证。
+
+### ADR-005：从原文生成结构归属，独立验证生成收益
+
+2026-10-07，在 [rag/structure.py](../rag/structure.py) 实现原文字符位置、Markdown 标题路径、跨节片段归属和选中上下文的章节完整性检查。沿用 ADR-002 中 WeKnora `evaluation.go` / `metric_hook.go` 的阶段产物与分层验证思路；具体 Markdown 子集解析器由本项目编写，不声称来自 WeKnora。模块不读取知识库领域、题目或标准答案。
+
+取舍：仅支持 ATX、单行 Setext 和代码围栏排除；独立加粗行需显式启用，标记为启发式，不等同于正式标题。不支持完整 CommonMark 或语义条款识别；非 Markdown 归属未知。字符位置来自未经规范化的原文，无法字面定位时失败，不伪造来源。父章节完整性包含所有子章节，多个已选片段按来源合并覆盖后判断。
+
+目前是可复用核心模块，尚未接入应用默认生成路径。10 项结构测试及全部 40 项应用测试通过。下一步固定已有九题检索正文，以新生成的对照组验证结构提示；模型可见标题只引用已选正文中的文字，防止元数据额外带入答案。收益及开销以实测报告为准。
