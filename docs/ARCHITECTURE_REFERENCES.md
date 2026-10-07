@@ -53,4 +53,12 @@
 
 ## 持续维护
 
+### ADR-002：开发集单题追踪
+
+2026-10-07 落地于 [trace_question.py](../experiments/rag-baseline/evaluation/trace_question.py)，案例见 [实践一](RAG_TRACE_WALKTHROUGH.md)。具体参考是 [WeKnora evaluation.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/evaluation.go) 保存召回、重排与生成产物，以及 [metric_hook.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/metric_hook.go) 分阶段计算指标的边界。
+
+采用点：记录真实应用各阶段输入输出，再以原文位置核对证据。取舍：仅在独立诊断进程中包装现有服务与 SDK，避免为了单例解释引入完整事件框架；这是开发评测工具，尚非线上全请求追踪。题目标注只在真实回答结束后评分，额外 Top-20 结果不回填给生成模型。
+
+验证：Q043 实际运行记录了 1 次问题 Embedding、1 次生成与正式 Top-4；检查四条命中全文进入请求、输出文件哈希及源代码哈希一致，诊断发现第三组必要证据未进入正式上下文。工具只接受 dev 题；单例结果不用于宣称总体准确率。
+
 后续重要设计改动记录：参考项目及具体出处、采用点、不采用的原因、落地文件、验证证据。已有实验收益仍按 [HYBRID_REPORT.md](../experiments/rag-baseline/evaluation/HYBRID_REPORT.md) 的领域与指标边界报告。该文档补足设计依据，不代表通用知识库改造已经完成。

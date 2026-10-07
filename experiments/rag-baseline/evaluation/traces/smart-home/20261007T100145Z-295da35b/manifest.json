@@ -1,0 +1,41 @@
+{
+  "status": "completed",
+  "knowledge_base": "smart-home",
+  "question_id": "Q043",
+  "split": "dev",
+  "purpose": "single-case walkthrough, not an accuracy estimate",
+  "index_rebuilt": false,
+  "index": {
+    "generation": "cc771a42395648c5bfe3570ef1f56aa9",
+    "signature": {
+      "corpus_sha256": "24f8a2aaea65f7ef120319f5ad9512b116966ee4bffd99ae951b9a57ec5465b9",
+      "embedding_model": "qwen3.7-text-embedding-flash",
+      "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "chunk_size": 500,
+      "chunk_overlap": 50,
+      "distance": "l2"
+    },
+    "dimensions": 1024,
+    "documents": 5,
+    "chunks": 26
+  },
+  "llm_model": "deepseek-chat",
+  "llm_url": "https://api.deepseek.com/v1",
+  "gold_used_for_retrieval_or_generation": false,
+  "script_sha256": "156d4d5fa892d706b9ea20cd1eb60e0313032c3ab10128c328f55653b447b484",
+  "questions_sha256": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+  "application_sha256": {
+    "rag/knowledge.py": "8dea9d3c1ca93218f7a83998d3f6c2096cf1937412dd7a2dc90d260d2d8bc1f8",
+    "rag/knowledge_routing.py": "f16e7b14bf98b4734f8bf90577cdd2cfe98b967b6af33d49040894fa2860297b",
+    "rag/config.py": "032ea3d68d6202d6d7de53ddb7296d96c7f546cba545e1f417f7f3f1e9225f8e"
+  },
+  "repository_commit": "9a7f8e49f2b4a285a96f7e6b32b915c557b4f233",
+  "generation_calls": 1,
+  "embedding_calls": 1,
+  "output_sha256": {
+    "diagnosis.json": "88d39fc2218f22bd71a6e96640fdaafe64c2741eeb21db99f225e614497c9350",
+    "prompt.txt": "daac924d1bf3254b31e9d503b2d0051e8d32cf4f2adcf1979d85077709bf0124",
+    "online.json": "1a2c585be1a3a685298e2cdc86bfcdb283ab7427f29ca3223e3334db407e17df",
+    "corpus_chunks.json": "50afb50c275253e40a5ce885ae268e60b05dc701194631b8f21fc8b246495918"
+  }
+}
