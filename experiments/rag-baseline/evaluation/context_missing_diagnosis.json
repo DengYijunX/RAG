@@ -1,0 +1,100 @@
+{
+  "source_run": "topk_runs/20261007T110838Z-70f47b9c",
+  "source_manifest_sha256": "3b6ec02e6a00e5b95829d520b6a62bd30646b06a9d5d36a999658a52e1cff41c",
+  "method": "Offline source-span and adjacency inspection of prior saved Top12. null rank means outside saved pool, not an exact global rank. Labels used for diagnosis only.",
+  "model_calls": 0,
+  "cases": [
+    {
+      "knowledge_base": "accounting",
+      "question_id": "ACC-Q041",
+      "missing_evidence": [
+        {
+          "evidence_id": "CAS-35-2006-A005",
+          "top12_span_fraction": 0.445578231292517,
+          "overlapping_chunks": [
+            {
+              "id": "accounting:CAS-35-2006.md:0",
+              "span_fraction": 0.445578231292517,
+              "top12_rank": 1,
+              "neighbors": [
+                {
+                  "id": "accounting:CAS-35-2006.md:1",
+                  "top12_rank": null
+                }
+              ]
+            },
+            {
+              "id": "accounting:CAS-35-2006.md:1",
+              "span_fraction": 0.673469387755102,
+              "top12_rank": null,
+              "neighbors": [
+                {
+                  "id": "accounting:CAS-35-2006.md:0",
+                  "top12_rank": 1
+                },
+                {
+                  "id": "accounting:CAS-35-2006.md:2",
+                  "top12_rank": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_id": "ACC-Q116",
+      "missing_evidence": [
+        {
+          "evidence_id": "CAS-21-2018-A053",
+          "top12_span_fraction": 0.0,
+          "overlapping_chunks": [
+            {
+              "id": "accounting:CAS-21-2018.md:20",
+              "span_fraction": 1.0,
+              "top12_rank": null,
+              "neighbors": [
+                {
+                  "id": "accounting:CAS-21-2018.md:19",
+                  "top12_rank": null
+                },
+                {
+                  "id": "accounting:CAS-21-2018.md:21",
+                  "top12_rank": 9
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_id": "ACC-Q118",
+      "missing_evidence": [
+        {
+          "evidence_id": "CAS-14-2017-A004",
+          "top12_span_fraction": 0.0,
+          "overlapping_chunks": [
+            {
+              "id": "accounting:CAS-14-2017.md:1",
+              "span_fraction": 1.0,
+              "top12_rank": null,
+              "neighbors": [
+                {
+                  "id": "accounting:CAS-14-2017.md:0",
+                  "top12_rank": 1
+                },
+                {
+                  "id": "accounting:CAS-14-2017.md:2",
+                  "top12_rank": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

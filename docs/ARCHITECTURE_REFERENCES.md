@@ -64,3 +64,9 @@
 后续重要设计改动记录：参考项目及具体出处、采用点、不采用的原因、落地文件、验证证据。已有实验收益仍按 [HYBRID_REPORT.md](../experiments/rag-baseline/evaluation/HYBRID_REPORT.md) 的领域与指标边界报告。该文档补足设计依据，不代表通用知识库改造已经完成。
 
 2026-10-07 的 [Top-K 对照](../experiments/rag-baseline/evaluation/TOPK_REPORT.md) 延续 WeKnora `search.go` / `rerank.go` 分离召回和后处理、`metric_hook.go` 分层记录的参考点。当前仅实现纯向量 K 值实验，尚未引入重排服务或改变应用默认值；保存实际上下文与生成结果，验证覆盖提高不等于生成质量必然提高。下一步候选池与上下文预算分开仍属待验证设计，不能写成已实现能力。
+
+### ADR-003：固定预算下验证邻段扩展，拒绝直接设为默认
+
+2026-10-07 实验落地于 [context_budget.py](../experiments/rag-baseline/evaluation/context_budget.py)，结果见 [CONTEXT_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_REPORT.md)。沿用已核验 WeKnora [search.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/search.go) / [rerank.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/rerank.go) 的阶段分离思路：将已召回候选与最终上下文分别保存、分别评分。前后相邻切片的具体贪心规则由本项目为控制实验编写，不声称来自 WeKnora 源码。
+
+已实现的边界是实验工具：仅使用通用来源身份、字符位置、正文与预算，不接受题目标准答案或领域路由；整个应用尚未接入该选择器。固定 2000 正文字符，验证 128 道开发题、18 次生成、16 项测试。会计证据覆盖改善、售后明显退步，且出现条款归属矛盾，因此保留结果而不晋升默认。下一步相关性重排及结构边界组装仍待独立实现与评测；字符上限也尚未替代为生产 Token 预算。

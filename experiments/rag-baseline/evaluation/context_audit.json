@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "run": "20261007T114837Z-81170bcc",
+  "manifest_sha256": "b32dee1c117234f70da16d5e98390ef3618cf6a3243a4f63a6a5424fddc29257",
+  "dev_questions": 128,
+  "context_variants": 256,
+  "logical_generation_calls": 18,
+  "embedding_calls": 0,
+  "max_body_characters": 2000,
+  "tests_passed": 16,
+  "checks": [
+    "ancestry and source/output hashes",
+    "exact replay of saved candidate IDs",
+    "whole-chunk budgets and duplicate removal",
+    "neighbors never cross source identity",
+    "source-span metrics and summary recomputed",
+    "actual requests reconstructed from question and citations only",
+    "citation numbers valid, independent of semantic support",
+    "18 assistant review excerpts match saved answers",
+    "no credential-like fields"
+  ],
+  "document_number_exceptions": [],
+  "human_semantic_review": null,
+  "semantic_pass_implied": false
+}

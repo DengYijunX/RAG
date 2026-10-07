@@ -1,0 +1,30 @@
+{
+  "status": "completed",
+  "split": "dev",
+  "kind": "fixed_budget_neighbor_ablation",
+  "source_run": "topk_runs/20261007T110838Z-70f47b9c",
+  "source_manifest_sha256": "3b6ec02e6a00e5b95829d520b6a62bd30646b06a9d5d36a999658a52e1cff41c",
+  "source_sha256": {
+    "experiments/rag-baseline/evaluation/context_experiment.py": "c7e13b958b9d0bbfdc066d571f69124c2e03b9bd11b1754f9ad0e6bb8a9398a1",
+    "experiments/rag-baseline/evaluation/context_budget.py": "7a6f80c6ae69439eef5248e38ec5d2b26f8cd41dbd384c6f28534371b9420b35",
+    "experiments/rag-baseline/evaluation/context_plan.json": "6865ffbee66659fb0bcff1a5f8b0267d75e6065442d277ffb5e43c1d9107281a",
+    "experiments/rag-baseline/evaluation/baseline.py": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+    "rag/knowledge.py": "8dea9d3c1ca93218f7a83998d3f6c2096cf1937412dd7a2dc90d260d2d8bc1f8",
+    "rag/config.py": "032ea3d68d6202d6d7de53ddb7296d96c7f546cba545e1f417f7f3f1e9225f8e"
+  },
+  "repository_commit": "207ba71373cd521fc20dea8e7d78f61e640d16ba",
+  "model": "deepseek-chat",
+  "llm_url": "https://api.deepseek.com/v1",
+  "embedding_calls": 0,
+  "generation_calls": 18,
+  "generation_reuses": 0,
+  "routing_enabled": false,
+  "gold_used_for_selection_or_generation": false,
+  "budget_scope": "chunk bodies in Python characters; not token budget, excludes title/system/query overhead",
+  "completed_questions": 128,
+  "output_sha256": {
+    "plan.json": "0263b5f3ed0e2a1518ff81df49dd64a139148e5775e65c98212eb929fa5925e0",
+    "results.jsonl": "1086e7955c631ea8f7c6f55fdeb52e0c9e6ceffcf1438c0ff1f9091c5a32ad96",
+    "summary.json": "cb5723c5f1147abd57cf92bbbb5ac1edef8519097526175a6a554e9e435d876f"
+  }
+}

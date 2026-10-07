@@ -1,0 +1,151 @@
+{
+  "smart-home": {
+    "dev_questions": 43,
+    "scored_questions": 30,
+    "variants": {
+      "dense_budget": {
+        "mean_evidence_unit_coverage": 0.9722222222222222,
+        "all_evidence_covered_count": 28,
+        "context_characters_mean": 1860.1627906976744,
+        "context_characters_max": 1996,
+        "generation_answers": 3,
+        "prompt_tokens_sum_per_arm": 4036,
+        "completion_tokens_sum_per_arm": 2121,
+        "improved_vs_dense_budget": [],
+        "regressed_vs_dense_budget": [],
+        "by_category": {
+          "multi": {
+            "count": 5,
+            "mean_evidence_unit_coverage": 0.8333333333333334,
+            "all_evidence_covered_count": 3
+          },
+          "single": {
+            "count": 25,
+            "mean_evidence_unit_coverage": 1.0,
+            "all_evidence_covered_count": 25
+          }
+        }
+      },
+      "neighbor_budget": {
+        "mean_evidence_unit_coverage": 0.8694444444444444,
+        "all_evidence_covered_count": 25,
+        "context_characters_mean": 1840.5116279069769,
+        "context_characters_max": 1993,
+        "generation_answers": 3,
+        "prompt_tokens_sum_per_arm": 4067,
+        "completion_tokens_sum_per_arm": 611,
+        "improved_vs_dense_budget": [],
+        "regressed_vs_dense_budget": [
+          "Q006",
+          "Q026",
+          "Q040",
+          "Q043",
+          "Q044"
+        ],
+        "by_category": {
+          "multi": {
+            "count": 5,
+            "mean_evidence_unit_coverage": 0.6166666666666667,
+            "all_evidence_covered_count": 2
+          },
+          "single": {
+            "count": 25,
+            "mean_evidence_unit_coverage": 0.92,
+            "all_evidence_covered_count": 23
+          }
+        }
+      }
+    }
+  },
+  "accounting": {
+    "dev_questions": 85,
+    "scored_questions": 67,
+    "variants": {
+      "dense_budget": {
+        "mean_evidence_unit_coverage": 0.9228855721393036,
+        "all_evidence_covered_count": 60,
+        "context_characters_mean": 1869.5176470588235,
+        "context_characters_max": 1999,
+        "generation_answers": 6,
+        "prompt_tokens_sum_per_arm": 7055,
+        "completion_tokens_sum_per_arm": 2842,
+        "improved_vs_dense_budget": [],
+        "regressed_vs_dense_budget": [],
+        "by_category": {
+          "article_lookup": {
+            "count": 37,
+            "mean_evidence_unit_coverage": 0.9459459459459459,
+            "all_evidence_covered_count": 35
+          },
+          "calculation": {
+            "count": 1,
+            "mean_evidence_unit_coverage": 1.0,
+            "all_evidence_covered_count": 1
+          },
+          "multi_evidence": {
+            "count": 5,
+            "mean_evidence_unit_coverage": 0.5666666666666667,
+            "all_evidence_covered_count": 2
+          },
+          "semantic": {
+            "count": 16,
+            "mean_evidence_unit_coverage": 0.96875,
+            "all_evidence_covered_count": 15
+          },
+          "version_comparison": {
+            "count": 8,
+            "mean_evidence_unit_coverage": 0.9375,
+            "all_evidence_covered_count": 7
+          }
+        }
+      },
+      "neighbor_budget": {
+        "mean_evidence_unit_coverage": 0.9527363184079602,
+        "all_evidence_covered_count": 63,
+        "context_characters_mean": 1877.9882352941177,
+        "context_characters_max": 1997,
+        "generation_answers": 6,
+        "prompt_tokens_sum_per_arm": 7245,
+        "completion_tokens_sum_per_arm": 4282,
+        "improved_vs_dense_budget": [
+          "ACC-Q041",
+          "ACC-Q059",
+          "ACC-Q098",
+          "ACC-Q114",
+          "ACC-Q118"
+        ],
+        "regressed_vs_dense_budget": [
+          "ACC-Q075",
+          "ACC-Q084"
+        ],
+        "by_category": {
+          "article_lookup": {
+            "count": 37,
+            "mean_evidence_unit_coverage": 1.0,
+            "all_evidence_covered_count": 37
+          },
+          "calculation": {
+            "count": 1,
+            "mean_evidence_unit_coverage": 1.0,
+            "all_evidence_covered_count": 1
+          },
+          "multi_evidence": {
+            "count": 5,
+            "mean_evidence_unit_coverage": 0.7666666666666667,
+            "all_evidence_covered_count": 3
+          },
+          "semantic": {
+            "count": 16,
+            "mean_evidence_unit_coverage": 0.875,
+            "all_evidence_covered_count": 14
+          },
+          "version_comparison": {
+            "count": 8,
+            "mean_evidence_unit_coverage": 1.0,
+            "all_evidence_covered_count": 8
+          }
+        }
+      }
+    }
+  }
+}

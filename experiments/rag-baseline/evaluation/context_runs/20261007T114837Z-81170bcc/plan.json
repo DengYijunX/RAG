@@ -1,0 +1,29 @@
+{
+  "split": "dev",
+  "source_run": "topk_runs/20261007T110838Z-70f47b9c",
+  "source_k": 12,
+  "budget_characters": 2000,
+  "variants": [
+    "dense_budget",
+    "neighbor_budget"
+  ],
+  "controls": "Replay identical saved Top-12 candidates and source chunks for all 128 dev questions. Both arms use the same 2000-body-character cap. No embedding, reranker, domain routes or gold-based selection. Whole chunks only; duplicate chunk IDs removed; overlapping text not merged.",
+  "neighbor_policy": "Visit each ranked seed, then immediate next and previous chunks in the same source ordered by position. Skip any whole chunk that does not fit; no expansion if its seed cannot fit. Adjacent chunks can be outside the dense candidate pool. No cross-source or cross-version adjacency.",
+  "generation_sample": {
+    "smart-home": [
+      "Q008",
+      "Q040",
+      "Q043"
+    ],
+    "accounting": [
+      "ACC-Q041",
+      "ACC-Q059",
+      "ACC-Q098",
+      "ACC-Q114",
+      "ACC-Q116",
+      "ACC-Q118"
+    ]
+  },
+  "generation": "Same previously selected nine questions, application generate method and current model/prompt. If both arms have identical ordered chunk IDs, call once and mark response reuse; do not treat reuse as independent repetitions. Alternate arm order by question. Compare these newly generated arms, not historical answers.",
+  "decision": "Keep failures and regressions. Character cap is a reproducible proxy, not an equal-token constraint. Review actual input tokens and answer quality. No automatic promotion to production; held-out test unused."
+}
