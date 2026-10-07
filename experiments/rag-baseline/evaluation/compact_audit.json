@@ -1,0 +1,115 @@
+{
+  "run": "compact_runs/20261007T171547Z-9beed06a",
+  "status": "passed",
+  "paired_cases": 9,
+  "generation_calls": 18,
+  "code_commit": "41db35ba0d666c503e1820c2773606a8ae6595c3",
+  "unchanged_bodies_order_citations": true,
+  "retained_ancestry_title_visibility_and_boundary_states": true,
+  "source_isolated_short_ids": true,
+  "compact_input_byte_cap": 12000,
+  "heldout_calls": 0,
+  "token_counts": "actual provider usage, not byte estimate",
+  "semantic_quality": "see separate assistant review",
+  "cases": [
+    {
+      "question_id": "Q008",
+      "input_bytes": {
+        "full_structure": 13644,
+        "compact_structure": 8470
+      },
+      "prompt_tokens": {
+        "full_structure": 3658,
+        "compact_structure": 2155
+      }
+    },
+    {
+      "question_id": "Q040",
+      "input_bytes": {
+        "full_structure": 17020,
+        "compact_structure": 9557
+      },
+      "prompt_tokens": {
+        "compact_structure": 2520,
+        "full_structure": 4651
+      }
+    },
+    {
+      "question_id": "Q043",
+      "input_bytes": {
+        "full_structure": 15966,
+        "compact_structure": 9625
+      },
+      "prompt_tokens": {
+        "full_structure": 4240,
+        "compact_structure": 2435
+      }
+    },
+    {
+      "question_id": "ACC-Q041",
+      "input_bytes": {
+        "full_structure": 22873,
+        "compact_structure": 10524
+      },
+      "prompt_tokens": {
+        "compact_structure": 2343,
+        "full_structure": 5710
+      }
+    },
+    {
+      "question_id": "ACC-Q059",
+      "input_bytes": {
+        "full_structure": 19739,
+        "compact_structure": 10064
+      },
+      "prompt_tokens": {
+        "full_structure": 4956,
+        "compact_structure": 2252
+      }
+    },
+    {
+      "question_id": "ACC-Q098",
+      "input_bytes": {
+        "full_structure": 22848,
+        "compact_structure": 10730
+      },
+      "prompt_tokens": {
+        "compact_structure": 2406,
+        "full_structure": 5759
+      }
+    },
+    {
+      "question_id": "ACC-Q114",
+      "input_bytes": {
+        "full_structure": 21599,
+        "compact_structure": 10662
+      },
+      "prompt_tokens": {
+        "full_structure": 5364,
+        "compact_structure": 2340
+      }
+    },
+    {
+      "question_id": "ACC-Q116",
+      "input_bytes": {
+        "full_structure": 19986,
+        "compact_structure": 10366
+      },
+      "prompt_tokens": {
+        "compact_structure": 2272,
+        "full_structure": 4974
+      }
+    },
+    {
+      "question_id": "ACC-Q118",
+      "input_bytes": {
+        "full_structure": 17960,
+        "compact_structure": 9913
+      },
+      "prompt_tokens": {
+        "full_structure": 4495,
+        "compact_structure": 2184
+      }
+    }
+  ]
+}

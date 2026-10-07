@@ -92,3 +92,5 @@
 2026-10-08，延续 ADR-005 的原文结构模型及 WeKnora [metric_hook.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/metric_hook.go) 的分阶段指标参考，在 [rag/context_structure.py](../rag/context_structure.py) 新增精简提示视图。完整 hash、位置和路径保留在实验审计记录；模型侧对章节去重、使用请求内短 ID，只保留可见标题、父节关系、片段归属及完整性。具体压缩格式由本项目设计，不宣称来自 WeKnora。
 
 取舍：数组格式更短但需要字段解释，可能增加模型误读；必须以固定正文的真实生成对照验证，不能只看序列化大小。按文档身份隔离短 ID，保留未知状态与加粗启发式标记，不偷偷裁掉正文或截断标记。超出完整 messages 的 UTF-8 字节预算则调用前失败；没有官方模型 tokenizer 时不将该上限称为精确 Token 预算。服务端实际 Token 用量另行记录。默认应用暂不接入。
+
+ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluation/COMPACT_REPORT.md)：九题18次重新生成，输入从43,807降至20,907 Token（−52.3%），请求最大10,730字节低于12,000字节精简上限；结构状态无损保留，但模型仍误读续段与完整性、猜测未展示条件总数。45项应用测试与44项评测工具测试通过，默认路径不变。下一步转向独立于评测文件的通用导入与第三语料接入，生成失败另存回归案例。

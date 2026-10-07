@@ -1,0 +1,16 @@
+{
+  "full_structure": {
+    "questions": 9,
+    "prompt_tokens": 43807,
+    "completion_tokens": 4527,
+    "input_bytes_max": 22873,
+    "generation_seconds_p50": 2.7576805830176454
+  },
+  "compact_structure": {
+    "questions": 9,
+    "prompt_tokens": 20907,
+    "completion_tokens": 3739,
+    "input_bytes_max": 10730,
+    "generation_seconds_p50": 2.6299195419996977
+  }
+}

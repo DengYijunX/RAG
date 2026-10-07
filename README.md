@@ -18,6 +18,8 @@
 
 实践五：[原文结构与完整性提示](experiments/rag-baseline/evaluation/SECTION_REPORT.md)，固定九题正文验证续段归属与截断提示，记录生成退步和 3.15 倍输入 Token 开销。
 
+实践六：[结构提示压缩](experiments/rag-baseline/evaluation/COMPACT_REPORT.md)，保持正文与结构状态不变，实测输入 Token 减少 52.3%，同时记录边界误读与无依据条件总数。
+
 ## 双知识库演示
 
 页面现在可分别查询**智能家居售后**（5 份文档）与**企业会计准则**（59 份文档），展示编号引用、文件年份、涉及条号，并打开完整原文。两库使用独立索引；原来的自定义文档入口仍可使用。

@@ -1,0 +1,15 @@
+{
+  "split": "dev",
+  "source_run": "structure_runs/20261007T130324Z-65ea2859",
+  "variants": [
+    "full_structure",
+    "compact_structure"
+  ],
+  "generation_calls": 18,
+  "compact_max_input_bytes": 12000,
+  "full_max_input_bytes": 64000,
+  "budget_scope": "UTF-8 serialized entire messages including system, question, bodies and metadata. This is NOT a tokenizer or token limit. Both arms preserve all selected bodies; fail before calls if over budget.",
+  "intervention": "Deduplicate ancestry, request-local section IDs, remove audit-only fields, represent blocks as arrays; accompanying instructions explain the new field layout. Retain visible title excerpts, parent paths, heuristic marker and all three boundary/completeness states. Same frozen nine questions, bodies/order/citations. Fresh generation for both arms, alternating order, no reused answers.",
+  "review": "Review all 18 for core completeness, citation faithfulness, task focus, continuation ownership and truncated conditions. Preserve regressions. Null human scores; no aggregate accuracy or causal stability claims from one paired generation per selected dev case.",
+  "scope": "No embedding or ranking calls. No held-out test. No production default promotion. Model-side prompt formatting plus interpretation instructions are one combined intervention."
+}

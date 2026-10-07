@@ -1,0 +1,43 @@
+{
+  "status": "completed",
+  "split": "dev",
+  "source_run": "structure_runs/20261007T130324Z-65ea2859",
+  "source_manifest_sha256": "60850454e804c9b45336e333eef43d9ac1537bc73e2b937d6a03e182fccddfed",
+  "repository_commit": "41db35ba0d666c503e1820c2773606a8ae6595c3",
+  "source_sha256": {
+    "experiments/rag-baseline/evaluation/compact_experiment.py": "bd21807f02c75acae13203774762e7aed1cf8cc4398dcc124cdd38a2265c4c21",
+    "experiments/rag-baseline/evaluation/compact_plan.json": "7977a62c8b8ab9b43a0973c30b1df489996b8a9fe3727b943bebfbd714fbd110",
+    "experiments/rag-baseline/evaluation/section_experiment.py": "f4fd3d2ff627dbc0501f4d8a83661079ce7af9734988d5967c45894fa0bc5b70",
+    "experiments/rag-baseline/evaluation/structure_context.py": "17fcba483531c7ec279d0e4a5fbfb1d4c5504b38c6ee23149d7c8d9a08f4899d",
+    "experiments/rag-baseline/evaluation/structure_plan.json": "53abf02a489690f33f8df952747100039f83a6021f17277bcc92e1c9874dc641",
+    "experiments/rag-baseline/evaluation/context_experiment.py": "c7e13b958b9d0bbfdc066d571f69124c2e03b9bd11b1754f9ad0e6bb8a9398a1",
+    "experiments/rag-baseline/evaluation/context_plan.json": "6865ffbee66659fb0bcff1a5f8b0267d75e6065442d277ffb5e43c1d9107281a",
+    "experiments/rag-baseline/evaluation/baseline.py": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+    "rag/context_structure.py": "de423eeb26b81725479ac43ec1b67849e93ef79e3d5b8d154d3f4cc350ac3aec",
+    "rag/structure.py": "2df771e450ce31c43703a2d328734997da6520649da431b0f78cc8a97dce756f",
+    "rag/knowledge.py": "8dea9d3c1ca93218f7a83998d3f6c2096cf1937412dd7a2dc90d260d2d8bc1f8",
+    "rag/config.py": "032ea3d68d6202d6d7de53ddb7296d96c7f546cba545e1f417f7f3f1e9225f8e"
+  },
+  "model": "deepseek-chat",
+  "llm_url": "https://api.deepseek.com/v1",
+  "generation_calls": 18,
+  "generation_attempts": 18,
+  "embedding_calls": 0,
+  "ranking_calls": 0,
+  "generation_reuses": 0,
+  "gold_used_for_prompt": false,
+  "sdk_retry_limit": 2,
+  "output_sha256": {
+    "smart-home-Q008.json": "ca1d0c11c8b059f588047e05652028996b86d896bede1db05c8a8fdbaf59b9de",
+    "accounting-ACC-Q059.json": "f48e17f63a05dd9d676478c6aa71f3c0503247c798f35be44ea6ebf8f87a0ee6",
+    "smart-home-Q040.json": "902d678432c9170bdc8a42b03bb9efd0604472c0ee6d074463cba37492a75fc4",
+    "accounting-ACC-Q116.json": "ffe750ec482d2cfdbe7fa9bb202d2012d044132df449b70cbc71a3008c804280",
+    "plan.json": "57976cf20c800dbae09a5ddab3e2c44c7fbda0143a3abfce2fbfca497366b93e",
+    "smart-home-Q043.json": "f9ef4e8c790f0ae9a717ef77762b1c5db8040d4790a970ba5e97c8ec0ce41b35",
+    "summary.json": "e9496aabb48a7e70e7834639f245cdb78019b90df6c4be6f9b60d30f6e788ee2",
+    "accounting-ACC-Q114.json": "3e00db9332f4b225e5a3e97da82a863b4e2a87d5f546f4c27aa5f9f28d8e09cc",
+    "accounting-ACC-Q041.json": "a52fa6042ec50c6a50782b62873226968c14fef956af557d35c44750028f23f1",
+    "accounting-ACC-Q118.json": "622ebcb0e400c44fd98a357e2d2a67263e960b2f42f1c35eddc03db2e072416d",
+    "accounting-ACC-Q098.json": "d4bab3558cf7bdfeaba837a5f8ae2e6c6b2aa6a9e64a04f95253587aba7ef87d"
+  }
+}
