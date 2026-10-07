@@ -1,0 +1,14 @@
+{
+  "boundary": {
+    "questions": 9,
+    "prompt_tokens": 13906,
+    "completion_tokens": 3700,
+    "generation_seconds_p50": 2.369641112003592
+  },
+  "structure": {
+    "questions": 9,
+    "prompt_tokens": 43807,
+    "completion_tokens": 4052,
+    "generation_seconds_p50": 2.5175551180000184
+  }
+}

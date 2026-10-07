@@ -1,0 +1,28 @@
+{
+  "split": "dev",
+  "source_run": "rerank_runs/20261007T120512Z-c89f9fa3",
+  "selection_variant": "rank_plain",
+  "generation_sample": {
+    "smart-home": [
+      "Q008",
+      "Q040",
+      "Q043"
+    ],
+    "accounting": [
+      "ACC-Q041",
+      "ACC-Q059",
+      "ACC-Q098",
+      "ACC-Q114",
+      "ACC-Q116",
+      "ACC-Q118"
+    ]
+  },
+  "variants": [
+    "boundary",
+    "structure"
+  ],
+  "budget_characters": 2000,
+  "intervention": "Same frozen nine contexts, exact body text/order/citations, fresh boundary-prompt baseline vs boundary plus source-derived structure and its interpretation instructions. No additional passage text. Heading excerpts must be present in selected spans. Both corpora use the same opt-in bold heuristic. Alternate execution order by case.",
+  "scope": "18 fresh generation calls, no embedding or ranking calls, no held-out questions. One sample per arm; metadata and interpretation instructions are one combined intervention, not separately identified causes.",
+  "review": "Check continuation ownership, truncated condition lists, core answer completeness, citation faithfulness and task focus for all 18 answers. Record input/output tokens and generation latency. Human review remains null. Evidence coverage fixed, not answer accuracy. No default production promotion."
+}

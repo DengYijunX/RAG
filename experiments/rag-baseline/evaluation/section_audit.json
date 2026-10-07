@@ -1,0 +1,64 @@
+{
+  "run": "structure_runs/20261007T130324Z-65ea2859",
+  "status": "passed",
+  "source_code_verified_at_commit": "21f46a91b9e43458b011ce41176d21c4929e594f",
+  "output_hashes": 12,
+  "documents": 64,
+  "literal_chunks": 775,
+  "paired_questions": 9,
+  "actual_generation_calls": 18,
+  "embedding_calls": 0,
+  "ranking_calls": 0,
+  "same_bodies_order_citations": true,
+  "metadata_recomputed_from_source": true,
+  "model_title_excerpts_in_selected_text": true,
+  "test_questions_executed": 0,
+  "questions": [
+    {
+      "question_id": "Q008",
+      "body_characters": 1683,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "Q040",
+      "body_characters": 1971,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "Q043",
+      "body_characters": 1956,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q041",
+      "body_characters": 1857,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q059",
+      "body_characters": 1797,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q098",
+      "body_characters": 1810,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q114",
+      "body_characters": 1929,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q116",
+      "body_characters": 1877,
+      "all_evidence_covered": true
+    },
+    {
+      "question_id": "ACC-Q118",
+      "body_characters": 1821,
+      "all_evidence_covered": true
+    }
+  ],
+  "semantic_answer_quality": "requires separate review; not inferred from this audit"
+}
