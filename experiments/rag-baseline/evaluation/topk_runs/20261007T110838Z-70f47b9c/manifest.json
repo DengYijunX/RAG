@@ -1,0 +1,240 @@
+{
+  "status": "completed",
+  "kind": "dense_topk_dev_ablation",
+  "split": "dev",
+  "routing_enabled": false,
+  "index_rebuilt": false,
+  "indexes": {
+    "smart-home": {
+      "generation": "cc771a42395648c5bfe3570ef1f56aa9",
+      "signature": {
+        "corpus_sha256": "24f8a2aaea65f7ef120319f5ad9512b116966ee4bffd99ae951b9a57ec5465b9",
+        "embedding_model": "qwen3.7-text-embedding-flash",
+        "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+        "chunk_size": 500,
+        "chunk_overlap": 50,
+        "distance": "l2"
+      },
+      "dimensions": 1024,
+      "documents": 5,
+      "chunks": 26
+    },
+    "accounting": {
+      "generation": "f9c60860c96d4688a9c3ac388463d690",
+      "signature": {
+        "corpus_sha256": "41e50b08b72879587361faacf22c9dbe712c19b3c9bd4548855fa734c8523de8",
+        "embedding_model": "qwen3.7-text-embedding-flash",
+        "embedding_url": "https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+        "chunk_size": 500,
+        "chunk_overlap": 50,
+        "distance": "l2"
+      },
+      "dimensions": 1024,
+      "documents": 59,
+      "chunks": 749
+    }
+  },
+  "model": "deepseek-chat",
+  "llm_url": "https://api.deepseek.com/v1",
+  "gold_used_for_retrieval_or_generation": false,
+  "source_sha256": {
+    "experiments/rag-baseline/evaluation/topk_experiment.py": "5f517f5bb4bb264f4020fffe2b50639e6bcca8aa4b06d3f6dad97447f68d8fbc",
+    "experiments/rag-baseline/evaluation/topk_plan.json": "78c94ead9c06b28e1ea4ed686b71e19217ae35c2061f99e0ae2c9814d64186bc",
+    "experiments/rag-baseline/evaluation/quality_sample.json": "bb5a1cbe07799f490cd44d6866eae8b81bfc407ecdd0aa37cd8bb2a16cfeb36d",
+    "experiments/rag-baseline/evaluation/baseline.py": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+    "rag/knowledge.py": "8dea9d3c1ca93218f7a83998d3f6c2096cf1937412dd7a2dc90d260d2d8bc1f8",
+    "rag/config.py": "032ea3d68d6202d6d7de53ddb7296d96c7f546cba545e1f417f7f3f1e9225f8e",
+    "experiments/rag-baseline/evaluation/v2/smart-home/questions.jsonl": "aa018eda123fa40a493729fef3b466bdc062f372f71892314092d80283758c59",
+    "experiments/rag-baseline/evaluation/v2/accounting/questions.jsonl": "65286aff8d1b5fd48f09a5999246e410bb7fa871ad26fb5b659069230fa85482"
+  },
+  "repository_commit": "4d97f402d01ea15f1d3d4e83b96d1c47c39d766c",
+  "generation_calls": 27,
+  "embedding_batches": [
+    {
+      "knowledge_base": "smart-home",
+      "question_ids": [
+        "Q002",
+        "Q006",
+        "Q007",
+        "Q008",
+        "Q010",
+        "Q011",
+        "Q013",
+        "Q014",
+        "Q016",
+        "Q017",
+        "Q018",
+        "Q021",
+        "Q022",
+        "Q023",
+        "Q024",
+        "Q025",
+        "Q026",
+        "Q027",
+        "Q028",
+        "Q029"
+      ],
+      "seconds": 2.083942429002491
+    },
+    {
+      "knowledge_base": "smart-home",
+      "question_ids": [
+        "Q030",
+        "Q032",
+        "Q033",
+        "Q034",
+        "Q036",
+        "Q039",
+        "Q040",
+        "Q041",
+        "Q043",
+        "Q044",
+        "Q045",
+        "Q047",
+        "Q049",
+        "Q051",
+        "Q052",
+        "Q053",
+        "Q055",
+        "Q056",
+        "Q057",
+        "Q058"
+      ],
+      "seconds": 0.652225740996073
+    },
+    {
+      "knowledge_base": "smart-home",
+      "question_ids": [
+        "Q070",
+        "Q071",
+        "Q072"
+      ],
+      "seconds": 0.5530337149975821
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_ids": [
+        "ACC-Q003",
+        "ACC-Q004",
+        "ACC-Q005",
+        "ACC-Q006",
+        "ACC-Q007",
+        "ACC-Q008",
+        "ACC-Q009",
+        "ACC-Q010",
+        "ACC-Q011",
+        "ACC-Q012",
+        "ACC-Q013",
+        "ACC-Q014",
+        "ACC-Q015",
+        "ACC-Q017",
+        "ACC-Q018",
+        "ACC-Q019",
+        "ACC-Q024",
+        "ACC-Q025",
+        "ACC-Q026",
+        "ACC-Q027"
+      ],
+      "seconds": 0.646113275011885
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_ids": [
+        "ACC-Q028",
+        "ACC-Q031",
+        "ACC-Q036",
+        "ACC-Q037",
+        "ACC-Q038",
+        "ACC-Q039",
+        "ACC-Q040",
+        "ACC-Q041",
+        "ACC-Q042",
+        "ACC-Q046",
+        "ACC-Q047",
+        "ACC-Q048",
+        "ACC-Q049",
+        "ACC-Q050",
+        "ACC-Q053",
+        "ACC-Q058",
+        "ACC-Q059",
+        "ACC-Q072",
+        "ACC-Q073",
+        "ACC-Q074"
+      ],
+      "seconds": 0.6326719909993699
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_ids": [
+        "ACC-Q075",
+        "ACC-Q076",
+        "ACC-Q077",
+        "ACC-Q078",
+        "ACC-Q079",
+        "ACC-Q080",
+        "ACC-Q081",
+        "ACC-Q082",
+        "ACC-Q083",
+        "ACC-Q084",
+        "ACC-Q085",
+        "ACC-Q087",
+        "ACC-Q088",
+        "ACC-Q089",
+        "ACC-Q098",
+        "ACC-Q099",
+        "ACC-Q100",
+        "ACC-Q101",
+        "ACC-Q102",
+        "ACC-Q105"
+      ],
+      "seconds": 0.4113365770026576
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_ids": [
+        "ACC-Q106",
+        "ACC-Q108",
+        "ACC-Q114",
+        "ACC-Q115",
+        "ACC-Q116",
+        "ACC-Q118",
+        "ACC-Q120",
+        "ACC-Q122",
+        "ACC-Q123",
+        "ACC-Q124",
+        "ACC-Q125",
+        "ACC-Q128",
+        "ACC-Q130",
+        "ACC-Q132",
+        "ACC-Q133",
+        "ACC-Q134",
+        "ACC-Q135",
+        "ACC-Q136",
+        "ACC-Q138",
+        "ACC-Q139"
+      ],
+      "seconds": 0.4262992449948797
+    },
+    {
+      "knowledge_base": "accounting",
+      "question_ids": [
+        "ACC-Q140",
+        "ACC-Q141",
+        "ACC-Q151",
+        "ACC-Q152",
+        "ACC-Q153"
+      ],
+      "seconds": 0.3605527639883803
+    }
+  ],
+  "latency_conditions": "serial, no warmup, provider retries possible; model calls only, not production load test",
+  "reviewer": "assistant review pending; human scores unset",
+  "completed_questions": 128,
+  "output_sha256": {
+    "smart-home-chunks.json": "eb567be3595e1f2348cafac30b436cf454364551568ad01f0bd1b0d0f6b0b9e1",
+    "plan.json": "7865e6a5c298bcd09e303539c0c05e91cb12e90b53a054e7dd5611c3643b657b",
+    "results.jsonl": "1f95765d5e320924a977dc2a7d19e8587eacc87b0e8225e1a493ea04b53badcc",
+    "summary.json": "bbb380ca643eb69aaee8ecc995805bc27cce9a787981c4a77a94baad63756f0d",
+    "accounting-chunks.json": "06c930768a05076086057491cb4bfcfea3a58e699e72c54cfc2c314aa150649f"
+  }
+}

@@ -62,3 +62,5 @@
 验证：Q043 实际运行记录了 1 次问题 Embedding、1 次生成与正式 Top-4；检查四条命中全文进入请求、输出文件哈希及源代码哈希一致，诊断发现第三组必要证据未进入正式上下文。工具只接受 dev 题；单例结果不用于宣称总体准确率。
 
 后续重要设计改动记录：参考项目及具体出处、采用点、不采用的原因、落地文件、验证证据。已有实验收益仍按 [HYBRID_REPORT.md](../experiments/rag-baseline/evaluation/HYBRID_REPORT.md) 的领域与指标边界报告。该文档补足设计依据，不代表通用知识库改造已经完成。
+
+2026-10-07 的 [Top-K 对照](../experiments/rag-baseline/evaluation/TOPK_REPORT.md) 延续 WeKnora `search.go` / `rerank.go` 分离召回和后处理、`metric_hook.go` 分层记录的参考点。当前仅实现纯向量 K 值实验，尚未引入重排服务或改变应用默认值；保存实际上下文与生成结果，验证覆盖提高不等于生成质量必然提高。下一步候选池与上下文预算分开仍属待验证设计，不能写成已实现能力。

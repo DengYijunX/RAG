@@ -1,0 +1,29 @@
+{
+  "status": "passed_with_document_identifier_classification",
+  "run": "experiments/rag-baseline/evaluation/topk_runs/20261007T110838Z-70f47b9c",
+  "manifest_sha256": "3b6ec02e6a00e5b95829d520b6a62bd30646b06a9d5d36a999658a52e1cff41c",
+  "checked_questions": 128,
+  "retrieval_variants": 384,
+  "generation_calls": 27,
+  "checked_distinct_citation_numbers_across_answers": 70,
+  "document_numbers": [
+    {
+      "question_id": "ACC-Q118",
+      "k": 4,
+      "excluded_document_codes": [
+        "财会[2006]3号"
+      ],
+      "reason": "manually confirmed document identifier, not citation"
+    }
+  ],
+  "checks": [
+    "source/output hashes match",
+    "only all dev questions, no test query",
+    "index signatures and chunk snapshots match",
+    "recomputed source-span scores and summary",
+    "actual model requests contain only fixed system prompt, question and cited hits",
+    "all actual citation numbers valid (not a semantic entailment check)",
+    "no credential-like fields"
+  ],
+  "human_semantic_review": null
+}
