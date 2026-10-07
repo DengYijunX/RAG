@@ -38,3 +38,19 @@ def test_boundary_format_preserves_original_article_headings_and_final_question(
     assert messages[-1]['content'].endswith('问题：用户问题')
     assert '片段引用编号不是原文条款编号' in messages[0]['content']
     assert '第五条' not in messages[-1]['content']
+
+
+def test_provider_failure_falls_back_and_does_not_save_exception_body(monkeypatch):
+    from types import SimpleNamespace
+    import rerank_experiment
+
+    def fail(**kwargs):
+        raise RuntimeError('sensitive_test_body')
+
+    monkeypatch.setattr(rerank_experiment, 'OpenAI', fail)
+    service=SimpleNamespace(config=SimpleNamespace(llm_model='test',llm_base_url='https://example.invalid',llm_api_key=''))
+    pool=[chunk('a','doc',0),chunk('b','doc',1)]
+    result=rerank_experiment.rank(service,'question',pool,{'doc':{'title':'Document'}})
+    assert result['order']==['a','b'] and result['fallback']=='provider_error'
+    assert result['error_type']=='RuntimeError' and result['usage'] is None
+    assert 'sensitive_test_body' not in json.dumps(result)
