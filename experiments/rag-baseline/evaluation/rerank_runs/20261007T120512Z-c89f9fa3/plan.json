@@ -1,0 +1,31 @@
+{
+  "split": "dev",
+  "source_run": "topk_runs/20261007T110838Z-70f47b9c",
+  "pool": "Saved Top12 seeds first, followed by their same-source immediate next/previous chunks, deduplicated by ID. One hop only, at most 36 chunks. No gold, domain filters or labels used to expand or rank.",
+  "budget_characters": 2000,
+  "generation_sample": {
+    "smart-home": [
+      "Q008",
+      "Q040",
+      "Q043"
+    ],
+    "accounting": [
+      "ACC-Q041",
+      "ACC-Q059",
+      "ACC-Q098",
+      "ACC-Q114",
+      "ACC-Q116",
+      "ACC-Q118"
+    ]
+  },
+  "variants": [
+    "base_plain",
+    "base_boundary",
+    "rank_plain",
+    "rank_boundary"
+  ],
+  "ranking": "Use configured LLM as a listwise relevance reranking prototype, JSON exact-permutation contract, temperature=0, max_tokens=1024. Invalid order or provider exception falls back to input pool order with recorded reason. This is not a dedicated cross-encoder model.",
+  "generation": "Same application generate method/model; rotate four-condition execution order by question. Plain prompt unchanged; boundary condition adds explicit per-chunk delimiters/source positions and boundary/task-focus instructions. Whole chunk bodies unchanged. No response reuse or repeated trials.",
+  "scope": "Pool and base-budget evidence coverage for all 128 dev questions, no new embeddings. Nine fixed diagnostic questions receive nine rerank calls and 36 generation calls. Do not infer whole-dev reranker accuracy or causal stability from this pilot.",
+  "decision": "Separate pool coverage, retained-context coverage, answer completeness, source attribution, task focus, and reranking token/time overhead. No promotion to production or held-out test access from this pilot."
+}

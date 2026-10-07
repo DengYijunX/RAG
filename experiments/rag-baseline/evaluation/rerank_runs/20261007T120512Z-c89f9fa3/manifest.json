@@ -1,0 +1,41 @@
+{
+  "status": "completed",
+  "split": "dev",
+  "source_run": "topk_runs/20261007T110838Z-70f47b9c",
+  "source_manifest_sha256": "3b6ec02e6a00e5b95829d520b6a62bd30646b06a9d5d36a999658a52e1cff41c",
+  "source_sha256": {
+    "experiments/rag-baseline/evaluation/rerank_experiment.py": "d5013f83ea49f5c3df8ce328c44396b52641f2e837a4d8b01f13c959edff6f5b",
+    "experiments/rag-baseline/evaluation/rerank_context.py": "3667f97a19bf4b371bb08ae68eae901bc3423750471ac70f6a79613f0e479755",
+    "experiments/rag-baseline/evaluation/rerank_plan.json": "d041bd918e34e076e1fa826fde7a9385509305fb6ab2f873fa7566a9ea4680eb",
+    "experiments/rag-baseline/evaluation/context_budget.py": "7a6f80c6ae69439eef5248e38ec5d2b26f8cd41dbd384c6f28534371b9420b35",
+    "experiments/rag-baseline/evaluation/context_experiment.py": "c7e13b958b9d0bbfdc066d571f69124c2e03b9bd11b1754f9ad0e6bb8a9398a1",
+    "experiments/rag-baseline/evaluation/context_plan.json": "6865ffbee66659fb0bcff1a5f8b0267d75e6065442d277ffb5e43c1d9107281a",
+    "experiments/rag-baseline/evaluation/baseline.py": "7f5a48d82c0f4896f7ea7ac91e00f9c214833b42c2f963694b87b8cd7d90d0d6",
+    "rag/knowledge.py": "8dea9d3c1ca93218f7a83998d3f6c2096cf1937412dd7a2dc90d260d2d8bc1f8",
+    "rag/config.py": "032ea3d68d6202d6d7de53ddb7296d96c7f546cba545e1f417f7f3f1e9225f8e"
+  },
+  "repository_commit": "05aafc2cbe64ae6a776df8a893ef917e5ac4c965",
+  "model": "deepseek-chat",
+  "llm_url": "https://api.deepseek.com/v1",
+  "ranking_calls": 9,
+  "generation_calls": 36,
+  "embedding_calls": 0,
+  "gold_used_for_pool_ranking_selection_generation": false,
+  "scope": "all-dev offline pool coverage plus fixed 9-question LLM pilot; no full-dev reranker result",
+  "pool_questions": 128,
+  "pilot_questions": 9,
+  "output_sha256": {
+    "smart-home-Q008.json": "566cb0073c5c9325c5381a014c5f89c47d0c435ac8dbb4430e35257144962ebe",
+    "accounting-ACC-Q059.json": "944fa0edcdf5ead0734eada96bd4f0db8d07cd4f2d0381421ea615459576f160",
+    "pool_results.jsonl": "18121a203a5696047c5f15c2b068f77f37ba6062d6d4bf5b2365333a59a02863",
+    "smart-home-Q040.json": "dee1ec4c8d5e760b08e288dbb81b01941304f29b67e3159235420fcf1df53605",
+    "accounting-ACC-Q116.json": "f42bb7abd924e9a29168667d874e1dec84a80196b0186bfe69a495bb70660eaa",
+    "plan.json": "ae28e850f81ab06218bd019ea5a3fc6d16fe660922fef594c6d5a5c76fc9baf5",
+    "smart-home-Q043.json": "e4b7df5d6a93eb7309e9b8927b0d600e7f508406fd1f741148006e386e5e9c6f",
+    "summary.json": "48f738060a5853a18ba1448950b640f66d2f47803836cd8c264646142dd08e27",
+    "accounting-ACC-Q114.json": "9843d6570f92bceb040ef260d59d38d135966d499c71ec84ee8b4ce2247efef5",
+    "accounting-ACC-Q041.json": "df802cb1d4b9dd7fe1615a91b49d9ca669a1bf7af6c6de64b0a1a1bf7f106b9a",
+    "accounting-ACC-Q118.json": "3e40b41871e69cac16b7c1596d2e881aab20e805a1336d14a24e61697b8e6399",
+    "accounting-ACC-Q098.json": "ad772b7611c3a450ec0c689d763e7fe21f67dd0edf1a7952a43ef7b6926857c8"
+  }
+}

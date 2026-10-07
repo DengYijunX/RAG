@@ -1,0 +1,104 @@
+{
+  "status": "passed",
+  "run": "20261007T120512Z-c89f9fa3",
+  "manifest_sha256": "28d9987e12a043d09af8294239fa3565569fb37e8bc4a4f850f74fecdacd35e2",
+  "pool_dev_questions": 128,
+  "pilot_dev_questions": 9,
+  "ranking_calls": 9,
+  "generation_calls": 36,
+  "ranking_fallbacks": 0,
+  "embedding_calls": 0,
+  "tests_passed": 27,
+  "checks": [
+    "source and output hashes",
+    "all-dev pool replay from prior exact seeds",
+    "pilot preselection and dev isolation",
+    "exact permutation and rank input reconstruction",
+    "same selected evidence in plain/boundary pair",
+    "2000-body-character budgets",
+    "exact actual prompt reconstruction",
+    "source-span metrics recomputed",
+    "real citation numbers valid (not semantic entailment)",
+    "no credential-like fields",
+    "36 assistant review excerpts match saved answers; human scores remain unset"
+  ],
+  "document_codes": [
+    {
+      "question_id": "ACC-Q041",
+      "variant": "rank_boundary",
+      "document_codes": [
+        "财会[2006]3号"
+      ],
+      "all_codes_present_in_context": true,
+      "semantic_attribution_verified": false
+    },
+    {
+      "question_id": "ACC-Q059",
+      "variant": "base_plain",
+      "document_codes": [
+        "财会[2014]8号"
+      ],
+      "all_codes_present_in_context": true,
+      "semantic_attribution_verified": false
+    },
+    {
+      "question_id": "ACC-Q059",
+      "variant": "rank_boundary",
+      "document_codes": [
+        "财会[2014]8号"
+      ],
+      "all_codes_present_in_context": true,
+      "semantic_attribution_verified": false
+    },
+    {
+      "question_id": "ACC-Q118",
+      "variant": "base_plain",
+      "document_codes": [
+        "财会[2006]3号"
+      ],
+      "all_codes_present_in_context": true,
+      "semantic_attribution_verified": false
+    }
+  ],
+  "path_usage_for_fixed_9_questions": {
+    "base_plain": {
+      "generation_input": 11178,
+      "generation_output": 3509,
+      "ranking_input_if_deployed": 0,
+      "ranking_output_if_deployed": 0,
+      "path_input": 11178,
+      "path_output": 3509,
+      "path_seconds_p50": 2.3149567159998696
+    },
+    "base_boundary": {
+      "generation_input": 14002,
+      "generation_output": 3218,
+      "ranking_input_if_deployed": 0,
+      "ranking_output_if_deployed": 0,
+      "path_input": 14002,
+      "path_output": 3218,
+      "path_seconds_p50": 2.224631089993636
+    },
+    "rank_plain": {
+      "generation_input": 11149,
+      "generation_output": 4061,
+      "ranking_input_if_deployed": 59635,
+      "ranking_output_if_deployed": 636,
+      "path_input": 70784,
+      "path_output": 4697,
+      "path_seconds_p50": 3.802826143000857
+    },
+    "rank_boundary": {
+      "generation_input": 13906,
+      "generation_output": 3766,
+      "ranking_input_if_deployed": 59635,
+      "ranking_output_if_deployed": 636,
+      "path_input": 73541,
+      "path_output": 4402,
+      "path_seconds_p50": 3.305617190999328
+    }
+  },
+  "billing_note": "Ranking run once per question and shared across prompt conditions during this experiment; path costs above separately model either deployed arm. No money estimate.",
+  "human_semantic_review": null,
+  "assistant_reviews": 36
+}

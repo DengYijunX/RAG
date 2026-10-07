@@ -70,3 +70,9 @@
 2026-10-07 实验落地于 [context_budget.py](../experiments/rag-baseline/evaluation/context_budget.py)，结果见 [CONTEXT_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_REPORT.md)。沿用已核验 WeKnora [search.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/search.go) / [rerank.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/rerank.go) 的阶段分离思路：将已召回候选与最终上下文分别保存、分别评分。前后相邻切片的具体贪心规则由本项目为控制实验编写，不声称来自 WeKnora 源码。
 
 已实现的边界是实验工具：仅使用通用来源身份、字符位置、正文与预算，不接受题目标准答案或领域路由；整个应用尚未接入该选择器。固定 2000 正文字符，验证 128 道开发题、18 次生成、16 项测试。会计证据覆盖改善、售后明显退步，且出现条款归属矛盾，因此保留结果而不晋升默认。下一步相关性重排及结构边界组装仍待独立实现与评测；字符上限也尚未替代为生产 Token 预算。
+
+### ADR-004：可回退的重排原型与独立生成对照
+
+2026-10-07，参考 WeKnora [rerank.go](https://github.com/Tencent/WeKnora/blob/bccb4b151bae403508da77fbb174efc79dc47c1a/internal/application/service/chat_pipeline/rerank.go) 的召回后独立重排和故障回退边界，在 [rerank_context.py](../experiments/rag-baseline/evaluation/rerank_context.py) / [rerank_experiment.py](../experiments/rag-baseline/evaluation/rerank_experiment.py) 实现实验原型。未使用其具体排序模型或移植算法：本项目用已有 LLM 输出候选标签的精确排列，非法结果或调用异常回退原顺序，记录额外 Token 与耗时。
+
+同一候选池与 2000 字符预算下，把排序和生成的边界提示分为四组条件；提示格式仅保留原文标题并增加片段标记，不声称已解析完整章节结构。验证包括 128 题离线候选覆盖、固定九题的 9 次排序 / 36 次生成、27 项测试，以及实际请求与指标审计。结果见 [RERANK_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_REPORT.md)：九题上下文覆盖改善，但存在实质生成错误、续段结构缺失和明显额外用量，暂不接入应用默认策略。全开发集重排、专用模型与通用结构元数据均待后续验证。
