@@ -220,17 +220,51 @@ def first_hit_slot(labelled_slots, relevant_ids):
     return None
 
 
+def precision_in_top_k(labelled_slots, relevant_ids, k):
+    """Share of the first k retrieved chunks that carry a labelled passage.
+
+    One retrieved chunk may contain several labelled passages but counts once:
+    the unit here is "how much of the context we hand over is on target".
+    """
+    gold = set(relevant_ids)
+    if not gold:
+        return None
+    top = labelled_slots[:k]
+    if not top:
+        return 0.0
+    return sum(1 for labels in top if gold & set(labels)) / len(top)
+
+
+def ndcg_in_top_k(labelled_slots, relevant_ids, k):
+    """NDCG over retrieved slots with binary gain.
+
+    Gain is 1 for a slot holding at least one labelled passage. The ideal
+    ordering places one labelled passage per slot for as many slots as the
+    question has labels, so ``idcg`` uses ``min(k, number of labels)``.
+    """
+    gold = set(relevant_ids)
+    if not gold:
+        return None
+    gains = [1.0 if gold & set(labels) else 0.0 for labels in labelled_slots[:k]]
+    ideal_length = min(k, len(gold))
+    best = dcg_at_k([1.0] * ideal_length, k)
+    if best <= 0:
+        return 0.0
+    return dcg_at_k(gains, k) / best
+
+
 def score_slot_metrics(per_question, k=4):
-    """Aggregate slot-based recall, hit rate, first-hit rank and its MRR.
+    """Aggregate slot-based recall, precision, ranking and first-hit metrics.
 
     ``per_question`` yields ``(labelled_slots, relevant_ids)``.
     """
-    recalls, hits, ranks, reciprocal = [], [], [], []
+    recalls, precisions, ndcgs, hits, ranks, reciprocal = [], [], [], [], [], []
     for labelled_slots, relevant_ids in per_question:
         if not relevant_ids:
             continue
-        value = score_slots(labelled_slots, relevant_ids, k)
-        recalls.append(value)
+        recalls.append(score_slots(labelled_slots, relevant_ids, k))
+        precisions.append(precision_in_top_k(labelled_slots, relevant_ids, k))
+        ndcgs.append(ndcg_in_top_k(labelled_slots, relevant_ids, k))
         found = first_hit_slot(labelled_slots, relevant_ids)
         hits.append(1.0 if found else 0.0)
         if found:
@@ -239,9 +273,12 @@ def score_slot_metrics(per_question, k=4):
         else:
             reciprocal.append(0.0)
     if not recalls:
-        return {'recall_in_top_k': None, 'hit_rate_in_top_k': None,
-                'mean_first_hit_slot': None, 'mrr_first_hit': None, 'scored': 0}
+        return {'recall_in_top_k': None, 'precision_in_top_k': None, 'ndcg_in_top_k': None,
+                'hit_rate_in_top_k': None, 'mean_first_hit_slot': None, 'mrr_first_hit': None,
+                'scored': 0}
     return {'recall_in_top_k': sum(recalls) / len(recalls),
+            'precision_in_top_k': sum(precisions) / len(precisions),
+            'ndcg_in_top_k': sum(ndcgs) / len(ndcgs),
             'hit_rate_in_top_k': sum(hits) / len(hits),
             'mean_first_hit_slot': (sum(ranks) / len(ranks)) if ranks else None,
             'mrr_first_hit': sum(reciprocal) / len(reciprocal),

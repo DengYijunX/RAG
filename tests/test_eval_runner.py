@@ -160,9 +160,18 @@ def test_artifacts_are_written_once_and_not_overwritten(tmp_path):
     assert summary['knowledge_base'] == 'kb' and summary['metrics']['recall@k'] == 1.0
     lines = (directory / 'samples.jsonl').read_text(encoding='utf-8').strip().splitlines()
     assert len(lines) == 3 and json.loads(lines[0])['question_id'] == 'q1'
-    # A second run with the same task id must not silently overwrite the first.
-    with pytest.raises(FileExistsError):
-        write_artifacts(result, tmp_path)
+
+
+def test_a_repeat_run_in_the_same_second_gets_its_own_directory(tmp_path):
+    """Back-to-back modes share a task id; neither run may replace the other."""
+    result = run_evaluation(questions(1), fake_retrieve({'q1': ['P1']}), k=1,
+                            resolver=resolver_for(1))
+    first = write_artifacts(result, tmp_path)
+    second = write_artifacts(result, tmp_path)
+    assert first != second
+    assert first.is_dir() and second.is_dir()
+    assert second.name.startswith(result.task_id)
+    assert (first / 'summary.json').exists() and (second / 'summary.json').exists()
 
 
 def test_configuration_captures_what_the_score_depends_on():

@@ -137,8 +137,20 @@ def run_evaluation(questions, retrieve, *, knowledge_base='', dataset='', split=
 
 
 def write_artifacts(result, output_dir):
-    """Persist the summary and the per-sample records; never overwrite a run."""
-    directory = Path(output_dir) / result.task_id
+    """Persist the summary and the per-sample records.
+
+    Runs are never overwritten. The task id is unique to a second, so an
+    immediate repeat (the comparison script runs three modes back to back)
+    would collide; a numeric suffix keeps both records instead of failing or
+    silently replacing the earlier one.
+    """
+    root = Path(output_dir)
+    root.mkdir(parents=True, exist_ok=True)
+    directory = root / result.task_id
+    suffix = 2
+    while directory.exists():
+        directory = root / f'{result.task_id}-{suffix}'
+        suffix += 1
     directory.mkdir(parents=True, exist_ok=False)
     (directory / 'summary.json').write_text(
         json.dumps(result.summary(), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

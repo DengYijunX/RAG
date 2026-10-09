@@ -1,0 +1,39 @@
+{
+  "task_id": "20261009T125814Z-8a17302d",
+  "knowledge_base": "smart-home",
+  "dataset": "v1/dev:bm25",
+  "split": "dev",
+  "k": 4,
+  "metrics": {
+    "k": 4,
+    "questions": 35,
+    "recall@k": 1.0,
+    "precision@k": 1.0,
+    "hit_rate@k": 1.0,
+    "mrr": 1.0,
+    "map": 1.0,
+    "ndcg@k": 1.0,
+    "recall_in_top_k": 0.9333333333333335,
+    "precision_in_top_k": 0.2857142857142857,
+    "ndcg_in_top_k": 0.8988811053528744,
+    "hit_rate_in_top_k": 1.0,
+    "mean_first_hit_slot": 1.4285714285714286,
+    "mrr_first_hit": 0.9307692307692309,
+    "scored": 35,
+    "hits": 675,
+    "unresolved_hits": 629,
+    "resolution_coverage": 0.06814814814814818,
+    "unlabelled_questions": 5
+  },
+  "configuration": {
+    "k": 4,
+    "split": "dev",
+    "dataset": "v1/dev:bm25",
+    "knowledge_base": "smart-home",
+    "questions": 40,
+    "resolver": true
+  },
+  "questions": 40,
+  "failures": 0,
+  "output_dir": ""
+}

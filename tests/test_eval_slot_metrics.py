@@ -6,7 +6,8 @@ passage in the top results would otherwise look near-perfect.
 """
 import pytest
 
-from eval.metrics import first_hit_slot, score_slot_metrics, score_slots
+from eval.metrics import (first_hit_slot, ndcg_in_top_k, precision_in_top_k, score_slot_metrics,
+                          score_slots)
 
 
 def test_passage_found_late_does_not_count_as_early():
@@ -54,6 +55,38 @@ def test_aggregate_reports_first_hit_and_mrr():
     assert summary['hit_rate_in_top_k'] == pytest.approx(2 / 3)
     assert summary['mean_first_hit_slot'] == pytest.approx((1 + 2) / 2)
     assert summary['mrr_first_hit'] == pytest.approx((1.0 + 0.0 + 0.5) / 3)
+
+
+def test_precision_counts_each_slot_once():
+    # Three slots, two carry the gold passage, one carries an unrelated one.
+    slots = [['P1'], ['P2'], []]
+    assert precision_in_top_k(slots, ['P1'], 2) == 0.5
+    assert precision_in_top_k(slots, ['P1'], 3) == pytest.approx(1 / 3)
+    # A slot holding two gold passages still counts once for precision.
+    assert precision_in_top_k([['P1', 'P2']], ['P1', 'P2'], 1) == 1.0
+
+
+def test_ndcg_rewards_early_slots():
+    early = [['P1'], [], [], []]
+    late = [[], [], [], ['P1']]
+    assert ndcg_in_top_k(early, ['P1'], 4) == 1.0
+    assert ndcg_in_top_k(late, ['P1'], 4) < ndcg_in_top_k(early, ['P1'], 4)
+    # A gold passage outside the cutoff earns nothing.
+    assert ndcg_in_top_k(late, ['P1'], 3) == 0.0
+
+
+def test_ndcg_ideal_uses_the_number_of_labels():
+    # Two labels and two slots: filling both gives a perfect score.
+    assert ndcg_in_top_k([['P1'], ['P2']], ['P1', 'P2'], 2) == 1.0
+    # Four slots but only one label: hitting it first is already ideal.
+    assert ndcg_in_top_k([['P1'], [], [], []], ['P1'], 4) == 1.0
+
+
+def test_precision_and_ndcg_score_none_without_labels():
+    assert precision_in_top_k([['P1']], [], 4) is None
+    assert ndcg_in_top_k([['P1']], [], 4) is None
+    summary = score_slot_metrics([([['P1']], [])], k=4)
+    assert summary['precision_in_top_k'] is None and summary['ndcg_in_top_k'] is None
 
 
 def test_aggregate_with_nothing_to_score():

@@ -82,7 +82,9 @@ RAG/
 
 **已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**：售后 `recall_in_top_k` = 0.810（35 道可判分），会计 = 0.856（67 道可判分）；`mean_first_hit_slot` 分别为 1.76 与 1.47。
 
-注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重后**的视图，它会把排在第 9 名的金标签压进前 4 名，因此**偏高，不得单独引用**。两个数字的差距（售后 0.16、会计 0.04）就是"找回来了但没进前 k"的比例，也正是重排的收益空间。该基线是后续 BM25 / RRF / Rerank 的对照起点，且是**检索覆盖，不是答案准确率**。
+**检索模式对照（dense / BM25 / hybrid-RRF）**：见 [RETRIEVAL_MODES_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_MODES_REPORT.md)。结论**因语料而异**：会计 hybrid 最好（recall 0.856 → 0.893，NDCG 0.806 → 0.862），售后 **BM25 单路最好**（0.810 → 0.933），融合在售后反而略差。可迁移的结论是**融合收益取决于两条臂的分歧度**（会计候选池 Jaccard 0.247 → 有收益；售后 0.649 → 融合只是重排噪声）。RRF 权重未在开发集上调参。
+
+注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 
 **三条容易出错的规则**（已写进代码与测试，改动前先读）：
 
