@@ -11,7 +11,8 @@
 - `rag/static/index.html`：下拉动态读取注册表，新增创建/导入/建索引操作，已无领域硬编码字符串。
 - 测试：registry 11、importer 14、kb_service 14、api 12，本机共 83 项通过（`test_store` 单独 2 项通过；`test_knowledge` 的 11 项因原生向量索引不可用未运行）。
 - 验收：第三语料 `test_docs/third-corpus/`（阳台蔬菜种植，自撰）10/10 通过，见 `docs/THIRD_CORPUS_ACCEPTANCE.md`。
-- 设计出处：`docs/ARCHITECTURE_REFERENCES.md` 的 **ADR-007**（明确区分已实现与未迁移）。
+- 设计出处：`docs/ARCHITECTURE_REFERENCES.md` 的 **ADR-007**（通用注册与导入）与 **ADR-008**（按 WeKnora 路线固定目标结构，评测框架先落占位）。
+- 目标结构与后续路线：**`docs/ROADMAP.md`**（目录树、模块↔位置↔状态对应表、`eval/` 实施顺序、清理记录）。新会话先读这份。
 
 ## 本轮独立复核后修掉的问题
 

@@ -123,3 +123,15 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 - 向量后端在本机只能以注入的内存实现验证，真实 Chroma 路径未在本机跑通，原因见 [ENVIRONMENT_WINDOWS.md](ENVIRONMENT_WINDOWS.md)。
 
 **验证方式**：11 项注册表测试、14 项导入测试、14 项生命周期测试、13 项接口测试（本机共 84 项通过，另有 11 项 `test_knowledge.py` 因原生向量索引不可用未运行）；第三语料（阳台蔬菜种植）端到端验收 10/10 通过，见 [THIRD_CORPUS_ACCEPTANCE.md](THIRD_CORPUS_ACCEPTANCE.md)。该验收证明的是导入与接口契约，**不是答案质量，也没有使用真实向量检索**。此外用 `uvicorn rag.api:app` 启动真实服务复核过列表与页面可访问。
+
+### ADR-008：按 WeKnora 路线固定目标结构，评测框架先落占位
+
+2026-10-09，用户要求参考 WeKnora 的七步学习路线（文档解析与 Chunking → Embedding 与索引 → 混合检索与融合 → Rerank 与上下文 → 生成与引用 → Evaluation → 消融与工程优化）说明后续结构并允许留占位。落地方式见 [ROADMAP.md](ROADMAP.md)：标出目标目录树、模块与位置的对应表、每个模块的现状与缺口，以及 `eval/` 的实现顺序。
+
+**决策：** 新增 `eval/` 包（`datasets.py` / `metrics.py` / `runner.py`），只写数据类与接口说明，公开函数一律 `raise NotImplementedError`，并加 [tests/test_eval_scaffold.py](../tests/test_eval_scaffold.py) 断言占位不会被执行成功、指标名拼错会被拒、且 `eval` 不导入 `rag`、`rag` 不导入 `eval`（分层方向单向：评测包装产品，产品不依赖评测）。
+
+**原因：** 现有评测能力散在 `experiments/rag-baseline/evaluation/` 的脚本里，没有统一的数据集 schema、指标注册和任务调度，无法直接回答"这次退化出在哪一层"。参考 WeKnora 的分层（数据集 / 指标 / 评测服务 + 指标 hook）先固定接口与边界，比继续堆脚本更容易审查；同时保留已跑过的实验产物，不改写历史结论。
+
+**取舍：** 只落占位意味着这一轮**没有新增任何评测指标能力**，因此不写任何新数字；现有 5 份 `*_REPORT.md` 仍是唯一证据来源。占位用 `NotImplementedError` 而不是返回空值，是为了避免"看起来跑通了"。`rag/retrieve/`、`rag/generate/`、`rag/host/` 在 ROADMAP 中标为待拆分/未实现，本轮**不动代码结构**，避免在真实向量路径尚未在可用环境复跑前做大规模搬迁。
+
+**验证方式：** 5 项脚手架测试通过；本机全套 89 项通过（84 + 5）。ROADMAP 的清理记录同时列出本轮删除的本地产物与"无可删死代码"的核查结果（`context_structure.py`、`enumerate_sources`、旧单库路径均仍被引用）。
