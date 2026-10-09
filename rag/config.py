@@ -18,16 +18,34 @@ class Config:
     chunk_overlap: int
     top_k: int
     persist_dir: str
+    # Rerank is a different endpoint shape from chat/embeddings, so it carries
+    # its own provider settings. Empty values mean "no reranker configured".
+    rerank_base_url: str = ''
+    rerank_api_key: str = ''
+    rerank_model: str = ''
+
+    @property
+    def rerank_configured(self):
+        return bool(self.rerank_base_url and self.rerank_api_key and self.rerank_model)
+
+
+def _normalize_provider_url(value):
+    """Accept either a full URL or a bare Aliyun MaaS host name.
+
+    ``docs/CLOUD_STARTUP.md`` documents the host name alone; the
+    OpenAI-compatible path has to be appended. A full URL passes through.
+    """
+    if value and value.startswith('llm-') and '://' not in value:
+        return f'https://{value}/compatible-mode/v1'
+    return value
 
 
 def load_config() -> Config:
     """加载 .env 并返回 Config 实例，缺失字段使用默认值。"""
     load_dotenv()
-    embedding_url = os.getenv("EMBEDDING_BASE_URL", "https://api.siliconflow.cn/v1")
-    if embedding_url == "llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com":
-        embedding_url = "https://" + embedding_url + "/compatible-mode/v1"
     return Config(
-        embedding_base_url=embedding_url,
+        embedding_base_url=_normalize_provider_url(
+            os.getenv("EMBEDDING_BASE_URL", "https://api.siliconflow.cn/v1")),
         embedding_api_key=os.getenv("EMBEDDING_API_KEY", ""),
         embedding_model=os.getenv("EMBEDDING_MODEL", "BAAI/bge-m3"),
         llm_base_url=os.getenv("LLM_BASE_URL", "https://api.deepseek.com/v1"),
@@ -37,4 +55,7 @@ def load_config() -> Config:
         chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "50")),
         top_k=int(os.getenv("TOP_K", "4")),
         persist_dir=os.getenv("PERSIST_DIR", "./chroma_db"),
+        rerank_base_url=_normalize_provider_url(os.getenv("RERANK_BASE_URL", "")),
+        rerank_api_key=os.getenv("RERANK_API_KEY", ""),
+        rerank_model=os.getenv("RERANK_MODEL", ""),
     )

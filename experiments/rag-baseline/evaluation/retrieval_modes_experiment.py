@@ -40,11 +40,12 @@ from hybrid_retrieval import BM25Index, HybridRetriever
 from llm_rerank import LLMListwiseReranker
 from rag.config import load_config
 from rag.kb_service import KnowledgeBaseService
+from specialized_rerank import SpecializedReranker
 
 BASELINE = REPO / 'experiments' / 'rag-baseline'
 STORAGE = REPO / 'chroma_db' / 'eval-baseline'
 ARTIFACTS = BASELINE / 'evaluation' / 'retrieval_runs'
-MODES = ('dense', 'bm25', 'hybrid', 'rerank')
+MODES = ('dense', 'bm25', 'hybrid', 'rerank', 'rerank_specialized')
 
 CORPORA = {
     'smart-home': BASELINE / 'evidence.jsonl',
@@ -97,10 +98,10 @@ def ranking_for(mode, question, depth, dense_hits, bm25, hybrid, *, by_id=None,
         return bm25.search(question, depth)
     if mode == 'hybrid':
         return hybrid.ranking(question, depth, depth)
-    # Rerank: the model sees only the pool, but the returned ranking keeps the
-    # whole candidate list — reranked pool first, then the untouched remainder.
-    # Without the tail, choosing a small pool would cap recall, and a drop in
-    # recall could not be told apart from a reranking mistake.
+    # Both rerank modes see only the pool, but keep the whole candidate list —
+    # reranked pool first, then the untouched remainder. Without the tail,
+    # choosing a small pool would cap recall, and a drop in recall could not be
+    # told apart from a reranking mistake.
     candidates = hybrid.ranking(question, depth, depth)
     pool_ids = candidates[:pool or depth]
     if reranker is None or len(pool_ids) < 2:
@@ -155,7 +156,17 @@ def main(argv=None):
         return store.search(cache[question], depth)
 
     hybrid = HybridRetriever(dense_search=dense_hits, bm25=bm25)
-    reranker = LLMListwiseReranker(load_config()) if 'rerank' in selected else None
+    config = load_config()
+    # 'rerank' is a substring of 'rerank_specialized'; compare exact names so
+    # selecting both does not silently pick the wrong implementation.
+    rerankers = {}
+    if 'rerank' in selected:
+        rerankers['rerank'] = LLMListwiseReranker(config)
+    if 'rerank_specialized' in selected:
+        if not config.rerank_configured:
+            raise SystemExit('未配置 RERANK_BASE_URL / RERANK_API_KEY / RERANK_MODEL，'
+                             '请先运行 provider_probe.py 检查')
+        rerankers['rerank_specialized'] = SpecializedReranker(config)
 
     results = {}
     for mode in selected:
@@ -164,7 +175,7 @@ def main(argv=None):
 
         def retrieve(question, mode=mode):
             ids = ranking_for(mode, question.question, args.depth, dense_hits, bm25, hybrid,
-                              by_id=by_id, reranker=reranker, pool=args.rerank_pool)
+                              by_id=by_id, reranker=rerankers.get(mode), pool=args.rerank_pool)
             pools[question.id] = ids
             return [{'id': chunk_id, 'content': by_id[chunk_id]['content'],
                      'source': by_id[chunk_id]['source'], 'rank': rank}
@@ -198,12 +209,13 @@ def main(argv=None):
 
     comparison = {mode: {**data['summary'], 'seconds': data['seconds']}
                   for mode, data in results.items()}
-    if reranker is not None:
-        stats = reranker.stats()
-        print(f'  重排调用：{stats["calls"]} 次，回退 {stats["failures"]} 次，'
-              f'prompt {stats["prompt_tokens"]} / completion {stats["completion_tokens"]} tokens，'
-              f'累计 {stats["seconds"]}s', flush=True)
-        comparison['rerank_stats'] = stats
+    for name, instance in rerankers.items():
+        stats = instance.stats()
+        print(f'  [{name}] 调用 {stats["calls"]} 次，回退 {stats["failures"]} 次，'
+              f'累计 {stats["seconds"]}s' +
+              (f'，prompt {stats["prompt_tokens"]} / completion {stats["completion_tokens"]} tokens'
+               if 'prompt_tokens' in stats else ''), flush=True)
+        comparison[f'{name}_stats'] = stats
     stamp = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
     out = ARTIFACTS / f'modes-{args.kb}-{stamp}.json'
     out.write_text(json.dumps({'knowledge_base': args.kb, 'dataset': f'{args.version}/{args.split}',

@@ -1,5 +1,25 @@
 # 新会话交接（2026-10-09 晚，通用知识库注册与导入）
 
+## 当前模型与服务商配置（2026-10-09 晚实测自 `.env`）
+
+| 用途 | 提供方 | 模型 |
+| --- | --- | --- |
+| Embedding | 阿里云 MaaS（compatible-mode） | `qwen3.7-text-embedding-flash` |
+| Rerank | 阿里云 MaaS（同一 base_url，**独立端点 `/rerank`**） | `qwen3.7-text-rerank` |
+| 生成 / LLM 重排 | DeepSeek | `deepseek-v4-flash` |
+
+Base URL 均为 `https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`（rerank 同址）。`.env` 里 `RERANK_*` 三项与两把密钥的占位需由用户填入；`rag/config.py` 的 `Config` 新增 `rerank_base_url/rerank_api_key/rerank_model` 与 `rerank_configured` 属性。
+
+**换 Embedding 的后果**：索引签名包含 `embedding_model` 与 `embedding_base_url`，**所有已发布索引会判定失效**，必须重建（约 775 个片段）后重跑基线；此前用 `BAAI/bge-m3` 跑出的 recall/NDCG 数字**只在 bge-m3 下成立**，换模型后不可直接沿用。
+
+先跑探针确认两个端点可用与 rerank 的真实响应形态：
+
+```powershell
+.venv\Scripts\python.exe experiments\rag-baseline\evaluation\provider_probe.py
+```
+
+探针会打印是否仍是占位密钥、embedding 维度、以及 rerank 的原始响应。**rerank 的响应形态尚未实测**（缺真实密钥）：当前实现按 OpenAI 兼容 rerank 约定解析 `results: [{index, relevance_score}]`（0 基），并接受 `output.results` 嵌套形态；若实际形态不同，探针会明确指出，需相应调整 `specialized_rerank.parse_rerank_response`。
+
 ## 这一轮做了什么
 
 在 `work` 分支上按 `docs/PROJECT_SCOPE.md` 的下一步顺序，完成「通用知识库注册 + 文档导入」的前四步，并做了第三语料接入验收。小步提交，未 push，未合并 main。
