@@ -112,13 +112,20 @@ def run_evaluation(questions, retrieve, *, knowledge_base='', dataset='', split=
     scored = [(sample.question_id, sample.ranked_passage_ids, sample.relevant_passage_ids)
               for sample in samples if not sample.error]
     summary = metrics.score_dataset(scored, k=k)
+    # Slot-based metrics are the ones that answer the product question: is the
+    # labelled passage inside the top k chunks we would hand to the model?
+    # The de-duplicated passage list above reports a passage found at rank 9 as
+    # if it were found early, so it is kept only as a secondary view.
+    slot_summary = metrics.score_slot_metrics(
+        [(sample.labels_per_hit, sample.relevant_passage_ids)
+         for sample in samples if not sample.error and sample.labels_per_hit], k=k)
     unresolved_total = sum(len(sample.unresolved) for sample in samples)
     hit_total = sum(len(sample.hits) for sample in samples)
     result = EvaluationResult(
         task_id=task_id, knowledge_base=knowledge_base, dataset=dataset, split=split, k=k,
         configuration={'k': k, 'split': split, 'dataset': dataset, 'knowledge_base': knowledge_base,
                        'questions': len(questions), 'resolver': bool(resolver)},
-        metrics={**summary,
+        metrics={**summary, **slot_summary,
                  'hits': hit_total, 'unresolved_hits': unresolved_total,
                  'resolution_coverage': (1 - unresolved_total / hit_total) if hit_total else None,
                  'unlabelled_questions': sum(1 for sample in samples if not sample.relevant_passage_ids)},

@@ -80,7 +80,9 @@ RAG/
 | 5 生成侧指标 | `eval/metrics.py` | **未实现**：需人工标注或有评分规则的 LLM Judge，并抽样核验 Judge |
 | 6 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
 
-**已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索：售后 recall@4 = 0.971（35 道可判分），会计 recall@4 = 0.893（67 道可判分）。该数字是**检索覆盖，不是答案准确率**；MRR 与 NDCG 在单标签题上只能取 0 或 1，排序质量要看报告中的"首命中槽位"。这份基线是后续 BM25 / RRF / Rerank 的对照起点。
+**已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**：售后 `recall_in_top_k` = 0.810（35 道可判分），会计 = 0.856（67 道可判分）；`mean_first_hit_slot` 分别为 1.76 与 1.47。
+
+注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重后**的视图，它会把排在第 9 名的金标签压进前 4 名，因此**偏高，不得单独引用**。两个数字的差距（售后 0.16、会计 0.04）就是"找回来了但没进前 k"的比例，也正是重排的收益空间。该基线是后续 BM25 / RRF / Rerank 的对照起点，且是**检索覆盖，不是答案准确率**。
 
 **三条容易出错的规则**（已写进代码与测试，改动前先读）：
 

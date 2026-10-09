@@ -189,6 +189,65 @@ def mean_average_precision(ranked_ids, relevant_ids):
     return average_precision(ranked_ids, relevant_ids)
 
 
+def score_slots(labelled_slots, relevant_ids, k):
+    """Recall/rank metrics over the *retrieved slots*, not a de-duplicated list.
+
+    ``labelled_slots`` is one entry per retrieved hit, in retrieval order, each
+    holding the dataset passage ids that hit contains. De-duplicating those
+    labels first — as ``score_dataset`` does — collapses a passage found at
+    rank 9 into the first position it appears, which reports near-perfect
+    recall for a retriever that never puts the answer in the top results.
+
+    This is the metric that matches the product question: *is the labelled
+    passage inside the top k chunks we would hand to the model?*
+    """
+    gold = set(relevant_ids)
+    if not gold:
+        return None
+    top = labelled_slots[:k]
+    found = gold & {passage_id for labels in top for passage_id in labels}
+    return len(found) / len(gold)
+
+
+def first_hit_slot(labelled_slots, relevant_ids):
+    """1-based index of the first retrieved chunk holding a labelled passage."""
+    gold = set(relevant_ids)
+    if not gold:
+        return None
+    for position, labels in enumerate(labelled_slots, 1):
+        if gold & set(labels):
+            return position
+    return None
+
+
+def score_slot_metrics(per_question, k=4):
+    """Aggregate slot-based recall, hit rate, first-hit rank and its MRR.
+
+    ``per_question`` yields ``(labelled_slots, relevant_ids)``.
+    """
+    recalls, hits, ranks, reciprocal = [], [], [], []
+    for labelled_slots, relevant_ids in per_question:
+        if not relevant_ids:
+            continue
+        value = score_slots(labelled_slots, relevant_ids, k)
+        recalls.append(value)
+        found = first_hit_slot(labelled_slots, relevant_ids)
+        hits.append(1.0 if found else 0.0)
+        if found:
+            ranks.append(found)
+            reciprocal.append(1.0 / found)
+        else:
+            reciprocal.append(0.0)
+    if not recalls:
+        return {'recall_in_top_k': None, 'hit_rate_in_top_k': None,
+                'mean_first_hit_slot': None, 'mrr_first_hit': None, 'scored': 0}
+    return {'recall_in_top_k': sum(recalls) / len(recalls),
+            'hit_rate_in_top_k': sum(hits) / len(hits),
+            'mean_first_hit_slot': (sum(ranks) / len(ranks)) if ranks else None,
+            'mrr_first_hit': sum(reciprocal) / len(reciprocal),
+            'scored': len(recalls)}
+
+
 def score_dataset(samples, k=5):
     """Aggregate the retrieval metrics over recorded samples.
 
