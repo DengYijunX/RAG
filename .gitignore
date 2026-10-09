@@ -3,3 +3,7 @@ __pycache__/
 .env
 chroma_db/
 *.pyc
+.tmp/
+.uv-cache/
+.pytest_cache/
+.dsh-acl-recovery/
