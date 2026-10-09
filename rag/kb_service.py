@@ -378,3 +378,63 @@ class KnowledgeBaseService:
                     'answer': '本次检索片段不足以回答。', 'citations': []}
         return {'knowledge_base': kb_id, 'status': 'answer',
                 'answer': self.generate(question, citations), 'citations': citations}
+
+
+def main(argv=None):
+    """CLI for the generic lifecycle: create / list / import / index / ask."""
+    import argparse
+
+    from rag.config import load_config
+    from rag.registry import RegistryError
+
+    parser = argparse.ArgumentParser(description='通用知识库：注册、导入、建索引、问答')
+    commands = parser.add_subparsers(dest='command', required=True)
+
+    create = commands.add_parser('create', help='创建知识库')
+    create.add_argument('name')
+    create.add_argument('--description', default='')
+
+    commands.add_parser('list', help='列出知识库及状态')
+
+    importer = commands.add_parser('import', help='导入目录下的文档')
+    importer.add_argument('kb')
+    importer.add_argument('directory')
+    importer.add_argument('--glob', default='**/*')
+
+    index = commands.add_parser('index', help='为知识库建立索引')
+    index.add_argument('kb')
+
+    ask = commands.add_parser('ask', help='检索问答')
+    ask.add_argument('kb')
+    ask.add_argument('question')
+    ask.add_argument('--top-k', type=int, default=None)
+
+    args = parser.parse_args(argv)
+    service = KnowledgeBaseService(load_config())
+    try:
+        if args.command == 'create':
+            base = service.register(args.name, description=args.description)
+            print(json.dumps({'id': base.id, 'name': base.name}, ensure_ascii=False))
+        elif args.command == 'list':
+            print(json.dumps(service.bases(), ensure_ascii=False, indent=2))
+        elif args.command == 'import':
+            report = service.import_sources(args.kb, args.directory, args.glob)
+            print(json.dumps({'knowledge_base': args.kb, 'documents': len(report.documents),
+                              'chunks': len(report.chunks), 'skipped': report.skipped},
+                             ensure_ascii=False))
+        elif args.command == 'index':
+            info = service.build(args.kb)
+            print(json.dumps({'knowledge_base': args.kb, 'generation': info['generation'],
+                              'documents': info['documents'], 'chunks': info['chunks']},
+                             ensure_ascii=False))
+        else:
+            print(json.dumps(service.query(args.kb, args.question, args.top_k), ensure_ascii=False))
+    except (RegistryError, IndexUnavailable, BuildFailed, NotADirectoryError, KeyError) as exc:
+        print(json.dumps({'status': 'failed', 'error_type': type(exc).__name__,
+                          'message': str(exc)}, ensure_ascii=False))
+        return 1
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())
