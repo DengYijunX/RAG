@@ -8,7 +8,8 @@ import json
 
 import pytest
 
-from review_sheet import (CSV_COLUMNS, export, import_sheet, parse_score, rows_for)
+from review_sheet import (CSV_COLUMNS, EXAMPLE_ROW, FILL_COLUMNS, export, import_sheet,
+                          parse_score, rows_for)
 
 
 class StubQuestion:
@@ -71,18 +72,58 @@ def test_export_writes_both_views(tmp_path, monkeypatch):
     assert '人工评分' in markdown
 
 
-def fill_sheet(run, values):
-    """Write human columns into the exported CSV."""
-    path = run / 'review.csv'
+def fill_sheet(run, values, filename='review.csv'):
+    """Write human columns into an exported sheet."""
+    path = run / filename
     with open(path, encoding='utf-8-sig', newline='') as handle:
         rows = list(csv.DictReader(handle))
+    fieldnames = list(rows[0])
     for row in rows:
         for key, value in values.get(row['question_id'], {}).items():
             row[key] = value
     with open(path, 'w', encoding='utf-8-sig', newline='') as handle:
-        writer = csv.DictWriter(handle, fieldnames=CSV_COLUMNS)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+
+
+def test_export_writes_a_short_fill_in_sheet(tmp_path, monkeypatch):
+    """The short sheet is what a person edits: five cells, plus an example row."""
+    run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_context',
+                        lambda kb, version: stub_context(('Q1', 'Q2')))
+    export(run, 'smart-home', 'v2')
+    path = run / '待填写.csv'
+    assert path.is_file()
+    with open(path, encoding='utf-8-sig', newline='') as handle:
+        rows = list(csv.DictReader(handle))
+    assert list(rows[0]) == FILL_COLUMNS
+    assert len(rows) == 3                      # 1 example + 2 questions
+    assert rows[0]['question_id'].startswith('（示例')
+    assert rows[0]['human_key_points'] == '2'  # the example shows a filled value
+    assert rows[1]['human_key_points'] == ''   # real rows are empty
+    assert '助手初审' in rows[1]['assistant_summary']
+
+
+def test_the_short_sheet_round_trips_and_skips_the_example_row(tmp_path, monkeypatch):
+    run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_context',
+                        lambda kb, version: stub_context(('Q1', 'Q2')))
+    export(run, 'smart-home', 'v2')
+    fill_sheet(run, {'Q1': {'human_key_points': '2', 'human_citation_faithfulness': '2',
+                            'human_behavior_match': '2'},
+                     'Q2': {'human_key_points': '1', 'human_citation_faithfulness': '0',
+                            'human_behavior_match': '2'}},
+               filename='待填写.csv')
+    import_sheet(run, 'smart-home', 'v2')
+    summary = json.loads((run / 'human_summary.json').read_text(encoding='utf-8'))
+    assert summary['human_reviewed'] == 2
+    assert summary['incomplete'] == []
+    assert summary['skipped_rows'] == [EXAMPLE_ROW['question_id']]
+    records = [json.loads(line) for line in
+               (run / 'records.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert {record['question_id'] for record in records
+            if record['human_reviewed']} == {'Q1', 'Q2'}
 
 
 def test_import_records_human_scores_and_reports_rates(tmp_path, monkeypatch):
@@ -97,7 +138,7 @@ def test_import_records_human_scores_and_reports_rates(tmp_path, monkeypatch):
                'human_behavior_match': 'na', 'human_error_labels': 'unsupported_claim、wrong_scope',
                'human_note': '版本用错'},
     })
-    import_sheet(run, 'smart-home', 'v2')
+    import_sheet(run, 'smart-home', 'v2', run / 'review.csv')
 
     records = [json.loads(line) for line in
                (run / 'records.jsonl').read_text(encoding='utf-8').splitlines()]
@@ -125,7 +166,7 @@ def test_unfilled_rows_are_reported_and_excluded(tmp_path, monkeypatch):
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
     fill_sheet(run, {'Q1': {'human_key_points': '1'}})
-    import_sheet(run, 'smart-home', 'v2')
+    import_sheet(run, 'smart-home', 'v2', run / 'review.csv')
     summary = json.loads((run / 'human_summary.json').read_text(encoding='utf-8'))
     assert summary['human_reviewed'] == 1
     assert summary['incomplete'] == ['Q2']
@@ -139,7 +180,7 @@ def test_invalid_scores_are_refused(tmp_path, monkeypatch, value):
     export(run, 'smart-home', 'v2')
     fill_sheet(run, {'Q1': {'human_key_points': value}})
     with pytest.raises(SystemExit):
-        import_sheet(run, 'smart-home', 'v2')
+        import_sheet(run, 'smart-home', 'v2', run / 'review.csv')
 
 
 def test_unknown_error_labels_are_refused(tmp_path, monkeypatch):
@@ -149,7 +190,7 @@ def test_unknown_error_labels_are_refused(tmp_path, monkeypatch):
     export(run, 'smart-home', 'v2')
     fill_sheet(run, {'Q1': {'human_key_points': '2', 'human_error_labels': 'made_up'}})
     with pytest.raises(SystemExit):
-        import_sheet(run, 'smart-home', 'v2')
+        import_sheet(run, 'smart-home', 'v2', run / 'review.csv')
 
 
 def test_parse_score_accepts_the_documented_forms():

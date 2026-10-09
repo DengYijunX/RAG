@@ -44,6 +44,27 @@ CSV_COLUMNS = [
     'assistant_error_labels', 'assistant_justification',
 ] + [f'human_{dimension}' for dimension in DIMENSIONS] + ['human_error_labels', 'human_note']
 
+# The sheet people actually fill in: the five answers plus just enough context to
+# judge them. The full column set above is for machines and for the archive.
+FILL_COLUMNS = ['question_id', 'question', 'assistant_answer', 'cited_snippets',
+                'reference_points', 'assistant_summary',
+                'human_key_points', 'human_citation_faithfulness', 'human_behavior_match',
+                'human_error_labels', 'human_note']
+
+EXAMPLE_ROW = {
+    'question_id': '（示例，请勿修改这一行）',
+    'question': '问题原文',
+    'assistant_answer': '模型回答',
+    'cited_snippets': '本次引用的片段',
+    'reference_points': '数据集标注的参考要点',
+    'assistant_summary': '助手初审：完整性 2 / 引用忠实性 2 / 行为匹配 2',
+    'human_key_points': '2',
+    'human_citation_faithfulness': '1',
+    'human_behavior_match': '2',
+    'human_error_labels': 'retrieval_missing',
+    'human_note': '可以写一句话备注，也可以留空',
+}
+
 
 def latest_run(knowledge_base):
     candidates = sorted(path for path in QUALITY_RUNS.iterdir()
@@ -120,6 +141,29 @@ def export(run, knowledge_base, version, target=None):
         writer.writeheader()
         writer.writerows(rows)
 
+    # A short sheet: one example row plus one row per question, five empty cells.
+    short_path = target / '待填写.csv'
+    with open(short_path, 'w', encoding='utf-8-sig', newline='') as handle:
+        writer = csv.DictWriter(handle, fieldnames=FILL_COLUMNS)
+        writer.writeheader()
+        writer.writerow(EXAMPLE_ROW)
+        for row in rows:
+            writer.writerow({
+                'question_id': row['question_id'],
+                'question': row['question'],
+                'assistant_answer': row['assistant_answer'],
+                'cited_snippets': row['cited_snippets'],
+                'reference_points': row['reference_points'],
+                'assistant_summary': (
+                    f"助手初审：完整性 {row['assistant_key_points']} / "
+                    f"引用忠实性 {row['assistant_citation_faithfulness']} / "
+                    f"行为匹配 {row['assistant_behavior_match']}"
+                    + (f"；标签 {row['assistant_error_labels']}"
+                       if row['assistant_error_labels'] else '')),
+                **{f'human_{dimension}': '' for dimension in DIMENSIONS},
+                'human_error_labels': '', 'human_note': '',
+            })
+
     markdown = [
         f'# 人工审阅表：{knowledge_base}（{version}）', '',
         f'运行目录：`{run.name}`', '',
@@ -144,9 +188,21 @@ def export(run, knowledge_base, version, target=None):
             '错误标签 ____；备注 ____', '', '---', '',
         ]
     (target / 'review.md').write_text('\n'.join(markdown), encoding='utf-8')
-    print(f'已导出 {len(rows)} 题：')
+    print(f'已导出 {len(rows)} 题。')
+    print()
+    print('要填的文件（只填最后 5 列，其余列看不看都行）：')
+    print(f'  {target / "待填写.csv"}')
+    print('  · 第 1 行是示例，照着格式填，不用动它')
+    print('  · 每个维度填 0 / 1 / 2，或 na（澄清、拒答类）')
+    print('  · 错误标签填标准里的 6 类之一，没有就留空，多个用「、」分隔')
+    print()
+    print('完整对照（含助手评分与理由）：')
     print(f'  表格 {csv_path}')
     print(f'  阅读版 {target / "review.md"}')
+    print()
+    print('填完后回收：')
+    print(f'  .venv\\Scripts\\python experiments/rag-baseline/evaluation/review_sheet.py '
+          f'--run {run.name} --import')
     return 0
 
 
@@ -160,23 +216,37 @@ def parse_score(raw, field):
 
 
 def import_sheet(run, knowledge_base, version, csv_path=None):
-    csv_path = Path(csv_path) if csv_path else run / 'review.csv'
+    """Read a filled sheet back.
+
+    Accepts either the full ``review.csv`` or the short ``待填写.csv``; the short
+    one is what a person actually edits, and it carries the same five human
+    columns. The example row is skipped by id, so it can stay in the file.
+    """
+    if csv_path:
+        csv_path = Path(csv_path)
+    else:
+        short = run / '待填写.csv'
+        csv_path = short if short.is_file() else run / 'review.csv'
     if not csv_path.is_file():
         raise SystemExit(f'找不到审阅表：{csv_path}')
     with open(csv_path, 'r', encoding='utf-8-sig', newline='') as handle:
         rows = list(csv.DictReader(handle))
-    missing_columns = [column for column in CSV_COLUMNS if column not in (rows[0] if rows else {})]
+    header = rows[0] if rows else {}
+    required = [f'human_{dimension}' for dimension in DIMENSIONS] + ['human_error_labels', 'question_id']
+    missing_columns = [column for column in required if column not in header]
     if missing_columns:
         raise SystemExit(f'审阅表缺少列：{missing_columns}')
 
     records = [json.loads(line) for line in
                (run / 'records.jsonl').read_text(encoding='utf-8').splitlines() if line.strip()]
     by_id = {record['question_id']: record for record in records}
-    reviewed, incomplete = 0, []
+    reviewed, incomplete, skipped = 0, [], []
     for row in rows:
-        question_id = row['question_id']
+        question_id = (row.get('question_id') or '').strip()
         if question_id not in by_id:
-            raise SystemExit(f'审阅表里的题目不在本次运行中：{question_id}')
+            # The example row and any stray line are reported, not silently kept.
+            skipped.append(question_id)
+            continue
         scores = {}
         for dimension in DIMENSIONS:
             scores[dimension] = parse_score(row.get(f'human_{dimension}'), f'{question_id}.{dimension}')
@@ -187,8 +257,7 @@ def import_sheet(run, knowledge_base, version, csv_path=None):
         if unknown:
             raise SystemExit(f'{question_id} 出现标准外的错误标签：{unknown}；'
                              f'允许：{list(ERROR_LABELS)}')
-        filled = [value for value in scores.values() if value is not None]
-        if not filled:
+        if not any(value is not None for value in scores.values()):
             incomplete.append(question_id)
             continue
         by_id[question_id]['human_scores'] = scores
@@ -213,7 +282,7 @@ def import_sheet(run, knowledge_base, version, csv_path=None):
             labels_count[label] = labels_count.get(label, 0) + 1
     summary = {
         'knowledge_base': knowledge_base, 'dataset_version': version, 'run': run.name,
-        'human_reviewed': reviewed, 'incomplete': incomplete,
+        'human_reviewed': reviewed, 'incomplete': incomplete, 'skipped_rows': skipped,
         'human_full_marks': {dimension: rate(dimension, 2) for dimension in DIMENSIONS},
         'human_error_labels': labels_count,
         'note': ('人工评分，与助手初审分开记录；样本为定向诊断选样，不估计总体准确率。'
