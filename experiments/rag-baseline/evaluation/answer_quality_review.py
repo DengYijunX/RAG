@@ -92,9 +92,15 @@ def published_index(kb_dirs, knowledge_base, embedding_model, config):
                      f'请先运行 retrieval_baseline.py')
 
 
-def query_with_published_index(service, kb_id, base_dir, generation, question, cache, top_k=4):
-    """Top-k retrieve from the published FAISS generation, then generate."""
+def query_with_published_index(service, kb_id, base_dir, generation, question, cache, top_k=4,
+                               context_radius=0):
+    """Top-k retrieve from the published FAISS generation, then generate.
+
+    ``context_radius`` expands each hit with its neighbours before generation.
+    Retrieval itself is unchanged, so the same chunks are ranked either way.
+    """
     from eval.backends.faiss_store import FaissVectors
+    from rag.context import expand_hits
 
     store = FaissVectors(base_dir / generation)
     vector = cache.vectors(service, [question])[0]
@@ -104,6 +110,12 @@ def query_with_published_index(service, kb_id, base_dir, generation, question, c
         chunk = chunks.get(row['id'])
         if chunk is not None:
             hits.append({**chunk, 'score': row.get('distance')})
+    if context_radius:
+        # Both publishers are supported: the application writes manifest.json,
+        # the evaluation baseline writes records.jsonl.
+        from rag.generation import load_chunk_records
+
+        hits = expand_hits(hits, load_chunk_records(base_dir / generation), context_radius)
     citations = service.citations(kb_id, hits)
     if not citations:
         return {'status': 'insufficient_evidence', 'answer': '本次检索片段不足以回答。',
@@ -153,14 +165,16 @@ def citation_checks(answer, citations, sources, expected_action=''):
     return checks
 
 
-def judge_samples(config, selected, service, kb_id, base_dir, generation, cache, sources, passages):
+def judge_samples(config, selected, service, kb_id, base_dir, generation, cache, sources,
+                  passages, context_radius=0):
     judge = AnswerJudge(config)
     records = []
     for question in selected:
         started = time.time()
         try:
             response = query_with_published_index(service, kb_id, base_dir, generation,
-                                                  question.question, cache)
+                                                  question.question, cache,
+                                                  context_radius=context_radius)
             generated = {'status': response.get('status'), 'answer': response.get('answer', ''),
                          'citations': response.get('citations', [])}
         except Exception as exc:
@@ -184,9 +198,10 @@ def judge_samples(config, selected, service, kb_id, base_dir, generation, cache,
             'category': question.metadata.get('category'),
             'expected_action': question.metadata.get('expected_action'),
             'status': generated['status'], 'answer': generated['answer'],
-            'citations': [{'citation': item['citation'], 'source': item['source'],
-                           'start': item.get('start'), 'end': item.get('end'),
-                           'content': item['content']} for item in generated['citations']],
+            # Keep provenance fields, including whether the text was expanded by
+            # neighbour context: dropping them made the expansion report read 0.
+            'citations': [{**item, 'content': (item.get('content') or '')[:4000]}
+                          for item in generated['citations']],
             'automatic_checks': checks, 'automatic_passed': all(checks.values()),
             'gold_passages_in_context': gold_present,
             'gold_passage_count': len(question.relevant_passage_ids),
@@ -237,9 +252,12 @@ def main(argv=None):
     parser.add_argument('--kb', choices=['smart-home', 'accounting'], required=True)
     parser.add_argument('--limit', type=int, default=None)
     parser.add_argument('--sample', default=str(SAMPLE))
+    parser.add_argument('--context-radius', type=int, default=None,
+                        help='邻段扩展半径；缺省用配置 RAG_CONTEXT_RADIUS，0 表示关闭')
     args = parser.parse_args(argv)
 
     config = load_config()
+    context_radius = config.context_radius if args.context_radius is None else args.context_radius
     sample = load_sample(args.sample)
     requested = sample['knowledge_bases'][args.kb]
     dataset_version = sample.get('dataset_version', 'v2')
@@ -268,10 +286,20 @@ def main(argv=None):
                              else BASELINE / 'accounting' / 'articles.jsonl')
 
     print(f'知识库 {args.kb} | 索引 {kb_id} generation={pointer["generation"]} '
-          f'| 模型 {config.embedding_model} + {config.llm_model} | 题目 {len(selected)}', flush=True)
+          f'| 模型 {config.embedding_model} + {config.llm_model} | 题目 {len(selected)} '
+          f'| 邻段扩展半径 {context_radius}', flush=True)
     records, stats = judge_samples(config, selected, service, kb_id, base_dir,
-                                   pointer['generation'], cache, sources, passages)
-    summary = summarize(records, args.kb, config, dataset_version)
+                                   pointer['generation'], cache, sources, passages,
+                                   context_radius=context_radius)
+    summary = {**summarize(records, args.kb, config, dataset_version),
+               'context_radius': context_radius}
+    summary['average_context_chars'] = round(
+        sum(len(citation.get('content') or '')
+            for record in records for citation in (record.get('citations') or []))
+        / max(1, sum(len(record.get('citations') or []) for record in records)))
+    summary['expanded_citations'] = sum(
+        1 for record in records for citation in (record.get('citations') or [])
+        if citation.get('expanded'))
 
     stamp = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
     directory = OUTPUT / f'{args.kb}-{stamp}'

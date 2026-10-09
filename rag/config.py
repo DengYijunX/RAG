@@ -23,6 +23,9 @@ class Config:
     rerank_base_url: str = ''
     rerank_api_key: str = ''
     rerank_model: str = ''
+    # Neighbour expansion radius for the text handed to generation. 0 keeps each
+    # hit as its own chunk; 1 adds the immediate neighbours in the same source.
+    context_radius: int = 0
 
     @property
     def rerank_configured(self):
@@ -79,4 +82,5 @@ def load_config() -> Config:
         rerank_base_url=normalize_rerank_url(os.getenv("RERANK_BASE_URL", "")),
         rerank_api_key=os.getenv("RERANK_API_KEY", ""),
         rerank_model=os.getenv("RERANK_MODEL", ""),
+        context_radius=int(os.getenv("RAG_CONTEXT_RADIUS", "0")),
     )

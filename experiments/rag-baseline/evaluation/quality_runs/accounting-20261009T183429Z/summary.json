@@ -1,41 +1,45 @@
 {
-  "knowledge_base": "smart-home",
+  "knowledge_base": "accounting",
   "dataset_version": "v2",
   "embedding_model": "qwen3.7-text-embedding-flash",
   "generation_model": "deepseek-v4-flash",
   "questions": 10,
   "assistant_reviewed": 10,
   "assistant_invalid": 0,
-  "automatic_checks_passed": 10,
+  "automatic_checks_passed": 0,
   "full_marks": {
     "key_points": {
-      "numerator": 5,
-      "denominator": 7,
-      "rate": 0.7142857142857143
+      "numerator": 6,
+      "denominator": 9,
+      "rate": 0.6666666666666666
     },
     "citation_faithfulness": {
-      "numerator": 10,
-      "denominator": 10,
-      "rate": 1.0
+      "numerator": 2,
+      "denominator": 9,
+      "rate": 0.2222222222222222
     },
     "behavior_match": {
-      "numerator": 9,
+      "numerator": 7,
       "denominator": 10,
-      "rate": 0.9
+      "rate": 0.7
     }
   },
   "error_labels": {
-    "retrieval_missing": 2,
+    "unsupported_claim": 7,
+    "retrieval_missing": 3,
     "missing_clarification": 1
   },
   "human_reviewed": 0,
   "note": "助手初审，不是人工审阅；样本为定向诊断选样，不估计总体准确率、不计算置信区间。自动检查只验证引用形式，不验证语义支持。",
+  "context_radius": 1,
+  "average_context_chars": 1042,
+  "expanded_citations": 40,
   "judge_stats": {
     "calls": 10,
     "invalid": 0,
     "invalid_rate": 0.0,
-    "prompt_tokens": 18264,
-    "completion_tokens": 15352,
-    "seconds": 79.76
+    "prompt_tokens": 23297,
+    "completion_tokens": 18981,
+    "seconds": 103.23
   }
 }

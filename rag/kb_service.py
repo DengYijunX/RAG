@@ -21,6 +21,9 @@ import json
 import math
 from pathlib import Path
 
+from rag.context import expand_hits
+from rag.generation import load_chunk_records
+
 # The generation instruction is part of the product's answer contract, not an
 # experiment detail, so it lives here and the review harness reads it rather than
 # duplicating it. The clarification clause exists because the diagnostic sample
@@ -413,7 +416,9 @@ class KnowledgeBaseService:
 
         The published pointer is read once and the manifest entry is resolved
         from that same generation, so a concurrent re-import cannot pair new
-        chunk text with old vectors.
+        chunk text with old vectors. Each hit is a single chunk: expansion
+        happens later, in :meth:`context_hits`, so retrieval scoring still sees
+        the units that were actually ranked.
         """
         info = self.active(kb_id)
         snapshot = read_json(self.base_dir(kb_id) / info['generation'] / 'manifest.json')
@@ -430,13 +435,45 @@ class KnowledgeBaseService:
             hits.append({**chunk, 'score': row.get('distance')})
         return hits
 
+    def context_hits(self, kb_id, hits, radius=None):
+        """Give each hit the contiguous text of its neighbours in the source.
+
+        Off by default (``context_radius = 0``) and controlled by
+        ``RAG_CONTEXT_RADIUS``. It is opt-in because the trade is measurable
+        rather than obvious: expansion raises how often the complete passage
+        reaches the prompt, and also multiplies the prompt length.
+        """
+        radius = self.config.context_radius if radius is None else radius
+        if not radius:
+            return list(hits)
+        generation = self.base_dir(kb_id) / self.active(kb_id)['generation']
+        return expand_hits(hits, load_chunk_records(generation), radius)
+
+    def query(self, kb_id, question, top_k=None, context_radius=None):
+        hits = self.retrieve(kb_id, question, top_k or self.config.top_k)
+        hits = self.context_hits(kb_id, hits, context_radius)
+        citations = self.citations(kb_id, hits)
+        if not citations:
+            return {'knowledge_base': kb_id, 'status': 'insufficient_evidence',
+                    'answer': '本次检索片段不足以回答。', 'citations': []}
+        return {'knowledge_base': kb_id, 'status': 'answer',
+                'answer': self.generate(question, citations), 'citations': citations}
+
     def citations(self, kb_id, hits):
         output = []
         for index, hit in enumerate(hits, 1):
-            output.append({'citation': index, 'content': hit['content'], 'source': hit['source'],
-                           'source_id': hit['document_id'], 'title': Path(hit['source']).stem,
-                           'start': hit.get('start'), 'end': hit.get('end'),
-                           'url': f'/knowledge-bases/{kb_id}/sources/{hit["document_id"]}'})
+            citation = {'citation': index, 'content': hit['content'], 'source': hit['source'],
+                        'source_id': hit['document_id'], 'title': Path(hit['source']).stem,
+                        'start': hit.get('start'), 'end': hit.get('end'),
+                        'url': f'/knowledge-bases/{kb_id}/sources/{hit["document_id"]}'}
+            if hit.get('expanded'):
+                # The text now spans several chunks, so a character range inside
+                # one chunk would misdescribe it. The span is reported instead.
+                citation['expanded'] = True
+                citation['expanded_span'] = hit.get('expanded_span') or []
+                citation['start'] = None
+                citation['end'] = None
+            output.append(citation)
         return output
 
     def generate(self, question, citations):
