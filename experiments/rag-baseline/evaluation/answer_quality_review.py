@@ -93,28 +93,39 @@ def published_index(kb_dirs, knowledge_base, embedding_model, config):
 
 
 def query_with_published_index(service, kb_id, base_dir, generation, question, cache, top_k=4,
-                               context_radius=0):
+                               context_radius=0, depth=0, reranker=None, pool=20):
     """Top-k retrieve from the published FAISS generation, then generate.
 
-    ``context_radius`` expands each hit with its neighbours before generation.
-    Retrieval itself is unchanged, so the same chunks are ranked either way.
+    ``depth`` retrieves a deeper pool than ``top_k``; ``reranker`` then reorders
+    that pool and the first ``top_k`` become the citations. Both are off by
+    default so the baseline behaviour is unchanged. Retrieval metrics are not
+    affected by either — this path only builds the prompt.
     """
     from eval.backends.faiss_store import FaissVectors
     from rag.context import expand_hits
+    from rag.generation import load_chunk_records
 
     store = FaissVectors(base_dir / generation)
     vector = cache.vectors(service, [question])[0]
-    chunks = {chunk['id']: chunk for chunk in service._chunks(kb_id)}
+    search_depth = depth or top_k
+    chunks = {chunk['id']: chunk for chunk in load_chunk_records(base_dir / generation)}
     hits = []
-    for row in store.search(vector, top_k):
+    for row in store.search(vector, search_depth):
         chunk = chunks.get(row['id'])
         if chunk is not None:
             hits.append({**chunk, 'score': row.get('distance')})
-    if context_radius:
-        # Both publishers are supported: the application writes manifest.json,
-        # the evaluation baseline writes records.jsonl.
-        from rag.generation import load_chunk_records
 
+    if reranker is not None and len(hits) > 1:
+        head = hits[:pool or len(hits)]
+        payload = [{'id': hit['id'], 'content': hit.get('content') or ''} for hit in head]
+        reordered, _ = reranker.rerank(question, payload)
+        order = [item['id'] for item in reordered]
+        remaining = [hit['id'] for hit in hits if hit['id'] not in set(order)]
+        index = {hit['id']: hit for hit in hits}
+        hits = [index[identifier] for identifier in order + remaining if identifier in index]
+
+    hits = hits[:top_k]
+    if context_radius:
         hits = expand_hits(hits, load_chunk_records(base_dir / generation), context_radius)
     citations = service.citations(kb_id, hits)
     if not citations:
@@ -166,7 +177,7 @@ def citation_checks(answer, citations, sources, expected_action=''):
 
 
 def judge_samples(config, selected, service, kb_id, base_dir, generation, cache, sources,
-                  passages, context_radius=0):
+                  passages, context_radius=0, depth=0, reranker=None, pool=20):
     judge = AnswerJudge(config)
     records = []
     for question in selected:
@@ -174,7 +185,8 @@ def judge_samples(config, selected, service, kb_id, base_dir, generation, cache,
         try:
             response = query_with_published_index(service, kb_id, base_dir, generation,
                                                   question.question, cache,
-                                                  context_radius=context_radius)
+                                                  context_radius=context_radius,
+                                                  depth=depth, reranker=reranker, pool=pool)
             generated = {'status': response.get('status'), 'answer': response.get('answer', ''),
                          'citations': response.get('citations', [])}
         except Exception as exc:
@@ -254,10 +266,22 @@ def main(argv=None):
     parser.add_argument('--sample', default=str(SAMPLE))
     parser.add_argument('--context-radius', type=int, default=None,
                         help='邻段扩展半径；缺省用配置 RAG_CONTEXT_RADIUS，0 表示关闭')
+    parser.add_argument('--depth', type=int, default=0,
+                        help='检索深度；大于 top_k 时先取深池再截断')
+    parser.add_argument('--rerank', action='store_true',
+                        help='对深池做专用 rerank 后取前 k（需配置 RERANK_*）')
+    parser.add_argument('--pool', type=int, default=20, help='重排候选池大小')
     args = parser.parse_args(argv)
 
     config = load_config()
     context_radius = config.context_radius if args.context_radius is None else args.context_radius
+    reranker = None
+    if args.rerank:
+        if not config.rerank_configured:
+            raise SystemExit('未配置 RERANK_* ，无法重排')
+        from specialized_rerank import SpecializedReranker
+
+        reranker = SpecializedReranker(config)
     sample = load_sample(args.sample)
     requested = sample['knowledge_bases'][args.kb]
     dataset_version = sample.get('dataset_version', 'v2')
@@ -287,12 +311,17 @@ def main(argv=None):
 
     print(f'知识库 {args.kb} | 索引 {kb_id} generation={pointer["generation"]} '
           f'| 模型 {config.embedding_model} + {config.llm_model} | 题目 {len(selected)} '
-          f'| 邻段扩展半径 {context_radius}', flush=True)
+          f'| 邻段扩展半径 {context_radius} | 深度 {args.depth or 4} '
+          f'| 重排 {"on" if reranker else "off"}', flush=True)
     records, stats = judge_samples(config, selected, service, kb_id, base_dir,
                                    pointer['generation'], cache, sources, passages,
-                                   context_radius=context_radius)
+                                   context_radius=context_radius, depth=args.depth,
+                                   reranker=reranker, pool=args.pool)
     summary = {**summarize(records, args.kb, config, dataset_version),
-               'context_radius': context_radius}
+               'context_radius': context_radius, 'retrieval_depth': args.depth or 4,
+               'reranked': bool(reranker), 'rerank_pool': args.pool if reranker else None}
+    if reranker is not None:
+        summary['rerank_stats'] = reranker.stats()
     summary['average_context_chars'] = round(
         sum(len(citation.get('content') or '')
             for record in records for citation in (record.get('citations') or []))

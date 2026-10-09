@@ -16,9 +16,12 @@ from pathlib import Path
 MANIFEST = 'manifest.json'
 RECORDS = 'records.jsonl'
 
+# Fields a consumer needs that the baseline stores inside ``metadata``.
+PROVENANCE_KEYS = ('source', 'document_id')
+
 
 def load_chunk_records(generation_dir):
-    """Return chunk records with ``id`` / ``source`` / ``content`` keys.
+    """Return chunk records with ``id`` / ``source`` / ``content`` / ``document_id``.
 
     Raises FileNotFoundError when neither file exists: a generation without
     chunk records cannot support expansion, and silently returning an empty list
@@ -43,11 +46,17 @@ def load_chunk_records(generation_dir):
 
 
 def _normalize(record):
-    """Map a record to the ``id`` / ``source`` / ``content`` shape expansion uses."""
-    source = record.get('source')
-    if source is None:
-        source = (record.get('metadata') or {}).get('source', '')
-    content = record.get('content')
-    if content is None:
-        content = record.get('document', '')
-    return {**record, 'source': source, 'content': content}
+    """Map a record to the shape consumers use.
+
+    ``content`` is called ``document`` in the baseline's records, and
+    ``source`` / ``document_id`` live under ``metadata`` there. Promotion is
+    always from metadata if present, so an authoritative top-level value is
+    never overwritten by a stale copy.
+    """
+    metadata = record.get('metadata') or {}
+    normalized = {**record, 'source': record.get('source') or metadata.get('source', ''),
+                  'content': record.get('content') or record.get('document', '')}
+    for key in PROVENANCE_KEYS:
+        if metadata.get(key) is not None:
+            normalized[key] = metadata[key]
+    return normalized

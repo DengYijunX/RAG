@@ -92,8 +92,14 @@ def scan_sources(directory, glob_pattern='**/*'):
     return sources, unsupported
 
 
-def _document_id(kb_id, relative):
-    return 'doc-' + hashlib.sha256(f'{kb_id}\0{relative}'.encode()).hexdigest()[:16]
+def document_id_for(kb_id, relative):
+    """Stable document identity: same file in the same base, same id, forever.
+
+    Public because published indexes and citations both depend on it, and a
+    second implementation would drift. Deliberately not built-in ``hash``: this
+    must survive a process restart.
+    """
+    return 'doc-' + hashlib.sha256(f'{kb_id}\0{relative}'.encode('utf-8')).hexdigest()[:16]
 
 
 def _chunk_id(document_id, index):
@@ -168,7 +174,7 @@ def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pa
     for source in sources:
         try:
             loaded = load_file(source.path)
-            document_id = _document_id(kb_id, source.relative)
+            document_id = document_id_for(kb_id, source.relative)
             record = {'id': document_id, 'kb_id': kb_id, 'source': source.relative,
                       'media_type': source.media_type, 'size': source.size, 'sha256': source.sha256,
                       'content_sha256': hashlib.sha256(loaded.content.encode()).hexdigest(),
