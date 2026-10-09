@@ -35,5 +35,7 @@
   },
   "questions": 40,
   "failures": 0,
-  "output_dir": ""
+  "output_dir": "",
+  "embedding_model": "BAAI/bge-m3",
+  "embedding_source": "stamped_from_session_timeline"
 }

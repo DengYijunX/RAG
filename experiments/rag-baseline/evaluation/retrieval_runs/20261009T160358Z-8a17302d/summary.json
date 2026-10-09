@@ -1,0 +1,41 @@
+{
+  "task_id": "20261009T160358Z-8a17302d",
+  "knowledge_base": "accounting",
+  "dataset": "v1/dev:rerank_specialized",
+  "split": "dev",
+  "k": 4,
+  "metrics": {
+    "k": 4,
+    "questions": 67,
+    "recall@k": 0.9253731343283582,
+    "precision@k": 0.9402985074626866,
+    "hit_rate@k": 0.9402985074626866,
+    "mrr": 0.9402985074626866,
+    "map": 0.9253731343283582,
+    "ndcg@k": 0.9287506624706108,
+    "recall_in_top_k": 0.9104477611940298,
+    "precision_in_top_k": 0.2798507462686567,
+    "ndcg_in_top_k": 0.9192545187997041,
+    "hit_rate_in_top_k": 0.9402985074626866,
+    "mean_first_hit_slot": 1.3492063492063493,
+    "mrr_first_hit": 0.9260220635950681,
+    "scored": 67,
+    "hits": 4100,
+    "unresolved_hits": 4023,
+    "resolution_coverage": 0.018780487804878065,
+    "unlabelled_questions": 15
+  },
+  "configuration": {
+    "k": 4,
+    "split": "dev",
+    "dataset": "v1/dev:rerank_specialized",
+    "knowledge_base": "accounting",
+    "questions": 82,
+    "resolver": true
+  },
+  "questions": 82,
+  "failures": 0,
+  "output_dir": "",
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "embedding_source": "stamped_from_session_timeline"
+}

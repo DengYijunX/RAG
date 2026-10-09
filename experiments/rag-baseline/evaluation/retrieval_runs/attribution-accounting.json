@@ -2,8 +2,8 @@
   "knowledge_base": "accounting",
   "k": 4,
   "counts": {
-    "never_retrieved": 5,
-    "not_promoted": 0,
+    "never_retrieved": 4,
+    "not_promoted": 1,
     "promoted": 62,
     "fixed": 0,
     "broken": 0
@@ -116,7 +116,7 @@
     },
     {
       "question_id": "ACC-Q019",
-      "rank_before": 2,
+      "rank_before": 1,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
@@ -298,7 +298,7 @@
     },
     {
       "question_id": "ACC-Q076",
-      "rank_before": 2,
+      "rank_before": 1,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
@@ -319,14 +319,14 @@
     },
     {
       "question_id": "ACC-Q079",
-      "rank_before": 3,
+      "rank_before": 1,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
     },
     {
       "question_id": "ACC-Q080",
-      "rank_before": 1,
+      "rank_before": 2,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
@@ -354,7 +354,7 @@
     },
     {
       "question_id": "ACC-Q084",
-      "rank_before": 3,
+      "rank_before": 2,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
@@ -424,7 +424,7 @@
     },
     {
       "question_id": "ACC-Q105",
-      "rank_before": 2,
+      "rank_before": 1,
       "rank_after": 1,
       "gold_in_candidates": true,
       "outcome": "promoted"
@@ -466,10 +466,10 @@
     },
     {
       "question_id": "ACC-Q118",
-      "rank_before": null,
-      "rank_after": null,
-      "gold_in_candidates": false,
-      "outcome": "never_retrieved"
+      "rank_before": 23,
+      "rank_after": 23,
+      "gold_in_candidates": true,
+      "outcome": "not_promoted"
     },
     {
       "question_id": "ACC-Q120",

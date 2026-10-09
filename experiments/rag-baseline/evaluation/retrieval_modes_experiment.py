@@ -53,20 +53,35 @@ CORPORA = {
 }
 
 
-def load_published_index(knowledge_base):
-    """Reuse the generation published by ``retrieval_baseline.py``."""
+def load_published_index(knowledge_base, config=None):
+    """Reuse the generation published by ``retrieval_baseline.py``.
+
+    Refuses to reuse an index built by a different embedding model: question
+    vectors from the current model cannot be searched against another model's
+    document vectors, and the failure would look like bad retrieval rather
+    than a configuration mismatch.
+    """
+    config = config or load_config()
     kb_dir = next((path for path in STORAGE.iterdir()
                    if path.is_dir() and path.name.startswith(f'eval-{knowledge_base}')), None)
     if kb_dir is None:
         raise SystemExit(f'未找到 {knowledge_base} 的评测知识库，请先运行 retrieval_baseline.py')
     pointer = json.loads((kb_dir / 'active.eval.json').read_text(encoding='utf-8'))
+    built_with = (pointer.get('embedding') or {}).get('model')
+    if built_with != config.embedding_model:
+        raise SystemExit(f'{knowledge_base} 的索引由 {built_with or "未知模型"} 建立，'
+                         f'当前配置是 {config.embedding_model}；'
+                         f'请先运行 retrieval_baseline.py --rebuild 重建')
+    payload = json.loads((kb_dir / 'embedding-cache.json').read_text(encoding='utf-8'))
+    stored = (payload.get('fingerprint') or {}).get('model')
+    if stored != config.embedding_model:
+        raise SystemExit(f'Embedding 缓存属于 {stored or "未知模型"}，与当前配置不符')
     records = [json.loads(line) for line in
                (kb_dir / pointer['generation'] / 'records.jsonl')
                .read_text(encoding='utf-8').splitlines() if line.strip()]
     chunks = [{'id': record['id'], 'content': record['document'],
                'source': record['metadata']['source']} for record in records]
-    cache = json.loads((kb_dir / 'embedding-cache.json').read_text(encoding='utf-8'))
-    return FaissVectors(kb_dir / pointer['generation']), chunks, cache
+    return FaissVectors(kb_dir / pointer['generation']), chunks, payload['entries']
 
 
 def chunk_text(record, fallback=''):
@@ -220,7 +235,8 @@ def main(argv=None):
     out = ARTIFACTS / f'modes-{args.kb}-{stamp}.json'
     out.write_text(json.dumps({'knowledge_base': args.kb, 'dataset': f'{args.version}/{args.split}',
                                'k': args.k, 'depth': args.depth,
-                               'rerank_pool': args.rerank_pool if reranker else None,
+                               'rerank_pool': args.rerank_pool if rerankers else None,
+                               'embedding_model': config.embedding_model,
                                'modes': comparison},
                               ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'\n对照结果：{out}', flush=True)

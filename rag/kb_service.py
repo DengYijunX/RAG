@@ -268,6 +268,24 @@ class KnowledgeBaseService:
             raise ValueError('Embedding response values invalid')
         return vectors
 
+    def embed_batched(self, texts, batch_size=None):
+        """Embed a list, sending at most ``batch_size`` items per request.
+
+        The batch size is capped rather than fixed: providers differ, and the
+        Aliyun MaaS embedding endpoint rejects large batches with
+        ``batch size is invalid`` while accepting smaller ones.
+        """
+        import os
+
+        if batch_size is None:
+            batch_size = int(os.getenv('EMBEDDING_BATCH_SIZE', '10'))
+        if batch_size < 1:
+            raise ValueError('EMBEDDING_BATCH_SIZE 必须为正整数')
+        output = []
+        for offset in range(0, len(texts), batch_size):
+            output.extend(self.vectors(texts[offset:offset + batch_size]))
+        return output
+
     def build(self, kb_id, batch_size=20):
         """Vectorise every imported chunk, then publish the new generation."""
         self.registry.get(kb_id)

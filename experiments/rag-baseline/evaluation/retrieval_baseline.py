@@ -70,16 +70,39 @@ def existing_base_id(service, name):
 class EmbeddingCache:
     """Text -> vector cache so a re-run does not pay the provider twice.
 
-    Keyed by the exact text sent to the provider, so changing the chunking or
-    the model still invalidates everything that matters. Persisted as JSON
-    beside the index.
+    Entries are only reusable for the **same embedding model**: vectors from a
+    different model live in a different space, and mixing them would silently
+    produce a meaningless index. The file therefore records the provider
+    fingerprint that produced it, and a mismatched cache is discarded rather
+    than merged. (An earlier version keyed by text alone and claimed the model
+    invalidated it; it did not — that is what this guards against.)
     """
 
-    def __init__(self, path):
+    def __init__(self, path, fingerprint):
         self.path = Path(path)
+        self.fingerprint = dict(fingerprint)
         self.entries = {}
+        self.discarded_reason = ''
         if self.path.exists():
-            self.entries = json.loads(self.path.read_text(encoding='utf-8'))
+            self._load()
+
+    def _load(self):
+        try:
+            payload = json.loads(self.path.read_text(encoding='utf-8'))
+        except json.JSONDecodeError:
+            self.discarded_reason = 'cache_file_unreadable'
+            return
+        if not isinstance(payload, dict) or 'fingerprint' not in payload:
+            self.discarded_reason = 'cache_has_no_fingerprint'
+            return
+        stored = payload['fingerprint']
+        if stored != self.fingerprint:
+            self.discarded_reason = (f"model_or_url_changed:"
+                                     f"{stored.get('model')}->{self.fingerprint.get('model')}")
+            return
+        entries = payload.get('entries')
+        if isinstance(entries, dict):
+            self.entries = entries
 
     def __len__(self):
         return len(self.entries)
@@ -87,7 +110,9 @@ class EmbeddingCache:
     def vectors(self, service, texts):
         missing = [text for text in texts if text not in self.entries]
         if missing:
-            produced = service.vectors(missing)
+            # Batched by the service: providers cap how many inputs one request
+            # may carry, and a rejected batch would fail the whole build.
+            produced = service.embed_batched(missing)
             if len(produced) != len(missing):
                 raise RuntimeError(f'Embedding 返回 {len(produced)} 条，期望 {len(missing)} 条')
             for text, vector in zip(missing, produced):
@@ -96,17 +121,36 @@ class EmbeddingCache:
 
     def save(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(json.dumps(self.entries, ensure_ascii=False), encoding='utf-8')
+        payload = {'fingerprint': self.fingerprint, 'entries': self.entries}
+        self.path.write_text(json.dumps(payload, ensure_ascii=False), encoding='utf-8')
+
+
+def embedding_fingerprint(config):
+    """What an embedding vector depends on: the model and the endpoint."""
+    return {'model': config.embedding_model, 'base_url': config.embedding_base_url,
+            'dimensions': None}
 
 
 def build_index(service, kb_id, cache, rebuild=False):
-    """Publish a FAISS index for one knowledge base, reusing a previous build."""
+    """Publish a FAISS index for one knowledge base, reusing a previous build.
+
+    A previous generation is reused only when it was built with the same
+    embedding provider. Without that check a model switch would keep serving
+    vectors from the old model, and every retrieval number would be wrong
+    without anything looking broken.
+    """
     pointer = service.base_dir(kb_id) / 'active.eval.json'
     if pointer.exists() and not rebuild:
         info = json.loads(pointer.read_text(encoding='utf-8'))
-        if (service.base_dir(kb_id) / info['generation']).is_dir():
-            print(f'  复用已有索引 generation={info["generation"]} chunks={info["chunks"]}',
-                  flush=True)
+        previous = info.get('embedding') or {}
+        same_model = (previous.get('model') == cache.fingerprint['model']
+                      and previous.get('base_url') == cache.fingerprint['base_url'])
+        if not same_model:
+            print(f'  已有索引由 {previous.get("model", "未知模型")} 建立，与当前 '
+                  f'{cache.fingerprint["model"]} 不同，重建', flush=True)
+        elif (service.base_dir(kb_id) / info['generation']).is_dir():
+            print(f'  复用已有索引 generation={info["generation"]} chunks={info["chunks"]} '
+                  f'model={previous.get("model")}', flush=True)
             return info
 
     chunks = service._chunks(kb_id)
@@ -123,10 +167,11 @@ def build_index(service, kb_id, cache, rebuild=False):
                          for chunk in chunks])
     store.flush()
     info = {'generation': generation, 'chunks': store.count(),
-            'dimensions': len(vectors[0]), 'documents': len(service.documents(kb_id))}
+            'dimensions': len(vectors[0]), 'documents': len(service.documents(kb_id)),
+            'embedding': {**cache.fingerprint, 'dimensions': len(vectors[0])}}
     pointer.write_text(json.dumps(info, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    print(f'  索引完成 generation={generation} chunks={info["chunks"]} dim={info["dimensions"]}',
-          flush=True)
+    print(f'  索引完成 generation={generation} chunks={info["chunks"]} dim={info["dimensions"]} '
+          f'model={cache.fingerprint["model"]}', flush=True)
     return info
 
 
@@ -199,8 +244,13 @@ def main(argv=None):
     else:
         print(f'复用已导入清单：{len(service.documents(kb_id))} 份文档', flush=True)
 
-    cache = EmbeddingCache(STORAGE / kb_id / 'embedding-cache.json')
-    print(f'Embedding 缓存：{len(cache)} 条', flush=True)
+    cache = EmbeddingCache(STORAGE / kb_id / 'embedding-cache.json',
+                           embedding_fingerprint(config))
+    if cache.discarded_reason:
+        print(f'Embedding 缓存不可用（{cache.discarded_reason}），将重新向量化全部片段',
+              flush=True)
+    else:
+        print(f'Embedding 缓存命中：{len(cache)} 条（model={config.embedding_model}）', flush=True)
 
     info = build_index(service, kb_id, cache, rebuild=args.rebuild)
 

@@ -4,21 +4,21 @@
 
 | 用途 | 提供方 | 模型 |
 | --- | --- | --- |
-| Embedding | 阿里云 MaaS（compatible-mode） | `qwen3.7-text-embedding-flash` |
-| Rerank | 阿里云 MaaS（同一 base_url，**独立端点 `/rerank`**） | `qwen3.7-text-rerank` |
+| Embedding | 阿里云 MaaS（compatible-mode） | `qwen3.7-text-embedding-flash`（1024 维） |
+| Rerank | 阿里云 MaaS（**原生端点 `api/v1/services/rerank/text-rerank/text-rerank`**） | `qwen3.7-text-rerank` |
 | 生成 / LLM 重排 | DeepSeek | `deepseek-v4-flash` |
 
-Base URL 均为 `https://llm-k5ve8qaaz1tn5w7b.cn-beijing.maas.aliyuncs.com/compatible-mode/v1`（rerank 同址）。`.env` 里 `RERANK_*` 三项与两把密钥的占位需由用户填入；`rag/config.py` 的 `Config` 新增 `rerank_base_url/rerank_api_key/rerank_model` 与 `rerank_configured` 属性。
+**关键坑（已实测）**：embedding 在 `compatible-mode/v1` 下可用，**rerank 在该路径下全部 404**，必须走原生端点。`rag.config.normalize_rerank_url` 会自动转换，三种写法（compatible-mode / 裸主机名 / 完整原生路径）都可用；`rerank_path_probe.py` 可在换地址时定位路径。
 
-**换 Embedding 的后果**：索引签名包含 `embedding_model` 与 `embedding_base_url`，**所有已发布索引会判定失效**，必须重建（约 775 个片段）后重跑基线；此前用 `BAAI/bge-m3` 跑出的 recall/NDCG 数字**只在 bge-m3 下成立**，换模型后不可直接沿用。
+**另一个坑**：阿里云 Embedding 端点有**批大小上限**（实测 20 被拒，报 `batch size is invalid`），现默认 `EMBEDDING_BATCH_SIZE=10`（`rag/kb_service.py` 的 `embed_batched`）。
+
+**换 Embedding 的后果**：索引签名含模型与地址，换模型即失效，必须重建。Embedding 缓存也已改为**按模型指纹失效**（旧的无指纹缓存会被拒绝），否则会混用两个模型的向量。每个运行的 `summary.json` 现记录 `embedding_model` 以标明出处。
 
 先跑探针确认两个端点可用与 rerank 的真实响应形态：
 
 ```powershell
 .venv\Scripts\python.exe experiments\rag-baseline\evaluation\provider_probe.py
 ```
-
-探针会打印是否仍是占位密钥、embedding 维度、以及 rerank 的原始响应。**rerank 的响应形态尚未实测**（缺真实密钥）：当前实现按 OpenAI 兼容 rerank 约定解析 `results: [{index, relevance_score}]`（0 基），并接受 `output.results` 嵌套形态；若实际形态不同，探针会明确指出，需相应调整 `specialized_rerank.parse_rerank_response`。
 
 ## 这一轮做了什么
 

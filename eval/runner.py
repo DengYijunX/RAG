@@ -58,7 +58,6 @@ class EvaluationResult:
                 'questions': len(self.samples), 'failures': len(self.failures),
                 'output_dir': self.output_dir}
 
-
 def _digest(value):
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True).encode()).hexdigest()
 
