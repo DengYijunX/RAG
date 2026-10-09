@@ -1,0 +1,60 @@
+{
+  "knowledge_base": "smart",
+  "questions": 10,
+  "fully_comparable": 4,
+  "all_three_match": 3,
+  "per_dimension_match": {
+    "key_points": {
+      "numerator": 4,
+      "denominator": 4,
+      "rate": 1.0
+    },
+    "citation_faithfulness": {
+      "numerator": 7,
+      "denominator": 8,
+      "rate": 0.875
+    },
+    "behavior_match": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1.0
+    }
+  },
+  "label_disagreements": [
+    {
+      "question_id": "Q051",
+      "dimensions": {
+        "key_points": {
+          "lead": 1,
+          "assistant": 1,
+          "match": true,
+          "both_scored": true
+        },
+        "citation_faithfulness": {
+          "lead": 2,
+          "assistant": 1,
+          "match": false,
+          "both_scored": true
+        },
+        "behavior_match": {
+          "lead": 1,
+          "assistant": 1,
+          "match": true,
+          "both_scored": true
+        }
+      },
+      "lead_labels": [
+        "missing_clarification"
+      ],
+      "assistant_labels": [
+        "missing_clarification",
+        "wrong_scope"
+      ],
+      "labels_only_assistant": [
+        "wrong_scope"
+      ],
+      "labels_only_lead": []
+    }
+  ],
+  "note": "领队判断与助手初审的一致性核对。助手评分不是人工签署，此处的一致性也不等于正确率。"
+}
