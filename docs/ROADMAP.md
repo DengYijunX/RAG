@@ -44,7 +44,7 @@ RAG/
 │  ├─ evaluation/*.py                 [已实现] baseline/topk/context/rerank/section/compact
 │  ├─ evaluation/*_REPORT.md          [已实现] 各组实验结论与失败记录
 │  └─ evaluation/acceptance_third_corpus.py  [已实现] 通用接入验收
-├─ tests/                            共 102 项：89 项一次跑完（含 store 2 项），11 项需原生 Chroma 本机不可用
+├─ tests/                            共 102 项：91 项可运行，11 项需原生 Chroma（本机不可用）
 ├─ docs/                             设计、交接、验收、环境
 └─ test_docs/third-corpus/           第三语料夹具
 ```

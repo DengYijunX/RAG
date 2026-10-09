@@ -134,4 +134,4 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 
 **取舍：** 只落占位意味着这一轮**没有新增任何评测指标能力**，因此不写任何新数字；现有 5 份 `*_REPORT.md` 仍是唯一证据来源。占位用 `NotImplementedError` 而不是返回空值，是为了避免"看起来跑通了"。`rag/retrieve/`、`rag/generate/`、`rag/host/` 在 ROADMAP 中标为待拆分/未实现，本轮**不动代码结构**，避免在真实向量路径尚未在可用环境复跑前做大规模搬迁。
 
-**验证方式：** 5 项脚手架测试通过；本机全套 89 项通过（84 + 5）。ROADMAP 的清理记录同时列出本轮删除的本地产物与"无可删死代码"的核查结果（`context_structure.py`、`enumerate_sources`、旧单库路径均仍被引用）。
+**验证方式：** 5 项脚手架测试通过；本机全套 91 项通过（`pytest tests` 去掉需原生 Chroma 的 11 项）。ROADMAP 的清理记录同时列出本轮删除的本地产物与"无可删死代码"的核查结果（`context_structure.py`、`enumerate_sources`、旧单库路径均仍被引用）。
