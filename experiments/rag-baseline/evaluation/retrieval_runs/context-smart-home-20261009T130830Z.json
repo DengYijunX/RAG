@@ -1,0 +1,5955 @@
+{
+  "knowledge_base": "smart-home",
+  "dataset": "v1/dev",
+  "k": 4,
+  "depth": 50,
+  "modes": {
+    "dense": {
+      "radius_0": {
+        "scored": 35,
+        "complete": 27,
+        "partial": 3,
+        "missing": 5,
+        "complete_rate": 0.7714285714285715,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-875c3d99e44d7b07:0000"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-cfed764b4cb3f31a:0000"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-dd869be3ea50d6ea:0001"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-dd869be3ea50d6ea:0000"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 2,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          }
+        ]
+      },
+      "radius_1": {
+        "scored": 35,
+        "complete": 33,
+        "partial": 2,
+        "missing": 0,
+        "complete_rate": 0.9428571428571428,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0000"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 2,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0000"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          }
+        ]
+      },
+      "radius_2": {
+        "scored": 35,
+        "complete": 33,
+        "partial": 2,
+        "missing": 0,
+        "complete_rate": 0.9428571428571428,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0000"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 3,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06",
+              "D3-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          }
+        ]
+      }
+    },
+    "bm25": {
+      "radius_0": {
+        "scored": 35,
+        "complete": 31,
+        "partial": 3,
+        "missing": 1,
+        "complete_rate": 0.8857142857142857,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 2,
+            "passage_ids": [
+              "D2-S06",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 1,
+            "passage_ids": [
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          }
+        ]
+      },
+      "radius_1": {
+        "scored": 35,
+        "complete": 32,
+        "partial": 3,
+        "missing": 0,
+        "complete_rate": 0.9142857142857143,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-875c3d99e44d7b07:0000"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0000"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 2,
+            "passage_ids": [
+              "D2-S06",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 3,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03",
+              "D5-S06"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 1,
+            "passage_ids": [
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0000"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          }
+        ]
+      },
+      "radius_2": {
+        "scored": 35,
+        "complete": 33,
+        "partial": 2,
+        "missing": 0,
+        "complete_rate": 0.9428571428571428,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 3,
+            "passage_ids": [
+              "D2-S06",
+              "D3-S03",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 3,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03",
+              "D5-S06"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          }
+        ]
+      }
+    },
+    "hybrid": {
+      "radius_0": {
+        "scored": 35,
+        "complete": 31,
+        "partial": 2,
+        "missing": 2,
+        "complete_rate": 0.8857142857142857,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-875c3d99e44d7b07:0000"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 3,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0001"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          }
+        ]
+      },
+      "radius_1": {
+        "scored": 35,
+        "complete": 33,
+        "partial": 1,
+        "missing": 1,
+        "complete_rate": 0.9428571428571428,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 0,
+            "passage_ids": [],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0004"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0000"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 3,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 3,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03",
+              "D5-S06"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0000"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          }
+        ]
+      },
+      "radius_2": {
+        "scored": 35,
+        "complete": 34,
+        "partial": 1,
+        "missing": 0,
+        "complete_rate": 0.9714285714285714,
+        "rows": [
+          {
+            "question_id": "Q002",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q006",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S07"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q007",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q008",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S14"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q010",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q011",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S03"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005"
+            ]
+          },
+          {
+            "question_id": "Q013",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S06"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003"
+            ]
+          },
+          {
+            "question_id": "Q014",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S08"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q016",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D2-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004"
+            ]
+          },
+          {
+            "question_id": "Q017",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q018",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S02"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q021",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S10"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q022",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S14"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q023",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S17"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q024",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D3-S18"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q025",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q026",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S02"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q027",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S04"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q028",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S05"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q029",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S08"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006"
+            ]
+          },
+          {
+            "question_id": "Q030",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S13"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q032",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0000"
+            ]
+          },
+          {
+            "question_id": "Q033",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S01"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q034",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S04"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q036",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D5-S10"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002"
+            ]
+          },
+          {
+            "question_id": "Q039",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002"
+            ]
+          },
+          {
+            "question_id": "Q040",
+            "gold": 4,
+            "found": 3,
+            "passage_ids": [
+              "D1-S07",
+              "D2-S06",
+              "D4-S18"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q041",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001"
+            ]
+          },
+          {
+            "question_id": "Q043",
+            "gold": 3,
+            "found": 3,
+            "passage_ids": [
+              "D1-S02",
+              "D5-S03",
+              "D5-S06"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002"
+            ]
+          },
+          {
+            "question_id": "Q044",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D4-S05",
+              "D4-S17"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001"
+            ]
+          },
+          {
+            "question_id": "Q045",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D3-S01",
+              "D4-S01"
+            ],
+            "chunks": [
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-875c3d99e44d7b07:0000",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-875c3d99e44d7b07:0003"
+            ]
+          },
+          {
+            "question_id": "Q047",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D1-S02",
+              "D2-S02"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007"
+            ]
+          },
+          {
+            "question_id": "Q049",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D2-S08",
+              "D4-S09"
+            ],
+            "chunks": [
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003",
+              "doc-cfed764b4cb3f31a:0001",
+              "doc-cfed764b4cb3f31a:0002",
+              "doc-cfed764b4cb3f31a:0003",
+              "doc-cfed764b4cb3f31a:0004",
+              "doc-cfed764b4cb3f31a:0000",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005"
+            ]
+          },
+          {
+            "question_id": "Q051",
+            "gold": 1,
+            "found": 1,
+            "passage_ids": [
+              "D1-S09"
+            ],
+            "chunks": [
+              "doc-f06b5dde626e8ca5:0000",
+              "doc-f06b5dde626e8ca5:0001",
+              "doc-f06b5dde626e8ca5:0002",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          },
+          {
+            "question_id": "Q052",
+            "gold": 2,
+            "found": 2,
+            "passage_ids": [
+              "D5-S01",
+              "D5-S03"
+            ],
+            "chunks": [
+              "doc-dd869be3ea50d6ea:0000",
+              "doc-dd869be3ea50d6ea:0001",
+              "doc-dd869be3ea50d6ea:0002",
+              "doc-875c3d99e44d7b07:0001",
+              "doc-875c3d99e44d7b07:0002",
+              "doc-875c3d99e44d7b07:0003",
+              "doc-875c3d99e44d7b07:0004",
+              "doc-875c3d99e44d7b07:0005",
+              "doc-f06b5dde626e8ca5:0003",
+              "doc-f06b5dde626e8ca5:0004",
+              "doc-f06b5dde626e8ca5:0005",
+              "doc-f06b5dde626e8ca5:0006",
+              "doc-f06b5dde626e8ca5:0007",
+              "doc-d5c1809a54dcd9be:0000",
+              "doc-d5c1809a54dcd9be:0001",
+              "doc-d5c1809a54dcd9be:0002",
+              "doc-d5c1809a54dcd9be:0003"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

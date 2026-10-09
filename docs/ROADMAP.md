@@ -84,6 +84,8 @@ RAG/
 
 **检索模式对照（dense / BM25 / hybrid-RRF）**：见 [RETRIEVAL_MODES_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_MODES_REPORT.md)。结论**因语料而异**：会计 hybrid 最好（recall 0.856 → 0.893，NDCG 0.806 → 0.862），售后 **BM25 单路最好**（0.810 → 0.933），融合在售后反而略差。可迁移的结论是**融合收益取决于两条臂的分歧度**（会计候选池 Jaccard 0.247 → 有收益；售后 0.649 → 融合只是重排噪声）。RRF 权重未在开发集上调参。
 
+**邻段扩展**：见 [CONTEXT_EXPANSION_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_EXPANSION_REPORT.md)。根因是会计 4 道题的标注条文**完整存在于源文档但被 500 字切片切开，没有任何片段完整包含它**，所以排序手段无解。按同一源文档取相邻片段拼成连续文本后，**送入上下文的完整命中率**：会计 hybrid 0.866 → 0.910，售后 0.886 → 0.971。代价是上下文从约 1,800 字涨到约 3,900 字；radius 2 在会计无收益。**尚未接入产品默认路径**（需生成侧指标判断 3,900 字对答案的影响）。仍剩 3 道会计题失败，原因是目标片段根本没进候选，属检索问题。
+
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 
 **三条容易出错的规则**（已写进代码与测试，改动前先读）：
