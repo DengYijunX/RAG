@@ -1,8 +1,9 @@
-"""Contract tests for the evaluation skeleton.
+"""Contract tests for the evaluation framework's layering and honesty.
 
-These do not test metrics (there are none yet). They test that the placeholder
-cannot be mistaken for a working implementation, and that the layering rule in
-docs/ROADMAP.md holds: ``eval`` may depend on ``rag``, never the reverse.
+The dataset reader and retrieval metrics have their own tests. These check
+the properties that keep the package trustworthy as it grows: the runner
+placeholder cannot silently succeed, the layering rule holds, and importing
+the evaluation package does not drag in the application.
 """
 import subprocess
 import sys
@@ -16,17 +17,24 @@ from eval import datasets, metrics, runner
 REPO = Path(__file__).resolve().parents[1]
 
 
-def test_public_placeholders_raise():
-    with pytest.raises(NotImplementedError):
-        datasets.load_dataset('anything.jsonl')
-    with pytest.raises(NotImplementedError):
-        datasets.align_passages([], [])
-    with pytest.raises(NotImplementedError):
-        metrics.default_registry()
-    with pytest.raises(NotImplementedError):
-        metrics.MetricRegistry().compute([], [])
+def test_runner_is_still_a_placeholder():
     with pytest.raises(NotImplementedError):
         runner.run_evaluation(object(), object())
+
+
+def test_dataset_errors_are_explicit(tmp_path):
+    missing = tmp_path / 'nope.jsonl'
+    with pytest.raises(datasets.DatasetError):
+        datasets.load_dataset(missing)
+    broken = tmp_path / 'broken.jsonl'
+    broken.write_text('{not json}\n', encoding='utf-8')
+    with pytest.raises(datasets.DatasetError):
+        datasets.load_dataset(broken)
+    duplicate = tmp_path / 'dup.jsonl'
+    duplicate.write_text('{"id": "q1", "question": "a"}\n{"id": "q1", "question": "b"}\n',
+                         encoding='utf-8')
+    with pytest.raises(datasets.DatasetError):
+        datasets.load_dataset(duplicate)
 
 
 def test_metric_names_are_registered_and_typos_rejected():
@@ -36,16 +44,19 @@ def test_metric_names_are_registered_and_typos_rejected():
     registry = metrics.MetricRegistry()
     with pytest.raises(KeyError):
         registry.register('recal@k', lambda results: 0.0)
+    with pytest.raises(NotImplementedError):
+        registry.register('faithfulness', lambda results: 0.0)
     assert registry.names() == []
 
 
-def test_dataclasses_describe_ground_truth():
-    truth = eval_package.GroundTruth(query_id='q-1', question='问题', relevant_passage_ids=['p-1'])
-    assert truth.split == 'dev' and truth.answer == ''
-    passage = datasets.Passage(passage_id='p-1', text='正文')
-    assert passage.document_id == '' and passage.metadata == {}
-    result = eval_package.EvaluationResult()
-    assert result.metrics == {} and result.samples == []
+def test_public_dataclasses_describe_the_records():
+    question = eval_package.Question(id='q-1', question='问题', relevant_passage_ids=['p-1'])
+    assert question.split == '' and question.answer == ''
+    assert question.graded is True and question.relevance('p-1') == 1.0
+    assert question.relevance('p-2') == 0.0
+    dataset = eval_package.Dataset(name='d', questions=[question])
+    assert len(dataset) == 1 and dataset.summary()['graded'] == 1
+    assert eval_package.EvaluationResult().metrics == {}
 
 
 def test_eval_never_depends_on_rag_and_rag_never_imports_eval():
@@ -62,7 +73,7 @@ def test_eval_never_depends_on_rag_and_rag_never_imports_eval():
 
 
 def test_importing_eval_does_not_pull_in_the_application():
-    code = ('import sys, eval; '
+    code = ('import sys, eval, eval.metrics, eval.datasets; '
             'print(any(name == "rag" or name.startswith("rag.") for name in sys.modules))')
     output = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, cwd=REPO)
     assert output.returncode == 0, output.stderr

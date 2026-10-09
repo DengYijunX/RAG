@@ -69,17 +69,32 @@ RAG/
 
 ---
 
-## 三、Evaluation 包的实施顺序（本次只落地占位）
+## 三、Evaluation 包的实施进度
 
-占位文件里已写明每步的验收方式，实现时不要跳步：
+| 步骤 | 位置 | 状态 |
+| --- | --- | --- |
+| 1 数据集层 | [eval/datasets.py](../eval/datasets.py) | **已实现**：JSONL schema、重复 ID / 非法 JSON / 缺字段校验、`reference_excerpts` 提取 `article_id` 作为标签 |
+| 2 指标层（检索侧） | [eval/metrics.py](../eval/metrics.py) | **已实现**：`recall@k` / `precision@k` / `hit_rate@k` / `mrr` / `map` / `ndcg@k`，含手算样例与 tie / 重复命中规则 |
+| 3 ID 对齐 | 同上 + 待改 `rag/importer.py` | **未实现**：数据集 passage id 与 chunk id 仍是两个空间；计划从导入阶段保留 `source_passage_id` |
+| 4 执行层 | [eval/runner.py](../eval/runner.py) | **占位**：任务调度、逐题产物、落盘均未实现 |
+| 5 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
 
-1. **数据集层** `eval/datasets.py`：定 JSONL schema（`query_id` / `question` / `relevant_passage_ids` / `answer` / `split`），加重复 ID 与未知字段的校验测试；把现有 dev128 / test97 读成 `GroundTruth`。
-2. **ID 对齐**：评测答案用数据集 passage id，检索结果是 chunk，两个 id 空间不同。正确做法是从导入阶段就保留 `source_passage_id` 元数据并一路传到命中结果；文本匹配只作兜底并报告匹配失败，不静默算作未命中。
-3. **指标层** `eval/metrics.py`：先实现检索侧 `recall@k`、`mrr`、`ndcg@k`，每个指标配手算样例测试；再实现生成侧，生成侧必须走人工标注或有评分规则约束的 LLM Judge，并抽样核验 Judge 本身。
-4. **执行层** `eval/runner.py`：先只跑检索（不调用生成），再为生成加显式开关；每题保存召回列表、最终上下文、原始回答与用量，最后落盘配置快照与源码 hash。
-5. **消融矩阵**：在固定语料、Embedding、模型、生成参数下，只改一个变量，至少覆盖 Dense-only → Hybrid → Hybrid+Rerank 三组，每组报告质量与延迟，报告写进 `experiments/`。
+**两套数据集必须先分清**（本次读源码时发现文档里的数字与文件不一致，已实测核对）：
 
-**纪律**（与 AGENTS.md 一致）：97 题保留测试在开发集冻结前不运行；两个领域分别报告指标，不合并成单一分数；证据覆盖率不等于答案准确率。
+| 版本 | 位置 | 题目数 | 用途 |
+| --- | --- | --- | --- |
+| v1 | `experiments/rag-baseline/`（售后在根、会计在自己目录） | **201** = 售后 60（dev 40 / test 20）+ 会计 141（dev 82 / test 59） | 已完成的实验都用它：dev 122 / test 79 |
+| v2 | `experiments/rag-baseline/evaluation/v2/` | **225** = 售后 72（dev 43 / test 29）+ 会计 153（dev 85 / test 68） | 复核候选集，标注仍为 `draft_needs_domain_review`，**不是签署过的 gold** |
+
+`docs/HANDOFF.md` 旧文写的"dev128 / test97 / 225 道候选题"与文件不符：128 与 97 来自更早的划分记录，实际 v1 是 122 / 79，v2 才是 225。读取时用 `load_knowledge_base_dataset(..., version='v1'|'v2')` 明确指定，不要靠目录猜测。
+
+### 仍需注意
+
+- `eval/runner.py` 与生成侧指标仍是占位，未新增任何质量数字。
+- **纪律**（与 AGENTS.md 一致）：两个领域分别报告指标，不合并成单一分数；证据覆盖率不等于答案准确率；v2 未冻结前不把它当作 gold，也不为了更好成绩移动已有题目。
+- 生成侧指标必须走人工标注或有评分规则约束的 LLM Judge，并抽样核验 Judge 本身。
+
+**ID 对齐的做法**：评测答案用数据集 passage id，检索结果是 chunk，两个 id 空间不同。正确做法是从导入阶段就保留 `source_passage_id` 元数据并一路传到命中结果；文本匹配只作兜底并报告匹配失败，不静默算作未命中。
 
 ---
 
