@@ -40,6 +40,27 @@ def _normalize_provider_url(value):
     return value
 
 
+def normalize_rerank_url(value):
+    """Return the rerank endpoint URL for whatever the user configured.
+
+    Aliyun MaaS serves reranking **only on the native path**, not under
+    ``compatible-mode`` (verified: every compatible-mode path answers 404). So:
+
+    - a URL already containing ``/services/rerank`` is used as given;
+    - a ``compatible-mode`` URL has that suffix stripped and the native path
+      appended, because that is the URL the user naturally copies from the
+      embedding settings and it would otherwise 404;
+    - a bare host gets the native path appended.
+    """
+    if not value:
+        return ''
+    stripped = value.rstrip('/')
+    if '/services/rerank' in stripped:
+        return stripped
+    host = stripped.split('/compatible-mode')[0]
+    return f'{host}/api/v1/services/rerank/text-rerank/text-rerank'
+
+
 def load_config() -> Config:
     """加载 .env 并返回 Config 实例，缺失字段使用默认值。"""
     load_dotenv()
@@ -55,7 +76,7 @@ def load_config() -> Config:
         chunk_overlap=int(os.getenv("CHUNK_OVERLAP", "50")),
         top_k=int(os.getenv("TOP_K", "4")),
         persist_dir=os.getenv("PERSIST_DIR", "./chroma_db"),
-        rerank_base_url=_normalize_provider_url(os.getenv("RERANK_BASE_URL", "")),
+        rerank_base_url=normalize_rerank_url(os.getenv("RERANK_BASE_URL", "")),
         rerank_api_key=os.getenv("RERANK_API_KEY", ""),
         rerank_model=os.getenv("RERANK_MODEL", ""),
     )

@@ -133,10 +133,48 @@ def test_parse_rejects_a_non_object_payload():
 
 
 def test_client_targets_the_rerank_path_and_sends_the_model():
-    client = HttpRerankClient('https://example.test/v1/', 'sk-x', 'qwen3.7-text-rerank')
-    assert client.url == 'https://example.test/v1/rerank'
+    client = HttpRerankClient('https://example.test/native/rerank', 'sk-x',
+                              'qwen3.7-text-rerank')
+    assert client.url == 'https://example.test/native/rerank'
     assert client.model == 'qwen3.7-text-rerank'
     assert client.api_key == 'sk-x'
+
+
+NATIVE = 'https://host.test/api/v1/services/rerank/text-rerank/text-rerank'
+
+
+@pytest.mark.parametrize('configured,expected', [
+    # A compatible-mode URL is what a user copies from the embedding settings;
+    # reranking is not served there (every compatible-mode path answers 404),
+    # so the host is kept and the native path appended.
+    ('https://host.test/compatible-mode/v1', NATIVE),
+    ('https://host.test/compatible-mode/v1/', NATIVE),
+    # A bare host is accepted too.
+    ('https://host.test', NATIVE),
+    # An explicit native path is used exactly as given.
+    (NATIVE, NATIVE),
+    ('https://other.test/api/v1/services/rerank/text-rerank/text-rerank',
+     'https://other.test/api/v1/services/rerank/text-rerank/text-rerank'),
+    ('', ''),
+])
+def test_rerank_url_normalization(configured, expected):
+    from rag.config import normalize_rerank_url
+
+    assert normalize_rerank_url(configured) == expected
+
+
+def test_loaded_config_points_at_a_usable_rerank_path(monkeypatch):
+    """Whatever the user writes, the resolved URL must be the native path."""
+    from rag.config import normalize_rerank_url
+
+    monkeypatch.setenv('RERANK_BASE_URL', 'https://host.test/compatible-mode/v1')
+    monkeypatch.setenv('RERANK_API_KEY', 'sk-real')
+    monkeypatch.setenv('RERANK_MODEL', 'qwen3.7-text-rerank')
+    from rag.config import load_config
+
+    config = load_config()
+    assert config.rerank_base_url == NATIVE
+    assert config.rerank_configured is True
 
 
 def test_config_exposes_whether_a_reranker_is_configured():

@@ -23,9 +23,6 @@ import time
 import urllib.error
 import urllib.request
 
-RERANK_PATH = '/rerank'
-
-
 @dataclass
 class RerankOutcome:
     order: list = field(default_factory=list)
@@ -72,11 +69,13 @@ class HttpRerankClient:
     """Minimal client for the rerank endpoint.
 
     Uses urllib rather than the OpenAI SDK: the SDK has no rerank resource on
-    this provider, and this keeps the dependency surface unchanged.
+    this provider, and this keeps the dependency surface unchanged. The URL is
+    whatever ``config.rerank_base_url`` holds — ``rag.config.normalize_rerank_url``
+    has already resolved it to the provider's native rerank path.
     """
 
     def __init__(self, base_url, api_key, model, timeout=60):
-        self.url = base_url.rstrip('/') + RERANK_PATH
+        self.url = base_url.rstrip('/')
         self.api_key = api_key
         self.model = model
         self.timeout = timeout
