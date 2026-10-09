@@ -3,6 +3,7 @@
 The full journey is driven through the API with an injected in-memory vector
 store and a stubbed generator, so it proves the interface, not model quality.
 """
+import json
 from pathlib import Path
 
 import pytest
@@ -175,3 +176,25 @@ def test_builtin_fixtures_still_served(client):
     http, _ = client
     listing = http.get('/knowledge-bases').json()
     assert {row['id'] for row in listing} >= {'smart-home', 'accounting'}
+
+
+def test_fixture_entries_carry_no_domain_presentation_text(client, monkeypatch):
+    """Fixture text must not leak into the generic listing."""
+    http, _ = client
+    import rag.api as api
+
+    original = api.knowledge.catalog
+
+    class WithNote:
+        @staticmethod
+        def catalog():
+            rows = original()
+            rows[0]['scope_note'] = '覆盖 X1、X2、C1、G2 和售后政策。'
+            return rows
+
+    monkeypatch.setattr(api, 'knowledge', WithNote())
+    listing = http.get('/knowledge-bases').json()
+    fixtures = [row for row in listing if row.get('fixture')]
+    assert fixtures, 'fixture entries should be marked'
+    assert all('scope_note' not in row for row in fixtures)
+    assert 'X1' not in json.dumps(listing, ensure_ascii=False)

@@ -112,7 +112,7 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 - 片段位置复用 [rag/structure.py](../rag/structure.py) 的 `locate_chunks`：按顺序字面定位，定位失败即报错，不用规范化文本冒充原文位置。
 - 索引构建按知识库隔离到独立 generation 目录，全部片段向量化并核对数量后才原子替换 `active.json`；任一环节失败抛 `BuildFailed` 并清理半成品目录，旧索引继续服务（测试覆盖）。每个 generation 保存自己的片段快照，检索只在该 generation 内解析命中，避免与并发导入交错。
 - 签名包含文档 ID 与内容 hash 集合、Embedding 模型与地址、切片参数与距离度量；文档更新后旧索引被判定失效，需重新导入并重建。
-- 接口按知识库 ID 工作：创建、文件上传或服务器目录导入、建索引、问答、查看原文；未知知识库 404、未建索引 503/409、提供方异常 502 且不回显凭据细节。`GET /knowledge-bases` 只依赖注册表，**缺少实验目录时仍正常返回已注册知识库**（有测试覆盖）。
+- 接口按知识库 ID 工作：创建、文件上传或服务器目录导入、建索引、问答、查看原文；未知知识库 404、未建索引 503/409、提供方异常 502 且不回显凭据细节。`GET /knowledge-bases` 只依赖注册表，**缺少实验目录时仍正常返回已注册知识库**（有测试覆盖）；夹具项只标记 `fixture`，不把「型号 / 准则」等展示文案下发给通用列表。
 
 **取舍与仍未完成的部分**（不得当成已实现）：
 
@@ -122,4 +122,4 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 - 签名不含解析器与切片器的实现版本：只改切片逻辑而不改参数时，旧索引不会被判定失效。
 - 向量后端在本机只能以注入的内存实现验证，真实 Chroma 路径未在本机跑通，原因见 [ENVIRONMENT_WINDOWS.md](ENVIRONMENT_WINDOWS.md)。
 
-**验证方式**：11 项注册表测试、14 项导入测试、14 项生命周期测试、12 项接口测试（本机共 83 项通过，另有 11 项 `test_knowledge.py` 因原生向量索引不可用未运行）；第三语料（阳台蔬菜种植）端到端验收 10/10 通过，见 [THIRD_CORPUS_ACCEPTANCE.md](THIRD_CORPUS_ACCEPTANCE.md)。该验收证明的是导入与接口契约，**不是答案质量，也没有使用真实向量检索**。
+**验证方式**：11 项注册表测试、14 项导入测试、14 项生命周期测试、13 项接口测试（本机共 84 项通过，另有 11 项 `test_knowledge.py` 因原生向量索引不可用未运行）；第三语料（阳台蔬菜种植）端到端验收 10/10 通过，见 [THIRD_CORPUS_ACCEPTANCE.md](THIRD_CORPUS_ACCEPTANCE.md)。该验收证明的是导入与接口契约，**不是答案质量，也没有使用真实向量检索**。此外用 `uvicorn rag.api:app` 启动真实服务复核过列表与页面可访问。

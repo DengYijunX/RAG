@@ -65,13 +65,18 @@ def knowledge_bases():
     Registered bases are the generic product path and are always served. The
     two evaluation fixtures live under the experiment directory and are
     optional, so a checkout without that data lists only what it can serve
-    instead of failing the request the page loads first.
+    instead of failing the request the page loads first. Fixture-specific
+    presentation text (product models, standard names) is not forwarded to
+    the generic listing: the fixtures are identified as such and nothing more.
     """
     from rag.knowledge import DATA
 
     listing = bases.bases()
     if DATA.is_dir():
-        listing = listing + knowledge.catalog()
+        for entry in knowledge.catalog():
+            entry.pop('scope_note', None)
+            entry['fixture'] = True
+            listing.append(entry)
     return listing
 
 

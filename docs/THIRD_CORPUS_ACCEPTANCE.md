@@ -48,9 +48,9 @@ $env:PYTHONPATH="C:\Users\AD钙\Desktop\Projects\RAG\tools\testenv"
   --ignore=tests/test_knowledge.py --ignore=tests/test_store.py
 ```
 
-结果：**83 项通过**（registry 11、importer 14、kb_service 14、api 12，其余为既有模块）。`tests/test_store.py` 单独运行为 2 项通过。
+结果：**84 项通过**（registry 11、importer 14、kb_service 14、api 13，其余为既有模块）。`tests/test_store.py` 单独运行为 2 项通过。
 
-共收集 96 项；本机**无法运行** `tests/test_knowledge.py` 的 11 项（需要构建 749 片段的 Chroma 索引），另有 `test_store.py` 的 2 项需单独进程运行。
+共收集 97 项；本机**无法运行** `tests/test_knowledge.py` 的 11 项（需要构建 749 片段的 Chroma 索引），另有 `test_store.py` 的 2 项需单独进程运行。
 
 ## 本次验收**没有**验证的内容
 

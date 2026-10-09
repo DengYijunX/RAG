@@ -472,7 +472,8 @@ function updateKnowledgeNote() {
   const note = document.getElementById('knowledgeNote');
   if (!entry) { note.textContent = '还没有知识库，请先创建并导入文档。'; return; }
   const state = entry.ready ? `已建索引 · ${entry.chunk_count} 个片段` : (entry.imported ? '已导入，尚未建索引' : '尚未导入文档');
-  note.textContent = `${entry.documents} 份文档 · ${state}。${entry.scope_note || entry.description || ''}`;
+  const kind = entry.fixture ? '评测夹具 · ' : '';
+  note.textContent = `${kind}${entry.documents} 份文档 · ${state}。${entry.description || ''}`;
 }
 
 function changeKnowledge() {
