@@ -23,6 +23,7 @@ from pathlib import Path
 
 from rag.context import expand_hits
 from rag.generation import load_chunk_records
+from rag.rerank import rerank_hits
 
 # The generation instruction is part of the product's answer contract, not an
 # experiment detail, so it lives here and the review harness reads it rather than
@@ -449,8 +450,21 @@ class KnowledgeBaseService:
         generation = self.base_dir(kb_id) / self.active(kb_id)['generation']
         return expand_hits(hits, load_chunk_records(generation), radius)
 
-    def query(self, kb_id, question, top_k=None, context_radius=None):
-        hits = self.retrieve(kb_id, question, top_k or self.config.top_k)
+    def query(self, kb_id, question, top_k=None, context_radius=None, depth=None, pool=None):
+        """Retrieve, optionally rerank a deep pool, then generate.
+
+        The deep-pool rerank and the neighbour expansion are both off unless
+        configured, so the default behaviour is a plain top-k retrieval. Ordering
+        here is deliberate: rerank *then* expand, so expansion only widens the
+        chunks that survived reranking.
+        """
+        top_k = top_k or self.config.top_k
+        depth = self.config.retrieval_depth if depth is None else depth
+        pool = self.config.rerank_pool if pool is None else pool
+        hits = self.retrieve(kb_id, question, max(depth or 0, top_k))
+        if pool and self.config.rerank_configured and len(hits) > 1:
+            hits = rerank_hits(question, hits, pool, self.config)
+        hits = hits[:top_k]
         hits = self.context_hits(kb_id, hits, context_radius)
         citations = self.citations(kb_id, hits)
         if not citations:
@@ -489,15 +503,6 @@ class KnowledgeBaseService:
         if not answer:
             raise ValueError('Empty model response')
         return answer
-
-    def query(self, kb_id, question, top_k=None):
-        hits = self.retrieve(kb_id, question, top_k or self.config.top_k)
-        citations = self.citations(kb_id, hits)
-        if not citations:
-            return {'knowledge_base': kb_id, 'status': 'insufficient_evidence',
-                    'answer': '本次检索片段不足以回答。', 'citations': []}
-        return {'knowledge_base': kb_id, 'status': 'answer',
-                'answer': self.generate(question, citations), 'citations': citations}
 
 
 def main(argv=None):

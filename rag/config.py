@@ -25,11 +25,24 @@ class Config:
     rerank_model: str = ''
     # Neighbour expansion radius for the text handed to generation. 0 keeps each
     # hit as its own chunk; 1 adds the immediate neighbours in the same source.
+    # Off by default: it was not shown to improve answers, and it makes the
+    # answer-quality judge unreliable by lengthening the cited snippets.
     context_radius: int = 0
+    # Retrieve this deep, then rerank the first ``rerank_pool`` and keep top_k.
+    # 0 means "no deeper than top_k". Measured effect of 50/20 on the diagnostic
+    # sample: answer completeness 7/10 -> 9/10 (accounting), 6/9 -> 9/9
+    # (smart-home), context length almost unchanged, about 0.8 s per question.
+    retrieval_depth: int = 0
+    rerank_pool: int = 0
 
     @property
     def rerank_configured(self):
         return bool(self.rerank_base_url and self.rerank_api_key and self.rerank_model)
+
+    @property
+    def deep_rerank_enabled(self):
+        """Deep-pool reranking is on only when a pool and a reranker are set."""
+        return self.rerank_pool > 0 and self.rerank_configured
 
 
 def _normalize_provider_url(value):
@@ -83,4 +96,6 @@ def load_config() -> Config:
         rerank_api_key=os.getenv("RERANK_API_KEY", ""),
         rerank_model=os.getenv("RERANK_MODEL", ""),
         context_radius=int(os.getenv("RAG_CONTEXT_RADIUS", "0")),
+        retrieval_depth=int(os.getenv("RAG_RETRIEVAL_DEPTH", "0")),
+        rerank_pool=int(os.getenv("RAG_RERANK_POOL", "0")),
     )
