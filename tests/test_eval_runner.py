@@ -43,23 +43,60 @@ def test_perfect_run_scores_one():
     assert result.metrics['resolution_coverage'] == 1.0
 
 
-def test_second_rank_hit_lowers_mrr_but_not_recall_at_two():
-    """An unresolved hit still occupies its rank; it just earns no credit."""
-    retrieve = fake_retrieve({'q1': ['X', 'P1'], 'q2': ['P2'], 'q3': []})
-    resolver = PassageResolver({'P1': '文本 P1', 'P2': '文本 P2', 'P3': '文本 P3'})
-    result = run_evaluation(questions(), retrieve, k=2, resolver=resolver)
-    # q1: P1 resolved at rank 2 -> recall 1, rr .5
-    # q2: P2 resolved at rank 1 -> recall 1, rr 1
-    # q3: nothing returned      -> recall 0, rr 0
-    # Dropping the unresolved first hit would have made q1's rr 1.0 instead.
-    assert result.metrics['recall@k'] == pytest.approx(2 / 3)
-    assert result.metrics['mrr'] == pytest.approx((0.5 + 1.0 + 0.0) / 3)
-    assert result.metrics['unresolved_hits'] == 1
-    assert result.metrics['questions'] == 3
-    first = next(sample for sample in result.samples if sample.question_id == 'q1')
-    assert first.ranked_passage_ids == [None, 'P1']
-    assert first.unresolved == [{'id': 'chunk-q1-1', 'rank': 1,
-                                 'reason': 'no_matching_passage'}]
+def test_mrr_only_moves_between_multiple_gold_passages():
+    """Documents a real limit of MRR in this setup.
+
+    The resolver only credits passages the question labels, so a chunk holding
+    an unlabelled passage contributes no rank. With a single gold passage MRR
+    can therefore only be 1.0 or 0.0 — it cannot see that a gold passage was
+    found late. Use recall@k for coverage, and the per-sample
+    ``labels_per_hit`` to reason about ordering.
+    """
+    resolver = PassageResolver({'P1': '文本 P1', 'P2': '文本 P2'})
+    item = [Question(id='q1', question='q1', split='dev', relevant_passage_ids=['P1'])]
+
+    def retrieve(question):
+        return [{'id': 'c1', 'content': '文本 P2', 'rank': 1},
+                {'id': 'c2', 'content': '文本 P1', 'rank': 2}]
+
+    result = run_evaluation(item, retrieve, k=2, resolver=resolver)
+    # P2 is not a label of this question, so it is not a rank position.
+    assert result.samples[0].ranked_passage_ids == ['P1']
+    assert result.samples[0].labels_per_hit == [[], ['P1']]
+    assert result.metrics['mrr'] == 1.0
+
+
+def test_two_gold_passages_give_mrr_between_zero_and_one():
+    resolver = PassageResolver({'P1': '文本 P1', 'P2': '文本 P2'})
+    item = [Question(id='q1', question='q1', split='dev', relevant_passage_ids=['P1', 'P2'])]
+
+    def retrieve(question):
+        return [{'id': 'c1', 'content': '文本 P2', 'rank': 1},
+                {'id': 'c2', 'content': '文本 P1', 'rank': 2}]
+
+    result = run_evaluation(item, retrieve, k=2, resolver=resolver)
+    assert result.samples[0].ranked_passage_ids == ['P2', 'P1']
+    assert result.metrics['recall@k'] == 1.0
+    assert result.metrics['mrr'] == 1.0      # P2 is gold too, and it is first
+
+
+def test_unlabelled_chunks_do_not_shift_labelled_ranks():
+    """A chunk holding no labelled passage contributes no rank position."""
+    resolver = PassageResolver({'P1': '文本 P1'})
+    item = [Question(id='q1', question='q1', split='dev', relevant_passage_ids=['P1'])]
+
+    def retrieve(question):
+        return [{'id': 'c1', 'content': '完全无关的一段', 'rank': 1},
+                {'id': 'c2', 'content': '文本 P1', 'rank': 2}]
+
+    result = run_evaluation(item, retrieve, k=2, resolver=resolver)
+    assert result.metrics['mrr'] == 1.0
+    assert result.metrics['recall@k'] == 1.0
+    # The unlabelled chunk is still reported, never hidden.
+    sample = result.samples[0]
+    assert sample.ranked_passage_ids == ['P1']
+    assert sample.labels_per_hit == [[], ['P1']]
+    assert sample.coverage == 0.5
 
 
 def test_unlabelled_questions_are_excluded_and_counted():
@@ -80,7 +117,9 @@ def test_alignment_failures_are_recorded_not_hidden():
     failed = next(sample for sample in result.samples if sample.question_id == 'q1')
     assert failed.unresolved == [{'id': 'chunk-q1-1', 'rank': 1,
                                   'reason': 'no_matching_passage'}]
-    assert failed.ranked_passage_ids == [None]
+    # A chunk containing no labelled passage contributes no rank position.
+    assert failed.ranked_passage_ids == []
+    assert failed.labels_per_hit == [[]]
 
 
 def test_a_throwing_question_is_recorded_as_a_failure_not_dropped():

@@ -10,9 +10,10 @@ This is *not* a product backend. It lives under ``eval`` on purpose: the
 evaluation package must not be imported by ``rag``, and tests/test_eval_scaffold.py
 enforces that direction.
 
-Callers must pass already-normalised vectors; the backend checks this and
-raises rather than silently turning cosine similarity into a dot product of
-unnormalised vectors.
+Callers may pass raw vectors: this backend L2-normalises them on the way in and
+on the way out, so cosine similarity is correct regardless of what the embedding
+provider returns. It refuses zero vectors and non-finite values instead of
+quietly producing meaningless scores.
 """
 import json
 import math
@@ -24,14 +25,22 @@ META_FILE = 'backend.json'
 
 
 class NormalizationError(ValueError):
-    """Vectors must be L2-normalised before they reach a cosine index."""
+    """Vectors cannot be normalised, so cosine similarity would be wrong."""
 
 
-def _require_normalised(vectors, tolerance=1e-3):
-    for vector in vectors:
-        norm = math.sqrt(sum(value * value for value in vector))
-        if not math.isfinite(norm) or abs(norm - 1.0) > tolerance:
-            raise NormalizationError(f'向量未归一化（L2 范数 {norm:.6f}），余弦相似度会失真')
+def _normalise(vectors):
+    """Return unit-length copies of ``vectors``, refusing degenerate input."""
+    import numpy as np
+
+    matrix = np.asarray([list(vector) for vector in vectors], dtype='float64')
+    if matrix.ndim != 2 or matrix.shape[1] == 0:
+        raise NormalizationError('向量形状无效')
+    if not np.all(np.isfinite(matrix)):
+        raise NormalizationError('向量含非有限值')
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    if np.any(norms == 0):
+        raise NormalizationError('存在零向量，无法归一化')
+    return matrix / norms
 
 
 class FaissVectors:
@@ -83,11 +92,8 @@ class FaissVectors:
 
     def add(self, ids, vectors, documents, metadatas):
         import faiss
-        import numpy as np
 
-        vectors = [list(vector) for vector in vectors]
-        _require_normalised(vectors)
-        matrix = np.asarray(vectors, dtype='float32')
+        matrix = _normalise(vectors).astype('float32')
         if self._index is None:
             self._index = faiss.IndexFlatIP(matrix.shape[1])
         elif self._index.d != matrix.shape[1]:
@@ -103,16 +109,14 @@ class FaissVectors:
         index = self._load_index()
         if index.ntotal == 0 or limit <= 0:
             return []
-        vector = list(vector)
-        _require_normalised([vector])
-        scores, positions = index.search(np.asarray([vector], dtype='float32'),
-                                         min(limit, index.ntotal))
+        query = _normalise([vector]).astype('float32')
+        scores, positions = index.search(query, min(limit, index.ntotal))
         hits = []
         for score, position in zip(scores[0], positions[0]):
             if position < 0:
                 continue
             record = self.records[position]
-            # Inner product of normalised vectors is cosine similarity; the
+            # Inner product of unit vectors is cosine similarity; the
             # application's convention is a distance, so report 1 - cosine.
             hits.append({'id': record['id'], 'content': record['document'],
                          'source': record['metadata'].get('source', ''),
@@ -141,10 +145,4 @@ class FaissVectors:
     @staticmethod
     def normalize(vectors):
         """Scale vectors to unit length; the caller keeps the original values."""
-        import numpy as np
-
-        matrix = np.asarray([list(vector) for vector in vectors], dtype='float32')
-        norms = np.linalg.norm(matrix, axis=1, keepdims=True)
-        if np.any(norms == 0):
-            raise NormalizationError('存在零向量，无法归一化')
-        return (matrix / norms).tolist()
+        return _normalise(vectors).tolist()

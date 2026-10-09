@@ -50,13 +50,24 @@ def test_exact_search_matches_brute_force_cosine(tmp_path):
     assert [hit['id'] for hit in hits] == [identifier for identifier, _ in manual]
 
 
-def test_unnormalised_vectors_are_refused(tmp_path):
+def test_raw_vectors_are_normalised_internally(tmp_path):
+    """Unnormalised input must still rank by cosine, not by magnitude."""
+    store = FaissVectors(tmp_path)
+    # Same direction, very different lengths: both must score as identical.
+    store.add(ids=['a', 'b'], vectors=[[3.0, 4.0, 0.0], [30.0, 40.0, 0.0]],
+              documents=['da', 'db'], metadatas=[{'source': 's'}, {'source': 's'}])
+    hits = store.search([6.0, 8.0, 0.0], limit=2)
+    assert {hit['id'] for hit in hits} == {'a', 'b'}
+    assert all(hit['distance'] == pytest.approx(0.0, abs=1e-6) for hit in hits)
+
+
+def test_degenerate_vectors_are_refused(tmp_path):
     store = FaissVectors(tmp_path)
     with pytest.raises(NormalizationError):
-        store.add(ids=['c1'], vectors=[[3.0, 4.0, 0.0]], documents=['x'],
+        store.add(ids=['c1'], vectors=[[0.0, 0.0, 0.0]], documents=['x'],
                   metadatas=[{'source': 's'}])
     with pytest.raises(NormalizationError):
-        store.add(ids=['c1'], vectors=[[0.0, 0.0, 0.0]], documents=['x'],
+        store.add(ids=['c1'], vectors=[[float('nan'), 1.0, 0.0]], documents=['x'],
                   metadatas=[{'source': 's'}])
 
 

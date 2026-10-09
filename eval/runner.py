@@ -30,6 +30,7 @@ class SampleRecord:
     split: str
     relevant_passage_ids: list = field(default_factory=list)
     ranked_passage_ids: list = field(default_factory=list)
+    labels_per_hit: list = field(default_factory=list)
     hits: list = field(default_factory=list)
     unresolved: list = field(default_factory=list)
     coverage: float = None
@@ -101,6 +102,8 @@ def run_evaluation(questions, retrieve, *, knowledge_base='', dataset='', split=
             question_id=question.id, question=question.question, split=question.split,
             relevant_passage_ids=list(question.relevant_passage_ids),
             ranked_passage_ids=ranked,
+            labels_per_hit=[list(labels) for labels in resolution.labels_per_hit]
+            if resolution else [],
             hits=[{'id': str(hit.get('id', '')), 'source': hit.get('source', ''),
                    'rank': hit.get('rank'), 'score': hit.get('score')} for hit in hits],
             unresolved=list(resolution.unresolved) if resolution else [],
