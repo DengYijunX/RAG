@@ -1,14 +1,14 @@
 {
   "knowledge_base": "smart",
-  "run": "smart-home-20261009T173003Z",
+  "run": "smart-home-20261009T181532Z",
   "judged_by": "AI lead judgement (not human review)",
   "judged": 10,
   "questions": 10,
   "lead_full_marks": {
     "key_points": {
-      "numerator": 1,
+      "numerator": 3,
       "denominator": 5,
-      "rate": 0.2
+      "rate": 0.6
     },
     "citation_faithfulness": {
       "numerator": 9,
@@ -16,18 +16,17 @@
       "rate": 1.0
     },
     "behavior_match": {
-      "numerator": 8,
+      "numerator": 10,
       "denominator": 10,
-      "rate": 0.8
+      "rate": 1.0
     }
   },
   "lead_error_labels": {
-    "retrieval_missing": 2,
-    "missing_clarification": 2
+    "retrieval_missing": 2
   },
   "agreement_with_assistant": {
     "fully_comparable": 4,
-    "all_three_match": 3,
+    "all_three_match": 4,
     "per_dimension_match": {
       "key_points": {
         "numerator": 4,
@@ -35,14 +34,14 @@
         "rate": 1.0
       },
       "citation_faithfulness": {
-        "numerator": 7,
-        "denominator": 8,
-        "rate": 0.875
+        "numerator": 9,
+        "denominator": 9,
+        "rate": 1.0
       },
       "behavior_match": {
-        "numerator": 10,
+        "numerator": 9,
         "denominator": 10,
-        "rate": 1.0
+        "rate": 0.9
       }
     }
   },

@@ -90,7 +90,9 @@ RAG/
 
 **换阿里云 Embedding 后的三方对照**：见 [RERANK_PROVIDER_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_PROVIDER_REPORT.md)。Embedding 换成 `qwen3.7-text-embedding-flash` 后两库都改善（售后 recall 0.810 → 0.976，会计 0.856 → 0.893）。**专用 rerank `qwen3.7-text-rerank` 与 LLM 重排质量接近但快一个数量级**：会计 NDCG 0.9193 vs 0.9152、耗时 87.2s vs 1534.3s（快约 17.6 倍）；售后专用略差（0.9664 vs 0.9880），差异只出现在 2 道「多实体对比」题上——推测专用 rerank 缺少「整份候选是否覆盖问题全部实体」的全局视角（**未验证**）。专用端点输出分数，同一输入下**可复现**；LLM 重排两次跑出的排列不同（NDCG 0.9197/0.9152）。**仍未接入产品默认路径**。
 
-**生成侧答案审阅（助手初审）**：见 [ANSWER_QUALITY_REPORT.md](../experiments/rag-baseline/evaluation/ANSWER_QUALITY_REPORT.md)，标准见 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)。20 题预声明样本（每库 10 题，属 v2 数据集）：自动引用检查两库 **10/10 通过**、阻断缺陷 0；要点完整性满分率仅 **0.50**，错误标签以 `retrieval_missing`（2/3 题）为主，另有 4 处 `missing_clarification`。**两个限制必须一起读**：① 同一批答案两次评审，引用忠实性满分率从 1.0 变 0.78，**评审自身不稳定**，与标准「不得用 LLM 自评分代替语义评分」一致；② 样本是定向诊断选样，**不估计总体准确率**，且 `human_reviewed` 为 0。验收目标（≥90%/≥95%）针对**人工审阅**，与本报告数字不可直接比较。
+**生成侧答案审阅（助手初审 + 领队判断）**：见 [ANSWER_QUALITY_REPORT.md](../experiments/rag-baseline/evaluation/ANSWER_QUALITY_REPORT.md)，标准见 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)。20 题预声明样本：自动引用检查两库 **10/10 通过**、阻断缺陷 0；要点完整性满分率仅约 0.5，错误标签以 `retrieval_missing` 为主。**两个限制必须一起读**：① 同一批答案两次评审分数不同，**评审自身不稳定**，与标准「不得用 LLM 自评分代替语义评分」一致；② 样本是定向诊断选样，**不估计总体准确率**，`human_reviewed` 为 0。领队判断经所有者逐题确认，但属自评而非独立签署。
+
+**生成侧提示词修复**：见 [PROMPT_CLARIFICATION_REPORT.md](../experiments/rag-baseline/evaluation/PROMPT_CLARIFICATION_REPORT.md)。首轮发现 3 处 `missing_clarification`（型号/版本不明时模型条件性作答），**根因是提示词从未要求"前提不明先澄清"**。补上该条后：`missing_clarification` **3 → 0**，行为匹配满分率升至 **1.00**，要点完整性 0.20→0.60（售后）/ 0.43→0.57（会计）；控制组（明确题、拒答题）**无回归**。`retrieval_missing` 5 题未变，属检索侧问题。改动落在 [rag/kb_service.py](../rag/kb_service.py) 的 `GENERATION_SYSTEM_PROMPT`，契约由 6 项测试锁定。
 
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 

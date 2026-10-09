@@ -1,14 +1,14 @@
 {
   "knowledge_base": "accounting",
-  "run": "accounting-20261009T173248Z",
+  "run": "accounting-20261009T181815Z",
   "judged_by": "AI lead judgement (not human review)",
   "judged": 10,
   "questions": 10,
   "lead_full_marks": {
     "key_points": {
-      "numerator": 3,
+      "numerator": 4,
       "denominator": 7,
-      "rate": 0.42857142857142855
+      "rate": 0.5714285714285714
     },
     "citation_faithfulness": {
       "numerator": 8,
@@ -16,28 +16,27 @@
       "rate": 1.0
     },
     "behavior_match": {
-      "numerator": 9,
+      "numerator": 10,
       "denominator": 10,
-      "rate": 0.9
+      "rate": 1.0
     }
   },
   "lead_error_labels": {
-    "retrieval_missing": 3,
-    "missing_clarification": 1
+    "retrieval_missing": 3
   },
   "agreement_with_assistant": {
     "fully_comparable": 7,
-    "all_three_match": 5,
+    "all_three_match": 7,
     "per_dimension_match": {
       "key_points": {
-        "numerator": 6,
+        "numerator": 7,
         "denominator": 7,
-        "rate": 0.8571428571428571
+        "rate": 1.0
       },
       "citation_faithfulness": {
-        "numerator": 7,
+        "numerator": 8,
         "denominator": 8,
-        "rate": 0.875
+        "rate": 1.0
       },
       "behavior_match": {
         "numerator": 10,

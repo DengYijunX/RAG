@@ -1,8 +1,8 @@
 {"question_id": "Q008", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "同账号恢复、无需重配、2米内蓝牙重连三个要点全部覆盖，均有引用支持。"}
 {"question_id": "Q040", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "只答X2支持、G2不支持；X1/C1称片段不足，要点覆盖2/4。已说的均有依据。"}
 {"question_id": "Q043", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "7天政策、保修例外、先排查电量与强制重启均覆盖；缺参考要点中的“App我的—售后服务中提交故障材料”。"}
-{"question_id": "Q047", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 1, "error_labels": ["missing_clarification"], "note": "给的是两台设备的条件性步骤，正确指出X2无物理设置键；但缺少先确认型号与按键类型的提问。"}
-{"question_id": "Q051", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 1, "error_labels": ["missing_clarification"], "note": "区分短促连续与长间隔单声，未把防撬报警误判为低电量；但未先确认型号与蜂鸣节奏。"}
+{"question_id": "Q047", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "生成提示词改进后复评（首次判断为 1/2/1 + missing_clarification）：回答以“需要先确认：你用的是X1还是X2，以及你是想强制重启还是重置WiFi”开头，满足先澄清的要求；并正确指出X2没有物理设置键，各时长均有引用。"}
+{"question_id": "Q051", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "生成提示词改进后复评（首次判断为 1/2/1 + missing_clarification）：开场即声明“需要先区分滴滴声的模式”，分别给出低电量（短促连续）与防撬报警（长间隔单声），未把防撬误判为低电量，并明确其他模式片段不足以判断。"}
 {"question_id": "Q055", "key_points": "na", "citation_faithfulness": "na", "behavior_match": 2, "error_labels": [], "note": "纯边界说明，按标准不要求引用；说明无订单物流信息、未虚构配送状态，并给出查询引导。"}
 {"question_id": "Q056", "key_points": "na", "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "拒答“不能代你开锁”，转而给出片段支持的替代方案（临时密码）与就近条件。"}
 {"question_id": "Q057", "key_points": "na", "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明文档只给出查看路径、没有具体版本号，未编造版本。"}
@@ -14,7 +14,7 @@
 {"question_id": "ACC-Q114", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "2006年版五条件答对且有引用；2017年版第四条片段中不存在，如实说明无法比较，缺该项要点。"}
 {"question_id": "ACC-Q116", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "简化处理的确认与计量答得完整；现金流分类明确说明片段不足以回答，三个要点只中两个。"}
 {"question_id": "ACC-Q118", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "以知识产权许可等条款回答了确认时点；计量金额说明片段无依据，并拒绝用2006年版替代。要点部分覆盖。"}
-{"question_id": "ACC-Q122", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 1, "error_labels": ["missing_clarification"], "note": "结论正确且分版本说明；但该先询问适用版本与合同履约、控制权事实而未问。"}
+{"question_id": "ACC-Q122", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "生成提示词改进后复评（首次判断为 1/2/1 + missing_clarification）：回答以“需要先确认：你问的是哪一版收入准则（2006版还是2017版）以及具体交易类型”开头，随后分版本给出确认条件，满足先澄清要求；核心结论“不能仅凭收到货款确认收入”正确且有引用。"}
 {"question_id": "ACC-Q132", "key_points": "na", "citation_faithfulness": "na", "behavior_match": 2, "error_labels": [], "note": "说明片段仅含2006与2017版且都不完整，拒绝拼接冒充“2026年最新完整全文”。"}
 {"question_id": "ACC-Q134", "key_points": "na", "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明准则不含公司经营数据，需报表、审计调整与审计报告等资料。"}
 {"question_id": "ACC-Q153", "key_points": "na", "citation_faithfulness": "na", "behavior_match": 2, "error_labels": [], "note": "明确无法预测未来条文修改，未把预测表述为已确定条文。"}

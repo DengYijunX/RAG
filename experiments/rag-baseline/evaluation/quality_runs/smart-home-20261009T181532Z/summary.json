@@ -1,5 +1,5 @@
 {
-  "knowledge_base": "accounting",
+  "knowledge_base": "smart-home",
   "dataset_version": "v2",
   "embedding_model": "qwen3.7-text-embedding-flash",
   "generation_model": "deepseek-v4-flash",
@@ -9,14 +9,14 @@
   "automatic_checks_passed": 10,
   "full_marks": {
     "key_points": {
-      "numerator": 4,
-      "denominator": 8,
-      "rate": 0.5
+      "numerator": 5,
+      "denominator": 7,
+      "rate": 0.7142857142857143
     },
     "citation_faithfulness": {
-      "numerator": 9,
+      "numerator": 10,
       "denominator": 10,
-      "rate": 0.9
+      "rate": 1.0
     },
     "behavior_match": {
       "numerator": 9,
@@ -25,8 +25,7 @@
     }
   },
   "error_labels": {
-    "retrieval_missing": 3,
-    "unsupported_claim": 1,
+    "retrieval_missing": 2,
     "missing_clarification": 1
   },
   "human_reviewed": 0,
@@ -35,8 +34,8 @@
     "calls": 10,
     "invalid": 0,
     "invalid_rate": 0.0,
-    "prompt_tokens": 18403,
-    "completion_tokens": 12883,
-    "seconds": 71.68
+    "prompt_tokens": 18264,
+    "completion_tokens": 15352,
+    "seconds": 79.76
   }
 }

@@ -2,7 +2,7 @@
   "knowledge_base": "smart",
   "questions": 10,
   "fully_comparable": 4,
-  "all_three_match": 3,
+  "all_three_match": 4,
   "per_dimension_match": {
     "key_points": {
       "numerator": 4,
@@ -10,14 +10,14 @@
       "rate": 1.0
     },
     "citation_faithfulness": {
-      "numerator": 7,
-      "denominator": 8,
-      "rate": 0.875
+      "numerator": 9,
+      "denominator": 9,
+      "rate": 1.0
     },
     "behavior_match": {
-      "numerator": 10,
+      "numerator": 9,
       "denominator": 10,
-      "rate": 1.0
+      "rate": 0.9
     }
   },
   "label_disagreements": [
@@ -25,33 +25,30 @@
       "question_id": "Q051",
       "dimensions": {
         "key_points": {
-          "lead": 1,
-          "assistant": 1,
+          "lead": 2,
+          "assistant": "na",
+          "match": false,
+          "both_scored": false
+        },
+        "citation_faithfulness": {
+          "lead": 2,
+          "assistant": 2,
           "match": true,
           "both_scored": true
         },
-        "citation_faithfulness": {
+        "behavior_match": {
           "lead": 2,
           "assistant": 1,
           "match": false,
           "both_scored": true
-        },
-        "behavior_match": {
-          "lead": 1,
-          "assistant": 1,
-          "match": true,
-          "both_scored": true
         }
       },
-      "lead_labels": [
+      "lead_labels": [],
+      "assistant_labels": [
         "missing_clarification"
       ],
-      "assistant_labels": [
-        "missing_clarification",
-        "wrong_scope"
-      ],
       "labels_only_assistant": [
-        "wrong_scope"
+        "missing_clarification"
       ],
       "labels_only_lead": []
     }
