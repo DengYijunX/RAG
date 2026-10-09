@@ -77,7 +77,7 @@ RAG/
 | 2 指标层（检索侧） | [eval/metrics.py](../eval/metrics.py) | **已实现**：`recall@k` / `precision@k` / `hit_rate@k` / `mrr` / `map` / `ndcg@k`，含手算样例 |
 | 3 ID 对齐 | [eval/alignment.py](../eval/alignment.py) | **已实现**：按规范化文本精确匹配数据集 passage id；**未命中的槽位保留原排名**（`None`），不静默丢弃；歧义文本拒绝猜测并计入 `unresolved` |
 | 4 执行层 | [eval/runner.py](../eval/runner.py) | **已实现（仅检索）**：逐题记录命中 / 未命中 / 失败，落盘 `summary.json` + `samples.jsonl`，同一 task_id 不覆盖 |
-| 5 生成侧指标 | `eval/metrics.py` | **未实现**：需人工标注或有评分规则的 LLM Judge，并抽样核验 Judge |
+| 5 生成侧指标 | [eval/runner.py](../eval/runner.py) 之外的 `answer_review.py` + `answer_quality_review.py` | **已实现（助手初审）**：三维标准评分 + 自动引用检查；**人工审阅未做**，且实测评审自身不稳定 |
 | 6 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
 
 **已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**：售后 `recall_in_top_k` = 0.810（35 道可判分），会计 = 0.856（67 道可判分）；`mean_first_hit_slot` 分别为 1.76 与 1.47。
@@ -89,6 +89,8 @@ RAG/
 **LLM 重排（listwise）**：见 [RERANK_LLM_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_LLM_REPORT.md)，决策见 ADR-009。用**现有对话模型**（非专用 reranker）对 Top-20 候选输出排列，严格校验完整排列、非法即回退。会计 NDCG@4 0.862 → 0.920、售后 0.839 → 0.988，两库 `mean_first_hit_slot` 都变成 **1.000**。归因显示 `not_promoted` 与 `broken` 均为 0（提升确来自重排），会计剩余 5 题是 `never_retrieved`（候选池无金标签，重排无解）。**代价：每题 17–18 秒**。
 
 **换阿里云 Embedding 后的三方对照**：见 [RERANK_PROVIDER_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_PROVIDER_REPORT.md)。Embedding 换成 `qwen3.7-text-embedding-flash` 后两库都改善（售后 recall 0.810 → 0.976，会计 0.856 → 0.893）。**专用 rerank `qwen3.7-text-rerank` 与 LLM 重排质量接近但快一个数量级**：会计 NDCG 0.9193 vs 0.9152、耗时 87.2s vs 1534.3s（快约 17.6 倍）；售后专用略差（0.9664 vs 0.9880），差异只出现在 2 道「多实体对比」题上——推测专用 rerank 缺少「整份候选是否覆盖问题全部实体」的全局视角（**未验证**）。专用端点输出分数，同一输入下**可复现**；LLM 重排两次跑出的排列不同（NDCG 0.9197/0.9152）。**仍未接入产品默认路径**。
+
+**生成侧答案审阅（助手初审）**：见 [ANSWER_QUALITY_REPORT.md](../experiments/rag-baseline/evaluation/ANSWER_QUALITY_REPORT.md)，标准见 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)。20 题预声明样本（每库 10 题，属 v2 数据集）：自动引用检查两库 **10/10 通过**、阻断缺陷 0；要点完整性满分率仅 **0.50**，错误标签以 `retrieval_missing`（2/3 题）为主，另有 4 处 `missing_clarification`。**两个限制必须一起读**：① 同一批答案两次评审，引用忠实性满分率从 1.0 变 0.78，**评审自身不稳定**，与标准「不得用 LLM 自评分代替语义评分」一致；② 样本是定向诊断选样，**不估计总体准确率**，且 `human_reviewed` 为 0。验收目标（≥90%/≥95%）针对**人工审阅**，与本报告数字不可直接比较。
 
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 
