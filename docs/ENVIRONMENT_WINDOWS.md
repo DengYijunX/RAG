@@ -65,4 +65,6 @@ RAG_ACCEPTANCE_REAL=1 .venv/bin/python experiments/rag-baseline/evaluation/accep
 
 ## 清理提示
 
-以下目录已在 `.gitignore` 中，均为本机临时产物：`.tmp/`、`.uv-cache/`、`.pytest_cache/`、`.dsh-acl-recovery/`。其中 `.tmp/pytest-of-AD钙` 是沙箱权限诊断时留下的、当前进程无法删除的目录，需要时用管理员权限手工删除即可。
+以下目录已在 `.gitignore` 中，均为本机临时产物：`.tmp/`、`.uv-cache/`、`.pytest_cache/`、`.dsh-acl-recovery/`。
+
+2026-10-09 已清理 `.tmp/`（304 MB）、`.uv-cache/`（324 MB）、`.pytest_cache/`、`.dsh-acl-recovery/`。**残留需管理员权限删除**：`.tmp/` 下沙箱创建的 `pytest-of-AD钙` 等 6 个空目录，以及 `.uv-cache/` 剩余的 `builds-v0` / `interpreter-v4` / `sdists-v9`（合计约 96.7 MB）——当前进程对它们没有删除权限，`Remove-Item` 报 `Access is denied`。它们都不在版本控制内，不影响仓库与测试。
