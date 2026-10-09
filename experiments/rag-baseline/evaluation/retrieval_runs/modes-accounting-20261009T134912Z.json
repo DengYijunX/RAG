@@ -1,0 +1,96 @@
+{
+  "knowledge_base": "accounting",
+  "dataset": "v1/dev",
+  "k": 4,
+  "depth": 50,
+  "rerank_pool": 20,
+  "modes": {
+    "hybrid": {
+      "task_id": "20261009T132417Z-8a17302d",
+      "knowledge_base": "accounting",
+      "dataset": "v1/dev:hybrid",
+      "split": "dev",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 67,
+        "recall@k": 0.9104477611940298,
+        "precision@k": 0.9253731343283582,
+        "hit_rate@k": 0.9253731343283582,
+        "mrr": 0.9253731343283582,
+        "map": 0.9104477611940298,
+        "ndcg@k": 0.9138252893362824,
+        "recall_in_top_k": 0.8930348258706468,
+        "precision_in_top_k": 0.26865671641791045,
+        "ndcg_in_top_k": 0.8616228314800752,
+        "hit_rate_in_top_k": 0.9253731343283582,
+        "mean_first_hit_slot": 1.1612903225806452,
+        "mrr_first_hit": 0.8606965174129354,
+        "scored": 67,
+        "hits": 4100,
+        "unresolved_hits": 4025,
+        "resolution_coverage": 0.018292682926829285,
+        "unlabelled_questions": 15
+      },
+      "configuration": {
+        "k": 4,
+        "split": "dev",
+        "dataset": "v1/dev:hybrid",
+        "knowledge_base": "accounting",
+        "questions": 82,
+        "resolver": true
+      },
+      "questions": 82,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261009T132417Z-8a17302d",
+      "seconds": 1.5618062019348145
+    },
+    "rerank": {
+      "task_id": "20261009T132419Z-8a17302d",
+      "knowledge_base": "accounting",
+      "dataset": "v1/dev:rerank",
+      "split": "dev",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 67,
+        "recall@k": 0.9104477611940298,
+        "precision@k": 0.9253731343283582,
+        "hit_rate@k": 0.9253731343283582,
+        "mrr": 0.9253731343283582,
+        "map": 0.9104477611940298,
+        "ndcg@k": 0.9138252893362824,
+        "recall_in_top_k": 0.9104477611940298,
+        "precision_in_top_k": 0.2798507462686567,
+        "ndcg_in_top_k": 0.9197400712849403,
+        "hit_rate_in_top_k": 0.9253731343283582,
+        "mean_first_hit_slot": 1.0,
+        "mrr_first_hit": 0.9253731343283582,
+        "scored": 67,
+        "hits": 4100,
+        "unresolved_hits": 4025,
+        "resolution_coverage": 0.018292682926829285,
+        "unlabelled_questions": 15
+      },
+      "configuration": {
+        "k": 4,
+        "split": "dev",
+        "dataset": "v1/dev:rerank",
+        "knowledge_base": "accounting",
+        "questions": 82,
+        "resolver": true
+      },
+      "questions": 82,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261009T132419Z-8a17302d",
+      "seconds": 1492.9735958576202
+    },
+    "rerank_stats": {
+      "calls": 82,
+      "failures": 0,
+      "seconds": 1491.4,
+      "prompt_tokens": 411193,
+      "completion_tokens": 316075
+    }
+  }
+}

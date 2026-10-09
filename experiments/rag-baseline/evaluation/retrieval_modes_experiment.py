@@ -37,13 +37,14 @@ from eval.backends.faiss_store import FaissVectors
 from eval.datasets import load_knowledge_base_dataset
 from eval.runner import run_evaluation
 from hybrid_retrieval import BM25Index, HybridRetriever
+from llm_rerank import LLMListwiseReranker
 from rag.config import load_config
 from rag.kb_service import KnowledgeBaseService
 
 BASELINE = REPO / 'experiments' / 'rag-baseline'
 STORAGE = REPO / 'chroma_db' / 'eval-baseline'
 ARTIFACTS = BASELINE / 'evaluation' / 'retrieval_runs'
-MODES = ('dense', 'bm25', 'hybrid')
+MODES = ('dense', 'bm25', 'hybrid', 'rerank')
 
 CORPORA = {
     'smart-home': BASELINE / 'evidence.jsonl',
@@ -67,12 +68,55 @@ def load_published_index(knowledge_base):
     return FaissVectors(kb_dir / pointer['generation']), chunks, cache
 
 
-def ranking_for(mode, question, depth, dense_hits, bm25, hybrid):
+def chunk_text(record, fallback=''):
+    """Text of a chunk record.
+
+    Accepts either a plain string or the ``{'id', 'content', ...}`` records the
+    index publishes, and returns the text either way. Passing the record itself
+    to the reranker was a real bug: the prompt builder then sliced a dict.
+    """
+    if isinstance(record, str):
+        return record
+    if isinstance(record, dict):
+        return record.get('content', fallback)
+    return fallback
+
+
+def ranking_for(mode, question, depth, dense_hits, bm25, hybrid, *, by_id=None,
+                reranker=None, pool=None):
+    """Ranked chunk ids for one mode.
+
+    ``rerank`` first builds the hybrid ranking at the pool depth, asks the chat
+    model for a permutation, and returns the reranked ids followed by the rest.
+    Keeping the tail preserves recall while the head is reordered, so a change
+    in the top-k metrics cannot come from having dropped candidates.
+    """
     if mode == 'dense':
         return [hit['id'] for hit in dense_hits(question, depth)]
     if mode == 'bm25':
         return bm25.search(question, depth)
-    return hybrid.ranking(question, depth, depth)
+    if mode == 'hybrid':
+        return hybrid.ranking(question, depth, depth)
+    # Rerank: the model sees only the pool, but the returned ranking keeps the
+    # whole candidate list — reranked pool first, then the untouched remainder.
+    # Without the tail, choosing a small pool would cap recall, and a drop in
+    # recall could not be told apart from a reranking mistake.
+    candidates = hybrid.ranking(question, depth, depth)
+    pool_ids = candidates[:pool or depth]
+    if reranker is None or len(pool_ids) < 2:
+        return candidates
+    lookup = by_id or {}
+    payload = [{'id': identifier, 'content': chunk_text(lookup.get(identifier))}
+               for identifier in pool_ids]
+    reordered, _ = reranker.rerank(question, payload)
+    head = [candidate['id'] for candidate in reordered]
+    seen = set(head)
+    return head + [identifier for identifier in candidates if identifier not in seen]
+
+
+def show(value, digits=4):
+    """Format a metric that may be None (an unscoreable run, not a zero)."""
+    return 'n/a' if value is None else f'{value:.{digits}f}'
 
 
 def main(argv=None):
@@ -82,6 +126,8 @@ def main(argv=None):
     parser.add_argument('--version', default='v1', choices=['v1', 'v2'])
     parser.add_argument('--k', type=int, default=4)
     parser.add_argument('--depth', type=int, default=50, help='每条臂的候选深度')
+    parser.add_argument('--rerank-pool', type=int, default=20,
+                        help='rerank 模式下交给模型排序的候选数（越多越贵）')
     parser.add_argument('--limit', type=int, default=None, help='只跑前 N 题（冒烟用）')
     parser.add_argument('--modes', default=','.join(MODES))
     args = parser.parse_args(argv)
@@ -109,6 +155,7 @@ def main(argv=None):
         return store.search(cache[question], depth)
 
     hybrid = HybridRetriever(dense_search=dense_hits, bm25=bm25)
+    reranker = LLMListwiseReranker(load_config()) if 'rerank' in selected else None
 
     results = {}
     for mode in selected:
@@ -116,7 +163,8 @@ def main(argv=None):
         pools = {}
 
         def retrieve(question, mode=mode):
-            ids = ranking_for(mode, question.question, args.depth, dense_hits, bm25, hybrid)
+            ids = ranking_for(mode, question.question, args.depth, dense_hits, bm25, hybrid,
+                              by_id=by_id, reranker=reranker, pool=args.rerank_pool)
             pools[question.id] = ids
             return [{'id': chunk_id, 'content': by_id[chunk_id]['content'],
                      'source': by_id[chunk_id]['source'], 'rank': rank}
@@ -130,11 +178,11 @@ def main(argv=None):
         results[mode] = {'summary': run.summary(), 'pools': pools, 'seconds': elapsed,
                          'output_dir': run.output_dir}
         m = run.metrics
-        print(f'  [{mode:6}] recall_in_top_{args.k}={m["recall_in_top_k"]:.4f} '
-              f'precision_in_top_{args.k}={m["precision_in_top_k"]:.4f} '
-              f'ndcg_in_top_{args.k}={m["ndcg_in_top_k"]:.4f} '
-              f'mean_first_hit_slot={m["mean_first_hit_slot"]:.3f} '
-              f'mrr_first_hit={m["mrr_first_hit"]:.4f} ({elapsed:.1f}s)', flush=True)
+        print(f'  [{mode:6}] recall_in_top_{args.k}={show(m["recall_in_top_k"])} '
+              f'precision_in_top_{args.k}={show(m["precision_in_top_k"])} '
+              f'ndcg_in_top_{args.k}={show(m["ndcg_in_top_k"])} '
+              f'mean_first_hit_slot={show(m["mean_first_hit_slot"], 3)} '
+              f'mrr_first_hit={show(m["mrr_first_hit"])} ({elapsed:.1f}s)', flush=True)
 
     if 'dense' in results and 'bm25' in results:
         overlaps, keyword_only = [], 0
@@ -150,10 +198,18 @@ def main(argv=None):
 
     comparison = {mode: {**data['summary'], 'seconds': data['seconds']}
                   for mode, data in results.items()}
+    if reranker is not None:
+        stats = reranker.stats()
+        print(f'  重排调用：{stats["calls"]} 次，回退 {stats["failures"]} 次，'
+              f'prompt {stats["prompt_tokens"]} / completion {stats["completion_tokens"]} tokens，'
+              f'累计 {stats["seconds"]}s', flush=True)
+        comparison['rerank_stats'] = stats
     stamp = time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())
     out = ARTIFACTS / f'modes-{args.kb}-{stamp}.json'
     out.write_text(json.dumps({'knowledge_base': args.kb, 'dataset': f'{args.version}/{args.split}',
-                               'k': args.k, 'depth': args.depth, 'modes': comparison},
+                               'k': args.k, 'depth': args.depth,
+                               'rerank_pool': args.rerank_pool if reranker else None,
+                               'modes': comparison},
                               ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'\n对照结果：{out}', flush=True)
     return 0

@@ -1,0 +1,258 @@
+{
+  "knowledge_base": "smart-home",
+  "k": 4,
+  "counts": {
+    "never_retrieved": 0,
+    "not_promoted": 0,
+    "promoted": 33,
+    "fixed": 2,
+    "broken": 0
+  },
+  "rows": [
+    {
+      "question_id": "Q002",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q006",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q007",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q008",
+      "rank_before": 2,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q010",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q011",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q013",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q014",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q016",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q017",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q018",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q021",
+      "rank_before": 6,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "fixed"
+    },
+    {
+      "question_id": "Q022",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q023",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q024",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q025",
+      "rank_before": 3,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q026",
+      "rank_before": 3,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q027",
+      "rank_before": 2,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q028",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q029",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q030",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q032",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q033",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q034",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q036",
+      "rank_before": 2,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q039",
+      "rank_before": 5,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "fixed"
+    },
+    {
+      "question_id": "Q040",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q041",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q043",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q044",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q045",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q047",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q049",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q051",
+      "rank_before": 2,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    },
+    {
+      "question_id": "Q052",
+      "rank_before": 1,
+      "rank_after": 1,
+      "gold_in_candidates": true,
+      "outcome": "promoted"
+    }
+  ]
+}

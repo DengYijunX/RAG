@@ -86,6 +86,8 @@ RAG/
 
 **邻段扩展**：见 [CONTEXT_EXPANSION_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_EXPANSION_REPORT.md)。根因是会计 4 道题的标注条文**完整存在于源文档但被 500 字切片切开，没有任何片段完整包含它**，所以排序手段无解。按同一源文档取相邻片段拼成连续文本后，**送入上下文的完整命中率**：会计 hybrid 0.866 → 0.910，售后 0.886 → 0.971。代价是上下文从约 1,800 字涨到约 3,900 字；radius 2 在会计无收益。**尚未接入产品默认路径**（需生成侧指标判断 3,900 字对答案的影响）。仍剩 3 道会计题失败，原因是目标片段根本没进候选，属检索问题。
 
+**LLM 重排（listwise）**：见 [RERANK_LLM_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_LLM_REPORT.md)，决策见 ADR-009。用**现有对话模型**（非专用 reranker）对 Top-20 候选输出排列，严格校验完整排列、非法即回退。会计 NDCG@4 0.862 → 0.920、售后 0.839 → 0.988，两库 `mean_first_hit_slot` 都变成 **1.000**。归因显示 `not_promoted` 与 `broken` 均为 0（提升确来自重排），会计剩余 5 题是 `never_retrieved`（候选池无金标签，重排无解）。**代价：每题 17–18 秒**，因此结论是"重排有效但慢"，**未与专用 reranker 对照**，也未接入产品路径。
+
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 
 **三条容易出错的规则**（已写进代码与测试，改动前先读）：

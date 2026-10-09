@@ -135,3 +135,15 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 **取舍：** 只落占位意味着这一轮**没有新增任何评测指标能力**，因此不写任何新数字；现有 5 份 `*_REPORT.md` 仍是唯一证据来源。占位用 `NotImplementedError` 而不是返回空值，是为了避免"看起来跑通了"。`rag/retrieve/`、`rag/generate/`、`rag/host/` 在 ROADMAP 中标为待拆分/未实现，本轮**不动代码结构**，避免在真实向量路径尚未在可用环境复跑前做大规模搬迁。
 
 **验证方式：** 5 项脚手架测试通过；本机全套 91 项通过（`pytest tests` 去掉需原生 Chroma 的 11 项）。ROADMAP 的清理记录同时列出本轮删除的本地产物与"无可删死代码"的核查结果（`context_structure.py`、`enumerate_sources`、旧单库路径均仍被引用）。
+
+### ADR-009：重排先用现有对话模型验证收益，暂不引入专用 reranker
+
+2026-10-09，在 [llm_rerank.py](../experiments/rag-baseline/evaluation/llm_rerank.py) 实现 listwise 重排：把候选池（默认 Top-20）放进 prompt，让 **配置里已有的对话模型**（`deepseek-chat`）输出候选编号的排列，按该排列重排候选头，未进入池的候选保持原位。结果见 [RERANK_LLM_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_LLM_REPORT.md)。
+
+**决策：** 本轮不引入专用 cross-encoder reranker、不新增模型供应商与凭据，先用零新增依赖的方式量出"重排值不值得做"。
+
+**原因：** 专用 reranker 需要第二套凭据、第二份延迟与成本、以及"服务不可用怎么办"的策略，这值得单独决策，不该和"验证重排有没有用"混在一起。此外项目 ADR-004 已有"LLM 输出候选排列 + 非法结果回退原顺序"的先例，本次沿用同一形态但换用槽位口径评分。
+
+**取舍：** 生成式重排的输出**不可信**，必须当外部输入校验——实现要求回复是候选编号的完整排列（数量一致、无重复、无越界、集合相同），任何不合规回退原检索顺序并计数。实测 122 次调用**零回退**，但校验路径仍保留（14 项测试覆盖各类非法输出）。另有两个已知代价：**每题 17–18 秒**（约为检索本身耗时的 900 倍），以及 completion token 偏高（每题约 3,800，抽查单次原始输出却是干净的编号列表），后者是明确的优化点。因此本 ADR 的结论是"LLM 重排有效但慢"，**不是**"LLM 重排优于或劣于专用模型"——这个对照尚未做。
+
+**验证方式：** 两个语料各一次完整对照（会计 67 道可判分、售后 35 道）。会计 NDCG@4 0.8616 → 0.9197、售后 0.8392 → 0.9880；两库 `mean_first_hit_slot` 均由 1.16/1.49 变为 **1.000**，即候选池内的金标签全部被排到第 1 名。新增 [rerank_attribution.py](../experiments/rag-baseline/evaluation/rerank_attribution.py) 做归因：`not_promoted` 与 `broken` 均为 0，说明提升来自重排本身；会计剩余 5 道题属 `never_retrieved`（候选池里没有金标签），**重排无从下手**。未接入产品默认路径；未在保留测试集验证；未与专用 reranker 对照。
