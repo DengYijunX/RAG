@@ -73,11 +73,18 @@ RAG/
 
 | 步骤 | 位置 | 状态 |
 | --- | --- | --- |
-| 1 数据集层 | [eval/datasets.py](../eval/datasets.py) | **已实现**：JSONL schema、重复 ID / 非法 JSON / 缺字段校验、`reference_excerpts` 提取 `article_id` 作为标签 |
-| 2 指标层（检索侧） | [eval/metrics.py](../eval/metrics.py) | **已实现**：`recall@k` / `precision@k` / `hit_rate@k` / `mrr` / `map` / `ndcg@k`，含手算样例与 tie / 重复命中规则 |
-| 3 ID 对齐 | 同上 + 待改 `rag/importer.py` | **未实现**：数据集 passage id 与 chunk id 仍是两个空间；计划从导入阶段保留 `source_passage_id` |
-| 4 执行层 | [eval/runner.py](../eval/runner.py) | **占位**：任务调度、逐题产物、落盘均未实现 |
-| 5 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
+| 1 数据集层 | [eval/datasets.py](../eval/datasets.py) | **已实现**：JSONL schema、重复 ID / 非法 JSON / 缺字段校验、`reference_excerpts` 提取 `article_id` 作为标签、v1/v2 显式选择 |
+| 2 指标层（检索侧） | [eval/metrics.py](../eval/metrics.py) | **已实现**：`recall@k` / `precision@k` / `hit_rate@k` / `mrr` / `map` / `ndcg@k`，含手算样例 |
+| 3 ID 对齐 | [eval/alignment.py](../eval/alignment.py) | **已实现**：按规范化文本精确匹配数据集 passage id；**未命中的槽位保留原排名**（`None`），不静默丢弃；歧义文本拒绝猜测并计入 `unresolved` |
+| 4 执行层 | [eval/runner.py](../eval/runner.py) | **已实现（仅检索）**：逐题记录命中 / 未命中 / 失败，落盘 `summary.json` + `samples.jsonl`，同一 task_id 不覆盖 |
+| 5 生成侧指标 | `eval/metrics.py` | **未实现**：需人工标注或有评分规则的 LLM Judge，并抽样核验 Judge |
+| 6 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
+
+**三条容易出错的规则**（已写进代码与测试，改动前先读）：
+
+1. **未命中的槽位不能丢**。检索返回 5 条、其中第 1 条无法对齐时，第 2 条的排名仍是 2，MRR 记 0.5 而不是 1.0。丢掉槽位会静默抬高所有基于排名的指标——这正是本项目拒绝的行为。
+2. **歧义即拒绝**。若两段数据集正文规范化后完全相同，无法判断命中属于哪一段，计入 `unresolved` 并标 `ambiguous_passage_text`，不做猜测。
+3. **无标注 ≠ 得零分**。题目没有标签时该题不计入指标（`questions` 计数可见），而不是计 0 分；空指标集返回 `None`。
 
 **两套数据集必须先分清**（本次读源码时发现文档里的数字与文件不一致，已实测核对）：
 
@@ -94,7 +101,7 @@ RAG/
 - **纪律**（与 AGENTS.md 一致）：两个领域分别报告指标，不合并成单一分数；证据覆盖率不等于答案准确率；v2 未冻结前不把它当作 gold，也不为了更好成绩移动已有题目。
 - 生成侧指标必须走人工标注或有评分规则约束的 LLM Judge，并抽样核验 Judge 本身。
 
-**ID 对齐的做法**：评测答案用数据集 passage id，检索结果是 chunk，两个 id 空间不同。正确做法是从导入阶段就保留 `source_passage_id` 元数据并一路传到命中结果；文本匹配只作兜底并报告匹配失败，不静默算作未命中。
+**ID 对齐的做法**：评测答案用数据集 passage id（售后 `evidence.jsonl` 的 `D1-S01`、会计 `articles.jsonl` 的 `CAS-10-2006-A002`），检索返回的是导入片段 id。当前实现用规范化文本精确匹配来桥接，未命中的会进 `unresolved` 而不是算作未命中。更稳的做法仍是**从导入阶段保留 `source_passage_id` 并一路传到命中结果**：文本匹配对改写、截断和重复段落都脆弱，且匹配率本身会随切片策略变化。这条仍是待办。
 
 ---
 

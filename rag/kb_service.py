@@ -327,26 +327,45 @@ class KnowledgeBaseService:
         return output
 
     def source(self, kb_id, source_id):
+        """Full text of one imported document.
+
+        ``span`` is reported only when the first chunk of that document has a
+        proven character position; it is left out rather than guessed.
+        """
         for document in self.documents(kb_id):
             if document['id'] == source_id:
                 path = self.base_dir(kb_id) / 'text' / f"{document['id']}.txt"
                 if not path.exists():
                     raise IndexUnavailable('该文档的原文尚未保存，请重新导入。')
+                starts = [chunk['start'] for chunk in self._chunks(kb_id)
+                          if chunk['document_id'] == document['id'] and chunk['start'] is not None]
                 payload = {'source_id': document['id'], 'source': document['source'],
-                           'title': Path(document['source']).stem, 'content': path.read_text(encoding='utf-8'),
+                           'title': Path(document['source']).stem,
+                           'content': path.read_text(encoding='utf-8'),
                            'media_type': document['media_type'], 'positions': document['positions'],
                            'sections': document.get('sections', [])}
-                try:
-                    payload['span'] = [chunk['start'] for chunk in self._chunks(kb_id)
-                                       if chunk['document_id'] == document['id'] and chunk['start'] is not None][:1] or None
-                except Exception:
-                    payload['span'] = None
+                if starts:
+                    payload['span'] = [starts[0]]
                 return payload
         raise KeyError(source_id)
 
     def _chunks(self, kb_id):
         manifest = self._imports(kb_id)
         return manifest['chunks'] if manifest else []
+
+    def chunk_text(self, kb_id):
+        """``chunk_id -> content`` for the imported set, newest manifest wins."""
+        return {chunk['id']: chunk['content'] for chunk in self._chunks(kb_id)}
+
+    def retrieval_hits(self, kb_id, question, top_k=4):
+        """Hits in the format the evaluation runner consumes.
+
+        Deliberately does *not* call the generator: retrieval evaluation must
+        stay free of model calls so it can be repeated on every change.
+        """
+        return [{'id': hit['id'], 'content': hit['content'], 'source': hit['source'],
+                 'rank': rank, 'score': hit.get('score')}
+                for rank, hit in enumerate(self.retrieve(kb_id, question, top_k), 1)]
 
     def save_source_text(self, kb_id, source_id, text):
         path = self.base_dir(kb_id) / 'text' / f'{source_id}.txt'

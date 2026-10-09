@@ -1,9 +1,9 @@
 """Contract tests for the evaluation framework's layering and honesty.
 
-The dataset reader and retrieval metrics have their own tests. These check
-the properties that keep the package trustworthy as it grows: the runner
-placeholder cannot silently succeed, the layering rule holds, and importing
-the evaluation package does not drag in the application.
+The dataset reader, metrics, alignment and runner have their own tests. These
+check the properties that keep the package trustworthy as it grows: the
+layering rule holds, and importing the evaluation package does not drag in the
+application or a model call.
 """
 import subprocess
 import sys
@@ -15,11 +15,6 @@ import eval as eval_package
 from eval import datasets, metrics, runner
 
 REPO = Path(__file__).resolve().parents[1]
-
-
-def test_runner_is_still_a_placeholder():
-    with pytest.raises(NotImplementedError):
-        runner.run_evaluation(object(), object())
 
 
 def test_dataset_errors_are_explicit(tmp_path):
@@ -35,6 +30,11 @@ def test_dataset_errors_are_explicit(tmp_path):
                          encoding='utf-8')
     with pytest.raises(datasets.DatasetError):
         datasets.load_dataset(duplicate)
+
+
+def test_empty_question_set_is_refused():
+    with pytest.raises(ValueError):
+        runner.run_evaluation([], lambda question: [])
 
 
 def test_metric_names_are_registered_and_typos_rejected():
@@ -73,7 +73,7 @@ def test_eval_never_depends_on_rag_and_rag_never_imports_eval():
 
 
 def test_importing_eval_does_not_pull_in_the_application():
-    code = ('import sys, eval, eval.metrics, eval.datasets; '
+    code = ('import sys, eval, eval.metrics, eval.datasets, eval.alignment, eval.runner; '
             'print(any(name == "rag" or name.startswith("rag.") for name in sys.modules))')
     output = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, cwd=REPO)
     assert output.returncode == 0, output.stderr

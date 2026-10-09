@@ -87,6 +87,22 @@ def test_hit_dicts_and_objects_are_accepted():
     assert metrics.reciprocal_rank([Hit('a'), Hit('r1')], ['r1']) == 0.5
 
 
+def test_unplaceable_slots_keep_their_rank():
+    """Regression: a None slot must occupy its rank, not be skipped.
+
+    The resolver marks a hit it cannot place with None. If the metric skips
+    that slot, the next result is promoted from rank 2 to rank 1 and MRR is
+    inflated — exactly the silent improvement this project refuses.
+    """
+    assert metrics.reciprocal_rank([None, 'r1'], ['r1']) == 0.5
+    assert metrics.recall_at_k([None, 'r1'], ['r1'], 1) == 0.0
+    assert metrics.recall_at_k([None, 'r1'], ['r1'], 2) == 1.0
+    assert metrics.precision_at_k([None, 'r1'], ['r1'], 2) == 0.5
+    assert metrics.ndcg_at_k([None, 'r1'], ['r1'], 2) == pytest.approx(1 / math.log2(3))
+    # An empty id is treated the same way, since both mean "no passage here".
+    assert metrics.reciprocal_rank([{'id': ''}, {'id': 'r1'}], ['r1']) == 0.5
+
+
 def test_score_dataset_reports_how_many_questions_were_scored():
     samples = [('q1', ['a', 'r1'], ['r1']),          # hit at rank 2
                ('q2', ['x'], ['r2']),                 # miss

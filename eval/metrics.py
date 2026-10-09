@@ -76,19 +76,25 @@ def default_registry(k=5):
 
 
 def _ranked_ids(results):
-    """Accept the runner's hit dicts, plain ids, or any object with an id."""
+    """Accept the runner's hit dicts, plain ids, or any object with an id.
+
+    An entry that carries no id — including the ``None`` the resolver puts in
+    an unplaceable hit's slot — is kept as an empty string so it still occupies
+    its rank. Skipping it would shift every later result upward and inflate
+    rank-based metrics.
+    """
     ids = []
     for item in results or ():
         if isinstance(item, str):
             ids.append(item)
+        elif item is None:
+            ids.append('')
         elif isinstance(item, dict):
             value = item.get('id', item.get('passage_id', item.get('chunk_id')))
-            if value is not None:
-                ids.append(str(value))
+            ids.append('' if value is None else str(value))
         else:
             value = getattr(item, 'id', None)
-            if value is not None:
-                ids.append(str(value))
+            ids.append('' if value is None else str(value))
     return ids
 
 
