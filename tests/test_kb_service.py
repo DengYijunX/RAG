@@ -91,7 +91,9 @@ def test_import_then_build_then_query(service, corpus):
 def test_chunk_locations_match_source_text(service, corpus):
     base = register_and_import(service, corpus)
     manifest = json.loads(service.manifest_path(base.id).read_text(encoding='utf-8'))
+    assert manifest['chunks'], 'import must produce chunks to locate'
     for chunk in manifest['chunks']:
+        assert chunk['start'] is not None and chunk['end'] > chunk['start']
         text = (corpus / chunk['source']).read_text(encoding='utf-8')
         assert text[chunk['start']:chunk['end']] == chunk['content']
 
@@ -99,8 +101,9 @@ def test_chunk_locations_match_source_text(service, corpus):
 def test_source_view_returns_imported_text_and_spans(service, corpus):
     base = register_and_import(service, corpus)
     service.build(base.id)
-    source = service.sources(base.id)[0]
-    payload = service.source(base.id, source['source_id'])
+    sources = service.sources(base.id)
+    assert len(sources) == len(CORPUS)
+    payload = service.source(base.id, sources[0]['source_id'])
     assert payload['content']
     assert normalize(payload['content']) in normalize((corpus / payload['source']).read_text(encoding='utf-8'))
     with pytest.raises(KeyError):
@@ -167,6 +170,31 @@ def test_unknown_base_is_rejected(service):
         service.import_sources('missing', '.')
     with pytest.raises(KnowledgeBaseNotFound):
         service.base('missing')
+    with pytest.raises(KnowledgeBaseNotFound):
+        service.sources('missing')
+    with pytest.raises(KnowledgeBaseNotFound):
+        service.build('missing')
+
+
+def test_import_replaces_the_searchable_set(service, corpus):
+    """A later import defines the whole set; files no longer present drop out."""
+    base = register_and_import(service, corpus)
+    assert len(service.documents(base.id)) == 3
+    subset = Path(corpus).parent / 'subset'
+    subset.mkdir()
+    (subset / 'policy.md').write_text(CORPUS['policy.md'], encoding='utf-8')
+    service.import_sources(base.id, subset)
+    assert [d['source'] for d in service.documents(base.id)] == ['policy.md']
+
+
+def test_failed_build_leaves_no_stale_generation(service, corpus):
+    base = register_and_import(service, corpus)
+    service.vectors = lambda texts: (_ for _ in ()).throw(RuntimeError('provider down'))
+    with pytest.raises(BuildFailed):
+        service.build(base.id)
+    leftovers = [path for path in service.base_dir(base.id).iterdir()
+                 if path.is_dir() and len(path.name) == 32]
+    assert leftovers == []
 
 
 def test_bases_are_isolated(service, corpus):
@@ -187,7 +215,14 @@ def test_no_domain_specific_branch_is_required(service, corpus):
     """A brand new domain must work through the same calls, with no code edit."""
     base = service.register('花卉养护手册')
     assert base.extensions == {}
-    assert 'smart-home' not in base.id and 'accounting' not in base.id
+    stored = json.loads((service.storage_root / 'knowledge-bases.json').read_text(encoding='utf-8'))
+    entry = next(row for row in stored['knowledge_bases'] if row['id'] == base.id)
+    # Nothing domain-specific is written for a new base, and no fixture is
+    # reachable through it: its documents come only from its own import.
+    assert entry == {'id': base.id, 'name': '花卉养护手册', 'description': '',
+                     'language': 'zh', 'created_at': entry['created_at'],
+                     'updated_at': entry['updated_at'], 'extensions': {}}
     service.import_sources(base.id, corpus)
     service.build(base.id)
+    assert {d['source'] for d in service.documents(base.id)} == set(CORPUS)
     assert service.query(base.id, '什么时候浇水')['status'] == 'answer'

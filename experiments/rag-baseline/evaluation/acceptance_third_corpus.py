@@ -6,10 +6,11 @@ Python or front-end file:
 
     .venv/bin/python experiments/rag-baseline/evaluation/acceptance_third_corpus.py
 
-It drives the FastAPI application through HTTP with ``TestClient``. Vector
-work is redirected to a deterministic in-process store and the generator is
-stubbed so the check is offline and free; that means this script proves the
-import and wiring contract, not retrieval quality or provider behaviour.
+It drives the FastAPI application through HTTP with ``TestClient``. No source
+file is edited; instead the running application object is configured at run
+time — the vector backend and generator are replaced so the check is offline
+and free, which means this script proves the import and wiring contract, not
+retrieval quality or provider behaviour.
 Set ``RAG_ACCEPTANCE_REAL=1`` to keep the configured embedding provider and
 Chroma instead (requires network access and a working native vector index).
 
@@ -92,7 +93,7 @@ def main():
         entry = next(row for row in listing if row['id'] == kb)
         results.append(check('知识库出现在列表中且可查询', entry['ready'] is True,
                             f"documents={entry['documents']} chunks={entry['chunk_count']}"))
-        results.append(check('两个既有夹具仍可用', {row['id'] for row in listing} >= {'smart-home', 'accounting'},
+        results.append(check('两个既有夹具仍可列出', {row['id'] for row in listing} >= {'smart-home', 'accounting'},
                             ','.join(sorted(row['id'] for row in listing))))
 
         answer = client.post(f'/knowledge-bases/{kb}/query', json={'question': '浇水怎么判断该不该浇'})
@@ -106,14 +107,17 @@ def main():
                                  body['citations'][0]['url']))
 
         manifest = json.loads(service.manifest_path(kb).read_text(encoding='utf-8'))
-        located = [c for c in manifest['chunks'] if c['start'] is not None]
+        chunks = manifest['chunks']
+        located = [c for c in chunks if c['start'] is not None]
         verified = all(
             (CORPUS / c['source']).read_text(encoding='utf-8')[c['start']:c['end']] == c['content']
             for c in located)
-        results.append(check('片段字符区间可在原文中复原', bool(located) and verified,
-                             f'{len(located)}/{len(manifest["chunks"])} 个片段带位置'))
-        results.append(check('原文与片段均携带内容 hash',
+        results.append(check('每个片段都能在原文中复原', bool(chunks) and len(located) == len(chunks) and verified,
+                             f'{len(located)}/{len(chunks)} 个片段带位置'))
+        results.append(check('原文携带内容 hash',
                              all(len(d['content_sha256']) == 64 for d in manifest['documents'])))
+        results.append(check('导入未静默丢弃文件', manifest['skipped'] == [] and len(manifest['documents']) == len(files),
+                             json.dumps(manifest['skipped'], ensure_ascii=False)))
 
     print()
     print(f'结果：{sum(results)}/{len(results)} 项通过')

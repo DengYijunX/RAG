@@ -2,8 +2,11 @@
 
 This is the generic path. It reads a registry record and the files that were
 imported into it; it never consults a fixed knowledge-base table, an
-experiment directory or a domain rule. Domain-specific behaviour is opt-in
-through ``extensions`` on the registry record and is off by default.
+experiment directory or a domain rule.
+
+Domain extensions are only *recorded* today: the registry keeps an
+``extensions`` field, but no retrieval behaviour reads it yet, so every base
+is served by the same default pipeline.
 
 Lifecycle (RAGFlow-style configuration, LlamaIndex-style document identity):
 register -> import -> build -> publish -> query -> read source.
@@ -18,6 +21,7 @@ import json
 import math
 from pathlib import Path
 import re
+import shutil
 import uuid
 
 from rag.importer import import_documents, read_manifest, write_manifest
@@ -194,7 +198,13 @@ class KnowledgeBaseService:
         return self.registry.get(kb_id)
 
     def import_sources(self, kb_id, directory, glob_pattern='**/*'):
-        """Import files into one knowledge base and record the manifest."""
+        """Import files into one knowledge base and record the manifest.
+
+        The manifest written here is the whole searchable set of that base:
+        a later import replaces it rather than adding to it, so a file that is
+        no longer in the directory is no longer indexed. Incremental upsert is
+        not implemented.
+        """
         self.registry.get(kb_id)
         report = import_documents(kb_id, directory, self.config.chunk_size,
                                   self.config.chunk_overlap, glob_pattern)
@@ -260,6 +270,7 @@ class KnowledgeBaseService:
 
     def build(self, kb_id, batch_size=20):
         """Vectorise every imported chunk, then publish the new generation."""
+        self.registry.get(kb_id)
         manifest = self._imports(kb_id)
         if manifest is None:
             raise IndexUnavailable('该知识库还没有导入文档。')
@@ -267,7 +278,10 @@ class KnowledgeBaseService:
             raise BuildFailed('导入的文档没有可索引内容。')
         generation = uuid.uuid4().hex
         directory = self.base_dir(kb_id) / generation
-        directory.mkdir(parents=True, exist_ok=False)
+        try:
+            directory.mkdir(parents=True, exist_ok=False)
+        except OSError as exc:
+            raise BuildFailed(f'无法创建索引目录，已保留原有索引：{type(exc).__name__}') from exc
         backend = self.vector_backend(directory)
         dimensions = None
         try:
@@ -283,10 +297,15 @@ class KnowledgeBaseService:
             if count != len(manifest['chunks']):
                 raise BuildFailed('索引片段数与导入清单不一致。')
         except Exception as exc:
+            # The published pointer is untouched, so the previous index keeps
+            # serving; drop the half-built directory instead of leaving it.
+            shutil.rmtree(directory, ignore_errors=True)
             raise BuildFailed(f'建立索引失败，已保留原有索引：{type(exc).__name__}') from exc
         info = {'generation': generation, 'signature': self.signature(kb_id), 'chunks': count,
                 'documents': len(manifest['documents']), 'dimensions': dimensions}
-        write_json_atomic(directory / 'manifest.json', info)
+        # The generation keeps its own chunk snapshot so a published index can
+        # always be resolved against the text it was built from.
+        write_json_atomic(directory / 'manifest.json', {**info, 'chunk_records': manifest['chunks']})
         write_json_atomic(self.base_dir(kb_id) / 'active.json', info)
         return info
 
@@ -296,12 +315,15 @@ class KnowledgeBaseService:
         return manifest['documents'] if manifest else []
 
     def sources(self, kb_id):
+        """Imported documents of a registered base; an unknown id raises."""
+        self.registry.get(kb_id)
         output = []
         for document in self.documents(kb_id):
             output.append({'source_id': document['id'], 'source': document['source'],
                            'title': Path(document['source']).stem,
                            'media_type': document['media_type'], 'characters': document['characters'],
-                           'chunks': document['chunks'], 'positions': document['positions']})
+                           'chunks': document['chunks'], 'positions': document['positions'],
+                           'pages': document.get('pages')})
         return output
 
     def source(self, kb_id, source_id):
@@ -333,8 +355,15 @@ class KnowledgeBaseService:
         return path
 
     def retrieve(self, kb_id, question, top_k=4):
+        """Search one published generation and resolve hits in its manifest.
+
+        The published pointer is read once and the manifest entry is resolved
+        from that same generation, so a concurrent re-import cannot pair new
+        chunk text with old vectors.
+        """
         info = self.active(kb_id)
-        lookup = {chunk['id']: chunk for chunk in self._chunks(kb_id)}
+        snapshot = read_json(self.base_dir(kb_id) / info['generation'] / 'manifest.json')
+        lookup = {chunk['id']: chunk for chunk in snapshot.get('chunk_records', [])}
         vector = self.vectors([question])[0]
         if info.get('dimensions') and len(vector) != info['dimensions']:
             raise IndexUnavailable('向量维度已变化，请重建该知识库索引。')

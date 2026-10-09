@@ -43,14 +43,13 @@ def test_import_produces_located_chunks(tmp_path):
     report = import_documents('kb-1', directory)
     assert report.as_dict()['manifest_version'] == 1
     assert sorted(d['source'] for d in report.documents) == ['guide.md', 'notes.txt']
+    guide_chunks = [chunk for chunk in report.chunks if chunk['source'] == 'guide.md']
+    assert guide_chunks, 'guide.md must produce at least one chunk'
     text = MARKDOWN
-    for chunk in report.chunks:
-        if chunk['source'] != 'guide.md':
-            continue
+    for chunk in guide_chunks:
         assert chunk['start'] is not None and chunk['start'] < chunk['end']
         assert text[chunk['start']:chunk['end']] == chunk['content']
-    assert [c['chunk_index'] for c in report.chunks if c['source'] == 'guide.md'] == \
-        list(range(sum(1 for c in report.chunks if c['source'] == 'guide.md')))
+    assert [c['chunk_index'] for c in guide_chunks] == list(range(len(guide_chunks)))
 
 
 def test_document_identity_is_stable_and_distinct(tmp_path):
@@ -97,6 +96,7 @@ def test_empty_document_is_marked_not_positioned(tmp_path):
     (directory / 'blank.md').write_text('   \n\n', encoding='utf-8')
     record = [d for d in import_documents('kb', directory).documents if d['source'] == 'blank.md'][0]
     assert record['empty'] is True
+    assert record['positions'] is False
     assert record['chunks'] == 0
 
 
@@ -106,13 +106,33 @@ def test_pdf_reports_pages_without_inventing_positions(tmp_path):
     directory = build_corpus(tmp_path)
     writer = PdfWriter()
     writer.add_blank_page(width=200, height=200)
+    writer.add_blank_page(width=200, height=200)
     with open(directory / 'manual.pdf', 'wb') as handle:
         writer.write(handle)
     record = [d for d in import_documents('kb', directory).documents if d['source'] == 'manual.pdf'][0]
     assert record['media_type'] == 'application/pdf'
     assert record['parser'] == 'pdf'
     assert record['positions'] is False
+    assert record['pages'] == 2
     assert record['sections'] == []
+
+
+def test_line_count_ignores_trailing_newline(tmp_path):
+    directory = tmp_path / 'lines'
+    directory.mkdir()
+    (directory / 'a.md').write_text('# 标题\n\n正文\n', encoding='utf-8')
+    record = import_documents('kb', directory).documents[0]
+    assert record['lines'] == 3
+
+
+def test_unsupported_files_are_reported_not_silently_dropped(tmp_path):
+    directory = build_corpus(tmp_path)
+    (directory / 'sheet.xlsx').write_bytes(b'not a real workbook')
+    (directory / 'photo.png').write_bytes(b'\x89PNG')
+    report = import_documents('kb', directory)
+    skipped = {entry['source']: entry['reason'] for entry in report.skipped}
+    assert skipped == {'photo.png': 'unsupported_media_type', 'sheet.xlsx': 'unsupported_media_type'}
+    assert {d['source'] for d in report.documents} == {'guide.md', 'notes.txt'}
 
 
 def test_unparsable_file_is_skipped_without_blocking(tmp_path):

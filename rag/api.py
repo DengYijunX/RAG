@@ -60,8 +60,19 @@ def _unknown_base(exc):
 
 @app.get('/knowledge-bases')
 def knowledge_bases():
-    """Registered bases first, then the built-in evaluation fixtures."""
-    return bases.bases() + knowledge.catalog()
+    """Registered bases, plus whatever built-in fixtures are present.
+
+    Registered bases are the generic product path and are always served. The
+    two evaluation fixtures live under the experiment directory and are
+    optional, so a checkout without that data lists only what it can serve
+    instead of failing the request the page loads first.
+    """
+    from rag.knowledge import DATA
+
+    listing = bases.bases()
+    if DATA.is_dir():
+        listing = listing + knowledge.catalog()
+    return listing
 
 
 @app.post('/knowledge-bases', status_code=201)
@@ -102,6 +113,8 @@ def import_sources(kb: str, files: list[UploadFile] | None = File(default=None),
                 if not name or name.startswith('.'):
                     raise HTTPException(422, '文件名无效')
                 target = staging / name
+                if target.exists():
+                    raise HTTPException(422, f'同一次导入中存在重名文件：{name}')
                 with open(target, 'wb') as handle:
                     shutil.copyfileobj(upload.file, handle)
             directory = staging
@@ -145,7 +158,6 @@ def knowledge_sources(kb: str):
         return bases.sources(kb)
     except KnowledgeBaseNotFound:
         raise _unknown_base(None) from None
-
 
 @app.post('/knowledge-bases/{kb}/query')
 def knowledge_query(kb: str, req: KnowledgeQuery):

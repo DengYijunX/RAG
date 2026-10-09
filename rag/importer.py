@@ -63,20 +63,33 @@ def media_type_for(path):
 
 def enumerate_sources(directory, glob_pattern='**/*'):
     """Deterministic list of importable files; unsupported files are skipped."""
+    available, _ = scan_sources(directory, glob_pattern)
+    return available
+
+
+def scan_sources(directory, glob_pattern='**/*'):
+    """Split a directory into importable files and everything left out.
+
+    The second return value lists files that were deliberately not imported
+    (unsupported extension), so callers can report them instead of silently
+    dropping them from an import that claims to have read the directory.
+    """
     root = Path(directory)
     if not root.is_dir():
         raise NotADirectoryError(f'{directory} is not a directory')
-    sources = []
+    sources, unsupported = [], []
     for path in sorted(root.glob(glob_pattern)):
         if not path.is_file():
             continue
+        relative = path.relative_to(root).as_posix()
         media_type = media_type_for(path)
         if not media_type or path.suffix.lower() not in SUPPORTED_SUFFIXES:
+            unsupported.append({'source': relative, 'reason': 'unsupported_media_type'})
             continue
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        sources.append(DocumentInput(path=path, relative=path.relative_to(root).as_posix(),
-                                     media_type=media_type, size=path.stat().st_size, sha256=digest))
-    return sources
+        sources.append(DocumentInput(path=path, relative=relative, media_type=media_type,
+                                     size=path.stat().st_size, sha256=digest))
+    return sources, unsupported
 
 
 def _document_id(kb_id, relative):
@@ -87,12 +100,17 @@ def _chunk_id(document_id, index):
     return f'{document_id}:{index:04d}'
 
 
+def _line_count(raw):
+    """Physical line count; a trailing newline does not add an empty line."""
+    return len(raw.splitlines()) if raw else 0
+
+
 def _apply_document(record, raw, document_id, chunk_size, chunk_overlap, media_type):
     """Fill source span and structure for one document; never fabricate a span."""
     record['parser'] = 'markdown' if media_type == 'text/markdown' else 'text'
     record['positions'] = False
     record['sections'] = []
-    record['lines'] = raw.count('\n') + 1 if raw else 0
+    record['lines'] = _line_count(raw)
     record['chunk_size'] = chunk_size
     record['chunk_overlap'] = chunk_overlap
     if not raw.strip():
@@ -125,34 +143,48 @@ def _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap)
     return chunks
 
 
+def _pdf_pages(path):
+    """Page count from the PDF itself; only reported when the parser gives it."""
+    from PyPDF2 import PdfReader
+
+    try:
+        return len(PdfReader(str(path)).pages)
+    except Exception:
+        return None
+
+
 def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pattern='**/*'):
     """Parse a directory into document records and located chunks.
 
-    A file that cannot be parsed is reported in ``skipped`` and excluded; the
-    remaining files still import, so one broken document never blocks a build.
+    Every file the directory yields ends up either in ``documents`` or in
+    ``skipped`` with a reason: unsupported extensions, unparsable files and
+    files whose chunks cannot be located in the source are all reported, and
+    none of them abort the import of the remaining files.
     """
     report = ImportReport()
     directory = Path(directory).resolve()
-    for source in enumerate_sources(directory, glob_pattern):
+    sources, unsupported = scan_sources(directory, glob_pattern)
+    report.skipped.extend(unsupported)
+    for source in sources:
         try:
             loaded = load_file(source.path)
+            document_id = _document_id(kb_id, source.relative)
+            record = {'id': document_id, 'kb_id': kb_id, 'source': source.relative,
+                      'media_type': source.media_type, 'size': source.size, 'sha256': source.sha256,
+                      'content_sha256': hashlib.sha256(loaded.content.encode()).hexdigest(),
+                      'characters': len(loaded.content)}
+            document = {'source': source.relative, 'content': loaded.content}
+            if source.media_type == 'application/pdf':
+                record.update({'parser': 'pdf', 'positions': False, 'sections': [], 'lines': None,
+                               'pages': _pdf_pages(source.path), 'chunk_size': chunk_size,
+                               'chunk_overlap': chunk_overlap})
+            else:
+                _apply_document(record, loaded.content, document_id, chunk_size, chunk_overlap,
+                                source.media_type)
+            chunks = _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap)
         except Exception as exc:
             report.skipped.append({'source': source.relative, 'reason': type(exc).__name__})
             continue
-        document_id = _document_id(kb_id, source.relative)
-        record = {'id': document_id, 'kb_id': kb_id, 'source': source.relative,
-                  'media_type': source.media_type, 'size': source.size, 'sha256': source.sha256,
-                  'content_sha256': hashlib.sha256(loaded.content.encode()).hexdigest(),
-                  'characters': len(loaded.content)}
-        if source.media_type == 'application/pdf':
-            record.update({'parser': 'pdf', 'positions': False, 'sections': [],
-                           'lines': None, 'chunk_size': chunk_size, 'chunk_overlap': chunk_overlap})
-            document = {'source': source.relative, 'content': loaded.content}
-        else:
-            document = {'source': source.relative, 'content': loaded.content}
-            _apply_document(record, loaded.content, document_id, chunk_size, chunk_overlap,
-                            source.media_type)
-        chunks = _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap)
         record['chunks'] = len(chunks)
         report.documents.append(record)
         report.chunks.extend(chunks)

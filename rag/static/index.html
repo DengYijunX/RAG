@@ -356,8 +356,7 @@
   .picker-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
   .picker-actions input[type="text"] { padding: 8px 10px; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 6px; font: inherit; font-size: .85rem; }
   .picker-actions input[type="file"] { color: var(--text-dim); font-size: .82rem; max-width: 260px; }
-  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
-  .examples button, .source-link { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--accent); cursor: pointer; font: inherit; font-size: .85rem; }
+  .source-link { background: transparent; border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--accent); cursor: pointer; font: inherit; font-size: .85rem; }
   .answer-card, .chunk-content { white-space: pre-wrap; overflow-wrap: anywhere; }
   .citation-card { margin-top: 12px; padding: 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
   .citation-card summary { cursor: pointer; color: var(--accent); }
@@ -394,7 +393,7 @@
       <button class="source-link" type="button" id="importBtn" onclick="importSources()">导入文档</button>
       <button class="source-link" type="button" id="buildBtn" onclick="buildIndex()">建立索引</button>
     </div>
-    <div class="examples" id="examples"></div>
+    <p class="knowledge-note">导入会替换该知识库此前的文档集合；同名文件请先改名。支持 .md / .txt / .pdf。</p>
   </div>
 
   <div class="tabs">
@@ -517,8 +516,11 @@ async function importSources() {
     const result = await api(`/knowledge-bases/${entry.id}/sources`, { method: 'POST', body: body });
     picker.value = '';
     await loadKnowledge(entry.id);
-    const skipped = result.skipped.length ? `，跳过 ${result.skipped.length} 个无法解析的文件` : '';
-    setStatus(`已导入 ${result.documents} 份文档、${result.chunks} 个片段${skipped}。`, 'success');
+    const reasons = { unsupported_media_type: '格式不支持', OSError: '读取失败' };
+    const skipped = result.skipped.length
+      ? '；未导入：' + result.skipped.map(item => `${item.source}（${reasons[item.reason] || item.reason}）`).join('、')
+      : '';
+    setStatus(`已导入 ${result.documents} 份文档、${result.chunks} 个片段（替换原有集合）${skipped}。`, 'success');
   } catch (error) {
     setStatus('导入失败: ' + error.message, 'error');
   } finally {

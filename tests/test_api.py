@@ -112,16 +112,48 @@ def test_unknown_base_and_bad_input(client):
     assert http.post(f'/knowledge-bases/{kb}/query', json={'question': '   '}).status_code == 422
 
 
-def test_import_rejects_hidden_and_unsupported_files(client):
+def test_import_rejects_hidden_files_and_reports_unsupported(client):
     http, _ = client
     kb = http.post('/knowledge-bases', json={'name': '文件校验'}).json()['id']
     hidden = http.post(f'/knowledge-bases/{kb}/sources',
                        files=[('files', ('.env', b'secret', 'text/plain'))])
     assert hidden.status_code == 422
-    skipped = http.post(f'/knowledge-bases/{kb}/sources',
-                        files=[('files', ('raw.docx', b'zzz', 'application/octet-stream'))])
-    assert skipped.status_code == 200
-    assert skipped.json()['documents'] == 0
+    mixed = http.post(f'/knowledge-bases/{kb}/sources',
+                      files=[('files', ('keep.md', '# 标题\n\n正文。\n'.encode('utf-8'), 'text/markdown')),
+                             ('files', ('raw.docx', b'zzz', 'application/octet-stream'))])
+    assert mixed.status_code == 200
+    payload = mixed.json()
+    assert payload['documents'] == 1
+    assert payload['skipped'] == [{'source': 'raw.docx', 'reason': 'unsupported_media_type'}]
+
+
+def test_import_rejects_duplicate_upload_names(client):
+    http, _ = client
+    kb = http.post('/knowledge-bases', json={'name': '重名'}).json()['id']
+    response = http.post(f'/knowledge-bases/{kb}/sources',
+                         files=[('files', ('a.md', b'# A\n', 'text/markdown')),
+                                ('files', ('a.md', b'# B\n', 'text/markdown'))])
+    assert response.status_code == 422
+    assert '重名' in response.json()['detail']
+    assert http.get(f'/knowledge-bases/{kb}/sources').json() == []
+
+
+def test_registered_bases_are_listed_without_fixture_data(client, tmp_path, monkeypatch):
+    """The generic product path must not depend on the evaluation fixtures."""
+    http, _ = client
+    kb = http.post('/knowledge-bases', json={'name': '无夹具也要可见'}).json()['id']
+    import rag.knowledge as knowledge_module
+    monkeypatch.setattr(knowledge_module, 'DATA', tmp_path / 'no-such-fixtures')
+    listing = http.get('/knowledge-bases')
+    assert listing.status_code == 200
+    assert [row['id'] for row in listing.json()] == [kb]
+
+
+def test_sources_listing_unknown_base_is_404(client):
+    http, _ = client
+    assert http.get('/knowledge-bases/missing/sources').status_code == 404
+    kb = http.post('/knowledge-bases', json={'name': '空来源列表'}).json()['id']
+    assert http.get(f'/knowledge-bases/{kb}/sources').json() == []
 
 
 def test_provider_errors_are_sanitized(client):

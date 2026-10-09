@@ -94,3 +94,32 @@
 取舍：数组格式更短但需要字段解释，可能增加模型误读；必须以固定正文的真实生成对照验证，不能只看序列化大小。按文档身份隔离短 ID，保留未知状态与加粗启发式标记，不偷偷裁掉正文或截断标记。超出完整 messages 的 UTF-8 字节预算则调用前失败；没有官方模型 tokenizer 时不将该上限称为精确 Token 预算。服务端实际 Token 用量另行记录。默认应用暂不接入。
 
 ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluation/COMPACT_REPORT.md)：九题18次重新生成，输入从43,807降至20,907 Token（−52.3%），请求最大10,730字节低于12,000字节精简上限；结构状态无损保留，但模型仍误读续段与完整性、猜测未展示条件总数。45项应用测试与44项评测工具测试通过，默认路径不变。下一步转向独立于评测文件的通用导入与第三语料接入，生成失败另存回归案例。
+
+### ADR-007：知识库注册表与通用文档导入
+
+2026-10-09，按 `docs/PROJECT_SCOPE.md` 的下一步实施顺序，新增 [rag/registry.py](../rag/registry.py)、[rag/importer.py](../rag/importer.py)、[rag/kb_service.py](../rag/kb_service.py)，并改造 [rag/api.py](../rag/api.py) 与 [rag/static/index.html](../rag/static/index.html)。
+
+参考来源仍是本文开头固定的三处官方材料，**没有引入这些项目的框架或运行依赖**：
+[RAGFlow 知识库创建](https://github.com/infiniflow/ragflow/blob/2400ca8eb51432b1d304266d0de9ca232d9b53fa/docs/guides/dataset/dataset_list_and_creation.md)把名称、Embedding 模型、解析方式作为知识库配置，本文据此把知识库做成注册表实体而非固定选项；
+[RAGFlow 文档管理](https://github.com/infiniflow/ragflow/blob/2400ca8eb51432b1d304266d0de9ca232d9b53fa/docs/guides/dataset/files_dataset_document_management.md)区分文件、解析结果、片段与状态，本文据此把清单（manifest）与索引代（generation）分开；
+[LlamaIndex IngestionPipeline](https://github.com/run-llama/llama_index/blob/962940ddc079cc21701d28d1237c84c82a7c5164/llama-index-core/llama_index/core/ingestion/pipeline.py)的文档 ID / hash 与变换缓存边界，本文据此把「文档身份 = 知识库 ID + 相对路径」「内容 hash」用于变更检测。以上是采用点，不是本项目已具备这些框架的能力。
+
+**已实现**（有测试覆盖）：
+
+- 注册表以 JSON 持久化知识库 ID、名称、描述、语言与可选 `extensions`，写入采用临时文件替换；不含任何凭据字段，凭据仍由环境变量提供。
+- 导入只读文件本身：文档 ID 由知识库 ID 与相对路径派生，另有文件 SHA256 与解析后内容 SHA256；Markdown 记录 ATX/Setext 标题结构与章节归属，TXT 记录物理行数但不虚构标题；**PDF 的页码来自解析器实际给出的页数，字符位置一律不报告（`positions=false`），不伪造区间**。
+- 每次导入的产出是「文档 + 片段 + 跳过项」三份清单：不支持的扩展名、解析失败、片段无法在原文定位，都会带原因进入 `skipped`，不会静默消失，也不会中断其余文件；行数按物理行计（结尾换行不算空行）。
+- 片段位置复用 [rag/structure.py](../rag/structure.py) 的 `locate_chunks`：按顺序字面定位，定位失败即报错，不用规范化文本冒充原文位置。
+- 索引构建按知识库隔离到独立 generation 目录，全部片段向量化并核对数量后才原子替换 `active.json`；任一环节失败抛 `BuildFailed` 并清理半成品目录，旧索引继续服务（测试覆盖）。每个 generation 保存自己的片段快照，检索只在该 generation 内解析命中，避免与并发导入交错。
+- 签名包含文档 ID 与内容 hash 集合、Embedding 模型与地址、切片参数与距离度量；文档更新后旧索引被判定失效，需重新导入并重建。
+- 接口按知识库 ID 工作：创建、文件上传或服务器目录导入、建索引、问答、查看原文；未知知识库 404、未建索引 503/409、提供方异常 502 且不回显凭据细节。`GET /knowledge-bases` 只依赖注册表，**缺少实验目录时仍正常返回已注册知识库**（有测试覆盖）。
+
+**取舍与仍未完成的部分**（不得当成已实现）：
+
+- `rag/knowledge.py` 与既有两个夹具**尚未迁移**：智能家居与会计仍按 `experiments/rag-baseline` 的预生成元数据加载，其会计条号路由仍是该路径下的**领域专用分支**；该目录缺失时这两个夹具不再出现在列表中，通用部分不受影响。通用路径（`rag/kb_service.py`）不含任何领域条件分支，两者目前在同一个 API 中共存。
+- 领域扩展机制只预留了注册表字段，**尚未实现**基于导入元数据的精确定位；ADR-002 至 ADR-006 的检索增强（邻段扩展、重排、结构提示、精简提示）都还没有接入通用路径。检索默认仍是纯向量 Top-K。
+- 本轮不实现文档删除/禁用、增量 upsert 与 Embedding 缓存；**每次导入整体替换该知识库的可检索集合**，每次构建为全量重建，这一点已写进接口文档与页面文案。
+- 签名不含解析器与切片器的实现版本：只改切片逻辑而不改参数时，旧索引不会被判定失效。
+- 向量后端在本机只能以注入的内存实现验证，真实 Chroma 路径未在本机跑通，原因见 [ENVIRONMENT_WINDOWS.md](ENVIRONMENT_WINDOWS.md)。
+
+**验证方式**：11 项注册表测试、14 项导入测试、14 项生命周期测试、12 项接口测试（本机共 83 项通过，另有 11 项 `test_knowledge.py` 因原生向量索引不可用未运行）；第三语料（阳台蔬菜种植）端到端验收 10/10 通过，见 [THIRD_CORPUS_ACCEPTANCE.md](THIRD_CORPUS_ACCEPTANCE.md)。该验收证明的是导入与接口契约，**不是答案质量，也没有使用真实向量检索**。

@@ -83,11 +83,17 @@ def test_unsupported_schema_is_refused(tmp_path):
         Registry(tmp_path).list()
 
 
-def test_registry_never_stores_credentials(tmp_path):
+def test_registry_keeps_extensions_without_adding_credentials(tmp_path):
+    """The registry stores what it is given; credentials stay in the environment."""
     registry = Registry(tmp_path)
-    registry.create('甲', extensions={'retrieval': 'vector'})
-    text = (tmp_path / 'knowledge-bases.json').read_text(encoding='utf-8')
-    assert 'api_key' not in text and 'sk-' not in text
+    registry.create('甲', extensions={'retrieval': 'vector', 'api_key': 'sk-should-not-be-added'})
+    stored = json.loads((tmp_path / 'knowledge-bases.json').read_text(encoding='utf-8'))
+    entry = stored['knowledge_bases'][0]
+    assert entry['extensions'] == {'retrieval': 'vector', 'api_key': 'sk-should-not-be-added'}
+    # No credential field is invented by the registry itself.
+    assert set(entry) == {'id', 'name', 'description', 'language', 'created_at', 'updated_at',
+                          'extensions'}
+    assert 'embedding_api_key' not in entry and 'llm_api_key' not in entry
 
 
 def test_name_normalization():

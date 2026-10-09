@@ -1,4 +1,51 @@
-# 新会话交接（2026-10-09）
+# 新会话交接（2026-10-09 晚，通用知识库注册与导入）
+
+## 这一轮做了什么
+
+在 `work` 分支上按 `docs/PROJECT_SCOPE.md` 的下一步顺序，完成「通用知识库注册 + 文档导入」的前四步，并做了第三语料接入验收。小步提交，未 push，未合并 main。
+
+- `rag/registry.py`：持久化知识库注册表（ID/名称/描述/语言/可选扩展），原子写入，不存凭据。
+- `rag/importer.py`：只读文件本身推导文档身份、内容 hash、原文字符区间与 Markdown 标题结构；PDF 不伪造位置；坏文件跳过不阻塞。
+- `rag/kb_service.py`：注册→导入→建索引→问答→查看原文的通用生命周期，向量后端可注入；发布为成功后原子切换，失败保留旧索引；带 CLI（create/list/import/index/ask）。
+- `rag/api.py`：`/knowledge-bases` 创建、`/{kb}/sources` 上传或目录导入、`/{kb}/index`、`/{kb}/query`、`/{kb}/sources/{id}` 查看原文。
+- `rag/static/index.html`：下拉动态读取注册表，新增创建/导入/建索引操作，已无领域硬编码字符串。
+- 测试：registry 11、importer 14、kb_service 14、api 12，本机共 83 项通过（`test_store` 单独 2 项通过；`test_knowledge` 的 11 项因原生向量索引不可用未运行）。
+- 验收：第三语料 `test_docs/third-corpus/`（阳台蔬菜种植，自撰）10/10 通过，见 `docs/THIRD_CORPUS_ACCEPTANCE.md`。
+- 设计出处：`docs/ARCHITECTURE_REFERENCES.md` 的 **ADR-007**（明确区分已实现与未迁移）。
+
+## 本轮独立复核后修掉的问题
+
+两位独立审查者（对抗式解耦审查 + 复现验证）查出并已修复：
+
+1. `GET /knowledge-bases` 原先直接拼接 `knowledge.catalog()`，缺少 `experiments/rag-baseline` 时整个首屏请求 500；现在只依赖注册表，缺夹具仍正常返回（有测试）。
+2. 导入会静默丢弃非 md/txt/pdf 文件；现在所有未导入文件都带原因进入 `skipped`，重复上传同名文件报 422，页面显示未导入清单。
+3. PDF「报告页码」原先只是注释与测试名，没有字段；现在页码来自解析器实际页数，无页码时为 `null`。
+4. `lines` 原先按换行数+1 计算，结尾换行会多算一行；改为物理行数。
+5. 构建失败会残留半成品 generation 目录；现在失败即清理。
+6. 检索原先分别读取 active/清单/向量库，存在窄竞态；现在每个 generation 自带片段快照，命中只在该 generation 内解析。
+7. 未知知识库的 `GET .../sources` 原先返回 200 `[]`；现在 404。
+8. 测试里若干近似恒真的断言（空循环、随机 ID 断言、未写入凭据却断言不落盘）已改为可失败的断言。
+
+**本机两个硬限制**，动手前先读 `docs/ENVIRONMENT_WINDOWS.md`：`.venv` 基座已修好（CPython 3.11.15），跑测试必须注入 `tools/testenv/sitecustomize.py` 并加 `--basetemp`；ChromaDB 的原生 hnswlib 在本机崩溃（0xC0000005），本机**无法**跑真实索引与 `tests/test_knowledge.py`。
+
+## 尚未完成（按优先级）
+
+1. **在能跑原生向量索引的环境复跑真实验收**：Docker 或 Linux 主机上 `RAG_ACCEPTANCE_REAL=1` 跑 `acceptance_third_corpus.py`，并跑通 `tests/test_knowledge.py`（749 片段 Chroma 索引）。这是当前最大的未验证缺口。
+2. **迁移既有两个夹具到同一导入流程**：`rag/knowledge.py` 仍读 `experiments/rag-baseline` 的 `evidence.jsonl` / `articles.jsonl`，会计条号路由是这条旧路径下的领域分支。迁移时把「条号/年份」变成显式启用的可选扩展，并保持 ADR-002~006 的实验可复现。
+3. 领域扩展落地：基于导入元数据的精确定位（ADR-007 只预留了 `extensions` 字段）。
+4. 检索增强接入通用路径：邻段扩展、重排、结构提示目前都只在实验脚本里，通用默认路径仍为纯向量 Top-K。
+5. 文档禁用/删除、增量 upsert、Embedding 缓存均未实现。
+
+## 不可遗忘的边界
+
+- 通用流程不得依赖固定知识库 ID、产品型号、准则名称或评测答案；新语料必须走导入流程接入。
+- 第三语料验收证明的是**导入与接口契约**，不是答案准确率；不要把 9/9 写成质量结论。
+- 97 题保留测试仍未执行；不要为了更好结果重复调那九题。
+- 默认本地提交，不 push；不要自动合并到 main。
+
+---
+
+# 上一轮交接（2026-10-09 早）
 
 ## 目标与协作约定
 
