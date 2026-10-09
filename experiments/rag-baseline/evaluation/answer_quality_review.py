@@ -271,12 +271,16 @@ def main(argv=None):
     parser.add_argument('--rerank', action='store_true',
                         help='对深池做专用 rerank 后取前 k（需配置 RERANK_*）')
     parser.add_argument('--pool', type=int, default=20, help='重排候选池大小')
+    parser.add_argument('--context-only', action='store_true',
+                        help='只用邻段扩展，不重排（对照用）')
     args = parser.parse_args(argv)
 
     config = load_config()
     context_radius = config.context_radius if args.context_radius is None else args.context_radius
+    if args.context_only:
+        context_radius = context_radius or 1
     reranker = None
-    if args.rerank:
+    if args.rerank and not args.context_only:
         if not config.rerank_configured:
             raise SystemExit('未配置 RERANK_* ，无法重排')
         from specialized_rerank import SpecializedReranker
