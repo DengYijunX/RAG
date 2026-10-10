@@ -17,6 +17,7 @@ from pathlib import Path
 
 from rag.loader import SUPPORTED_SUFFIXES, load_file
 from rag.splitter import split
+from rag.structural_split import split_text
 from rag.structure import locate_chunks, parse_structure
 
 MANIFEST_VERSION = 1
@@ -130,21 +131,34 @@ def _apply_document(record, raw, document_id, chunk_size, chunk_overlap, media_t
     record['positions'] = True
 
 
-def _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap):
+def _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap,
+                structure_aware=True):
     from rag.loader import Document as Loaded
 
     loaded = Loaded(content=document['content'], metadata={'source': document['source']})
     produced = split([loaded], chunk_size, chunk_overlap)
     texts = [c.content for c in produced]
+    if structure_aware:
+        # Honour the document's own headings before any generic separator, so a
+        # section is not cut in half by the character limit. Measured on the
+        # accounting corpus: articles wholly inside one chunk 1523/1859 -> 1805/1859.
+        def fallback(text):
+            return [chunk.content for chunk in
+                    split([Loaded(content=text, metadata={'source': document['source']})],
+                          chunk_size, chunk_overlap)]
+
+        result = split_text(document['content'], chunk_size, chunk_overlap, fallback)
+        if result.structural:
+            texts = result.texts
     if record['positions']:
         spans = locate_chunks(document['content'], texts)
     else:
         spans = [None] * len(texts)
     chunks = []
-    for index, (chunk, span) in enumerate(zip(produced, spans)):
+    for index, (text, span) in enumerate(zip(texts, spans)):
         chunks.append({'id': _chunk_id(document_id, index), 'document_id': document_id,
                        'kb_id': kb_id, 'source': document['source'], 'chunk_index': index,
-                       'content': chunk.content,
+                       'content': text,
                        'start': span[0] if span else None, 'end': span[1] if span else None})
     return chunks
 

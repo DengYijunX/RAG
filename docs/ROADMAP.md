@@ -94,6 +94,8 @@ RAG/
 
 **生成侧提示词修复**：见 [PROMPT_CLARIFICATION_REPORT.md](../experiments/rag-baseline/evaluation/PROMPT_CLARIFICATION_REPORT.md)。首轮发现 3 处 `missing_clarification`（型号/版本不明时模型条件性作答），**根因是提示词从未要求"前提不明先澄清"**。补上该条后：`missing_clarification` **3 → 0**，行为匹配满分率升至 **1.00**，要点完整性 0.20→0.60（售后）/ 0.43→0.57（会计）；控制组（明确题、拒答题）**无回归**。`retrieval_missing` 5 题未变，属检索侧问题。改动落在 [rag/kb_service.py](../rag/kb_service.py) 的 `GENERATION_SYSTEM_PROMPT`，契约由 6 项测试锁定。
 
+**结构感知切片（已设为默认，修掉"条文被切开"的根因）**：见 [STRUCTURAL_CHUNKING_REPORT.md](../experiments/rag-baseline/evaluation/STRUCTURAL_CHUNKING_REPORT.md)。根因不在检索而在切片——`RecursiveCharacterTextSplitter` 的分隔符里没有条文边界，500 字打满时断点落在条文内部；而 [rag/structure.py](../rag/structure.py) 一直能识别这些边界，只用于记录、没用于切片。新增 [rag/structural_split.py](../rag/structural_split.py)，**先试文档自身的标题边界，再用通用分隔符**（通用机制，不依赖中文法条写法；无标题文档自动退回原行为）。会计：条文完整落片 **81.9% → 97.1%**、recall 0.8930→**0.9303**、ndcg 0.8535→**0.8987**、首命中槽位 1.365→**1.188**；售后**逐位不变**（FAQ 无标题，自动退回）。4 道失败题 **0/4 → 3/4**（ACC-Q059 因条文 560 字超过 500 上限；`CHUNK_SIZE=1000` 可修 4/4，但售后略降，故未改默认）。**注意：所有既有索引与检索数字随之失效，需重新导入与重跑。**
+
 **邻段扩展接入产品路径：实现完成但默认关闭**。见 [CONTEXT_WIRING_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_WIRING_REPORT.md)。扩展放在**检索之后**（不影响检索指标），由 `RAG_CONTEXT_RADIUS` 控制，默认 0。20 题生成侧对照**否决开启**：上下文涨到约 2.7 倍（383→1042 字），完整性**无改善**，引用忠实性满分率**会计 10/10→2/9、售后 8/9→4/9**，并新增 `unsupported_claim` 7 处（会计）与 `fabricated_action_or_data` 1 处（售后）。实例：ACC-Q114 的片段只有前三条，半径 0 诚实说"不足以回答"，半径 1 却写出第四条原文——**更多上下文诱发编造**。根因是那几题的目标条文**根本没进前 4 个命中**，扩展无法把未召回的条文拉进来。
 
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
