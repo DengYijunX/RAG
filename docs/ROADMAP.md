@@ -59,13 +59,13 @@ RAG/
 
 | # | WeKnora 路线 | 本项目位置 | 状态 | 离"可信"还差什么 |
 | --- | --- | --- | --- | --- |
-| 1 | 文档解析与 Chunking | [rag/loader.py](../rag/loader.py)、[rag/importer.py](../rag/importer.py)、[rag/splitter.py](../rag/splitter.py)、[rag/structure.py](../rag/structure.py) | 已实现 | 解析成功率/表格还原无专项测试；父子分块未实现 |
+| 1 | 文档解析与 Chunking | [rag/loader.py](../rag/loader.py)、[rag/importer.py](../rag/importer.py)、[rag/splitter.py](../rag/splitter.py)、[rag/structure.py](../rag/structure.py)、[rag/structural_split.py](../rag/structural_split.py) | 已实现，**结构感知切片已是默认** | 解析成功率/表格还原无专项测试；**父文档检索（长节补全）未实现**——这是最后一题 ACC-Q059 的候选解法 |
 | 2 | Embedding 与索引 | [rag/kb_service.py](../rag/kb_service.py)（`vectors` / `build` / `ChromaVectors`） | 已实现，**本机未验证** | 真实 Chroma 路径待 Docker 复跑；模型横向比较未做 |
-| 3 | 混合检索与融合 | 实验：`experiments/.../hybrid_experiment.py`、`topk_experiment.py` | 仅实验 | BM25、RRF 未进产品路径；无生产配置 |
-| 4 | Rerank 与上下文 | 实验：`rerank_experiment.py`、`context_budget.py`、`context_structure.py` | 仅实验 | 阈值、MMR 去重、父子扩展均未实现 |
-| 5 | 生成与引用 | [rag/kb_service.py](../rag/kb_service.py)（`generate` / `citations`） | 已实现 | 只有固定提示词；Faithfulness / 引用准确率未测 |
-| 6 | Evaluation | `eval/`（本次占位）；现有 `experiments/**` 脚本与报告 | 占位 + 脚本级 | 无统一数据集 schema、无指标注册表、无任务调度与持久化 |
-| 7 | 消融与工程优化 | `experiments/**/*_REPORT.md`（5 份对照报告） | 已实验 | 未固化为可一键复跑的矩阵；延迟/成本未系统记录 |
+| 3 | 混合检索与融合 | 实验：`hybrid_retrieval.py`、`retrieval_modes_experiment.py` | 仅实验 | BM25、RRF 未进产品路径 |
+| 4 | Rerank 与上下文 | [rag/rerank.py](../rag/rerank.py)（实现）、`RAG_RERANK_POOL`（开关，默认关） | **已实现，默认关闭** | 阈值、MMR 去重未实现；深池+重排未设为默认（生成侧已验证受益，待决定） |
+| 5 | 生成与引用 | [rag/kb_service.py](../rag/kb_service.py)（`generate` / `citations`） | 已实现 | 只有固定提示词；Faithfulness 只测过助手初审 |
+| 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` | **已实现（检索侧与生成侧初审）** | **人工审阅未做**；保留测试集未跑；评审自身不稳定 |
+| 7 | 消融与工程优化 | `experiments/**/*_REPORT.md` | 已实验 | 未固化为可一键复跑的矩阵；延迟/成本未系统记录 |
 
 ---
 
@@ -80,7 +80,7 @@ RAG/
 | 5 生成侧指标 | [eval/runner.py](../eval/runner.py) 之外的 `answer_review.py` + `answer_quality_review.py` | **已实现（助手初审）**：三维标准评分 + 自动引用检查；**人工审阅未做**，且实测评审自身不稳定 |
 | 6 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
 
-**已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**：售后 `recall_in_top_k` = 0.810（35 道可判分），会计 = 0.856（67 道可判分）；`mean_first_hit_slot` 分别为 1.76 与 1.47。
+**已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**。**注意这些数字属于通用切片 + `bge-m3` 阶段，已被后续两轮变更取代**：换 Embedding 后为售后 0.976 / 会计 0.893，结构切片后为售后 0.976 / 会计 **0.9378**（见下文）。历史数字保留在此仅为对照来源。
 
 **检索模式对照（dense / BM25 / hybrid-RRF）**：见 [RETRIEVAL_MODES_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_MODES_REPORT.md)。结论**因语料而异**：会计 hybrid 最好（recall 0.856 → 0.893，NDCG 0.806 → 0.862），售后 **BM25 单路最好**（0.810 → 0.933），融合在售后反而略差。可迁移的结论是**融合收益取决于两条臂的分歧度**（会计候选池 Jaccard 0.247 → 有收益；售后 0.649 → 融合只是重排噪声）。RRF 权重未在开发集上调参。
 
@@ -94,9 +94,11 @@ RAG/
 
 **生成侧提示词修复**：见 [PROMPT_CLARIFICATION_REPORT.md](../experiments/rag-baseline/evaluation/PROMPT_CLARIFICATION_REPORT.md)。首轮发现 3 处 `missing_clarification`（型号/版本不明时模型条件性作答），**根因是提示词从未要求"前提不明先澄清"**。补上该条后：`missing_clarification` **3 → 0**，行为匹配满分率升至 **1.00**，要点完整性 0.20→0.60（售后）/ 0.43→0.57（会计）；控制组（明确题、拒答题）**无回归**。`retrieval_missing` 5 题未变，属检索侧问题。改动落在 [rag/kb_service.py](../rag/kb_service.py) 的 `GENERATION_SYSTEM_PROMPT`，契约由 6 项测试锁定。
 
-**结构感知切片（已设为默认，修掉"条文被切开"的根因）**：见 [STRUCTURAL_CHUNKING_REPORT.md](../experiments/rag-baseline/evaluation/STRUCTURAL_CHUNKING_REPORT.md)。根因不在检索而在切片——`RecursiveCharacterTextSplitter` 的分隔符里没有条文边界，500 字打满时断点落在条文内部；而 [rag/structure.py](../rag/structure.py) 一直能识别这些边界，只用于记录、没用于切片。新增 [rag/structural_split.py](../rag/structural_split.py)，**先试文档自身的标题边界，再用通用分隔符**（通用机制，不依赖中文法条写法；无标题文档自动退回原行为）。会计：条文完整落片 **81.9% → 97.1%**、recall 0.8930→**0.9303**、ndcg 0.8535→**0.8987**、首命中槽位 1.365→**1.188**；售后**逐位不变**（FAQ 无标题，自动退回）。4 道失败题 **0/4 → 3/4**（ACC-Q059 因条文 560 字超过 500 上限；`CHUNK_SIZE=1000` 可修 4/4，但售后略降，故未改默认）。**注意：所有既有索引与检索数字随之失效，需重新导入与重跑。**
+**结构感知切片（已设为默认，修掉"条文被切开"的根因）**：见 [STRUCTURAL_CHUNKING_REPORT.md](../experiments/rag-baseline/evaluation/STRUCTURAL_CHUNKING_REPORT.md)。根因不在检索而在切片——`RecursiveCharacterTextSplitter` 的分隔符里没有条文边界，500 字打满时断点落在条文内部；而 [rag/structure.py](../rag/structure.py) 一直能识别这些边界，只用于记录、没用于切片。新增 [rag/structural_split.py](../rag/structural_split.py)，**先试文档自身的标题边界，再用通用分隔符**（通用机制，不依赖中文法条写法；无标题文档自动退回原行为）。会计：条文完整落片 **81.9% → 97.1%**、recall 0.8930→**0.9378**、ndcg 0.8535→**0.9026**、首命中槽位 1.365→**1.318**、mrr 0.8547→**0.8815**；售后**逐位不变**（FAQ 无标题，自动退回；切片集 id 与文本逐字相同）。4 道失败题 **0/4 → 3/4**（ACC-Q059 因条文 560 字超过 500 上限；`CHUNK_SIZE=1000` 可修 4/4，但售后 recall 0.9762→0.9714，故未改默认）。生成侧同批样本：会计要点完整性 0.43→0.89（深度 4）/ **0.90**（深度 50 + 重排），ACC-Q041 从"片段未包含第五条、无法回答"变为完整正确作答。**改动切片会使既有导入与索引失效**：`active.eval.json` 现记录含实际片数的 `chunking` 指纹，导入清单也记录切片身份，不匹配即重新导入并重建。
 
-**邻段扩展接入产品路径：实现完成但默认关闭**。见 [CONTEXT_WIRING_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_WIRING_REPORT.md)。扩展放在**检索之后**（不影响检索指标），由 `RAG_CONTEXT_RADIUS` 控制，默认 0。20 题生成侧对照**否决开启**：上下文涨到约 2.7 倍（383→1042 字），完整性**无改善**，引用忠实性满分率**会计 10/10→2/9、售后 8/9→4/9**，并新增 `unsupported_claim` 7 处（会计）与 `fabricated_action_or_data` 1 处（售后）。实例：ACC-Q114 的片段只有前三条，半径 0 诚实说"不足以回答"，半径 1 却写出第四条原文——**更多上下文诱发编造**。根因是那几题的目标条文**根本没进前 4 个命中**，扩展无法把未召回的条文拉进来。
+**邻段扩展接入产品路径：实现完成但默认关闭**。见 [CONTEXT_WIRING_REPORT.md](../experiments/rag-baseline/evaluation/CONTEXT_WIRING_REPORT.md)。扩展放在**检索之后**（不影响检索指标），由 `RAG_CONTEXT_RADIUS` 控制，默认 0。20 题对照显示上下文涨到约 2.7 倍（383→1042 字）而要点完整性**无改善**（7/9 对 7/10，在噪声内），因此**默认关闭**。
+
+**⚠️ 该报告曾给出更重的否决理由，已撤回**：初版称"半径 1 下模型编造 2017 年收入准则第四条"，依据是模型自称"片段只有前三条"。核对引用文本后发现**片段确实含第四条原文**，模型是如实引用——错误在于把模型的陈述当成了事实。进一步逐题核对当时全部 8 处 `unsupported_claim`，被指"片段里没有"的法条**实际都在引用片段内**；最直接的证据是 ACC-Q114 在半径 1 与深池重排下引用完整度相同，前者被判引用忠实性 0、后者判 2。**结论：引用忠实性维度在长片段下不可靠**（评审上下文随引用变长到 983–1448 字后定位不到法条即报无依据），属测量假象。因此扩展的准确表述是"**未被证明有益**"，而不是"有害"。凡涉及长上下文的结论都需人工复核。
 
 注意区分：报告里同时保留的 `recall@k`（0.971 / 0.893）是**按标签去重、且在整条候选列表上**计算的视图，三种模式数值完全相同，**不得单独引用**。排序质量看 `ndcg_in_top_k`、`mean_first_hit_slot` 与 `precision_in_top_k`。
 
