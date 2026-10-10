@@ -1,0 +1,10 @@
+{"question_id": "ACC-Q041", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "定位准确，概括与原文引用完整（含五类因素五项），标注 2006 年版。此前该题因条文被切开长期无法作答，结构切片修复后首次答对。"}
+{"question_id": "ACC-Q059", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "定义与四类构成正确并引用原文；主动注明片段未标明为第二条。注意：标注的该条原文（560 字）并未进入上下文，属“检索没给到”但仍答对。"}
+{"question_id": "ACC-Q098", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "分版引用、七项差异、明确编号相同不保证主题对应，未混成一条规则、未断定现行版本。"}
+{"question_id": "ACC-Q114", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "2006 五条件与 2017 履约义务/控制权均已答出并分别引用，未混版。"}
+{"question_id": "ACC-Q116", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "确认差异完整；现金流分类如实说明片段无依据。三要点缺“一般本金利息筹资、简化付款经营”，属检索未给到。"}
+{"question_id": "ACC-Q118", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "确认时点（履约义务/控制权及控制权转移迹象）与计量（分摊至各单项履约义务的交易价格、代第三方收取与预期退款不计入）均覆盖。"}
+{"question_id": "ACC-Q122", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "先问适用版本与是否已履约/客户是否取得控制权，再分版本作答；结论正确且有引用。"}
+{"question_id": "ACC-Q132", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明附件仅部分条款且无 2026 版本标识，拒绝还原全文，未编造。"}
+{"question_id": "ACC-Q134", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明准则不含公司财务数据，指出所需材料，未编造金额。"}
+{"question_id": "ACC-Q153", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明片段仅现行条文、无修订计划，拒绝预测，未把预测说成已定条文。"}

@@ -16,6 +16,7 @@ class StubQuestion:
     def __init__(self, identifier, split='dev'):
         self.id = identifier
         self.split = split
+        self.relevant_passage_ids = ['P1']
         self.metadata = {'category': 'single', 'expected_action': 'answer',
                          'expected_points': ['要点一', '要点二']}
 
@@ -49,8 +50,18 @@ def stub_context(question_ids):
     return {identifier: StubQuestion(identifier) for identifier in question_ids}
 
 
+def stub_passages(_path):
+    """Stand in for the dataset's labelled passages.
+
+    ``rows_for`` needs them to report whether the evidence the answer should have
+    used was actually in front of it; without the stub the tests read the corpus.
+    """
+    return {'P1': '片段正文'}
+
+
 def test_export_writes_both_views(tmp_path, monkeypatch):
     run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
@@ -90,6 +101,7 @@ def fill_sheet(run, values, filename='review.csv'):
 def test_export_writes_a_short_fill_in_sheet(tmp_path, monkeypatch):
     """The short sheet is what a person edits: five cells, plus an example row."""
     run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
@@ -107,6 +119,7 @@ def test_export_writes_a_short_fill_in_sheet(tmp_path, monkeypatch):
 
 def test_the_short_sheet_round_trips_and_skips_the_example_row(tmp_path, monkeypatch):
     run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
@@ -128,6 +141,7 @@ def test_the_short_sheet_round_trips_and_skips_the_example_row(tmp_path, monkeyp
 
 def test_import_records_human_scores_and_reports_rates(tmp_path, monkeypatch):
     run = write_run(tmp_path)
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
@@ -162,6 +176,7 @@ def test_import_records_human_scores_and_reports_rates(tmp_path, monkeypatch):
 
 def test_unfilled_rows_are_reported_and_excluded(tmp_path, monkeypatch):
     run = write_run(tmp_path, question_ids=('Q1', 'Q2'))
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1', 'Q2')))
     export(run, 'smart-home', 'v2')
@@ -175,6 +190,7 @@ def test_unfilled_rows_are_reported_and_excluded(tmp_path, monkeypatch):
 @pytest.mark.parametrize('value', ['3', '-1', '很好', 'two'])
 def test_invalid_scores_are_refused(tmp_path, monkeypatch, value):
     run = write_run(tmp_path, question_ids=('Q1',))
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1',)))
     export(run, 'smart-home', 'v2')
@@ -185,6 +201,7 @@ def test_invalid_scores_are_refused(tmp_path, monkeypatch, value):
 
 def test_unknown_error_labels_are_refused(tmp_path, monkeypatch):
     run = write_run(tmp_path, question_ids=('Q1',))
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1',)))
     export(run, 'smart-home', 'v2')
@@ -209,6 +226,7 @@ def test_rows_for_marks_invalid_assistant_scores(tmp_path, monkeypatch):
     records[0]['assistant_scores'] = {}
     with open(run / 'records.jsonl', 'w', encoding='utf-8') as handle:
         handle.write(json.dumps(records[0], ensure_ascii=False) + '\n')
+    monkeypatch.setattr('review_sheet.load_passages', stub_passages)
     monkeypatch.setattr('review_sheet.load_context',
                         lambda kb, version: stub_context(('Q1',)))
     rows = rows_for(run, 'smart-home', 'v2')

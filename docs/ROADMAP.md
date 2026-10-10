@@ -64,7 +64,7 @@ RAG/
 | 3 | 混合检索与融合 | 实验：`hybrid_retrieval.py`、`retrieval_modes_experiment.py` | 仅实验 | BM25、RRF 未进产品路径 |
 | 4 | Rerank 与上下文 | [rag/rerank.py](../rag/rerank.py)（实现）、`RAG_RERANK_POOL`（开关，默认关） | **已实现，默认关闭** | 阈值、MMR 去重未实现；深池+重排未设为默认（生成侧已验证受益，待决定） |
 | 5 | 生成与引用 | [rag/kb_service.py](../rag/kb_service.py)（`generate` / `citations`） | 已实现 | 只有固定提示词；Faithfulness 只测过助手初审 |
-| 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` | **已实现（检索侧与生成侧初审）** | **人工审阅未做**；保留测试集未跑；评审自身不稳定 |
+| 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` / `human_review.py` | **已实现（检索侧 + 生成侧初审 + 人工审阅）** | 保留测试集未跑；审阅者为项目所有者而非独立领域审阅者；评审自身不稳定 |
 | 7 | 消融与工程优化 | `experiments/**/*_REPORT.md` | 已实验 | 未固化为可一键复跑的矩阵；延迟/成本未系统记录 |
 
 ---
@@ -77,7 +77,7 @@ RAG/
 | 2 指标层（检索侧） | [eval/metrics.py](../eval/metrics.py) | **已实现**：`recall@k` / `precision@k` / `hit_rate@k` / `mrr` / `map` / `ndcg@k`，含手算样例 |
 | 3 ID 对齐 | [eval/alignment.py](../eval/alignment.py) | **已实现**：按规范化文本精确匹配数据集 passage id；**未命中的槽位保留原排名**（`None`），不静默丢弃；歧义文本拒绝猜测并计入 `unresolved` |
 | 4 执行层 | [eval/runner.py](../eval/runner.py) | **已实现（仅检索）**：逐题记录命中 / 未命中 / 失败，落盘 `summary.json` + `samples.jsonl`，同一 task_id 不覆盖 |
-| 5 生成侧指标 | [eval/runner.py](../eval/runner.py) 之外的 `answer_review.py` + `answer_quality_review.py` | **已实现（助手初审）**：三维标准评分 + 自动引用检查；**人工审阅未做**，且实测评审自身不稳定 |
+| 5 生成侧指标 | `answer_review.py` + `answer_quality_review.py` + `human_review.py` | **已实现（人工审阅已完成 20 题）**：三维标准评分 + 自动引用检查 + 人工确认；审阅者为项目所有者，非独立领域审阅者 |
 | 6 消融矩阵 | `experiments/**` | **仅实验**：5 份对照报告存在，但未固化为可一键复跑的矩阵 |
 
 **已经跑出的第一份真实检索指标**：见 [RETRIEVAL_BASELINE_REPORT.md](../experiments/rag-baseline/evaluation/RETRIEVAL_BASELINE_REPORT.md)。v1 开发集纯向量 Top-10 检索，主指标是**金标签是否落在前 4 个片段内**。**注意这些数字属于通用切片 + `bge-m3` 阶段，已被后续两轮变更取代**：换 Embedding 后为售后 0.976 / 会计 0.893，结构切片后为售后 0.976 / 会计 **0.9378**（见下文）。历史数字保留在此仅为对照来源。
@@ -89,6 +89,8 @@ RAG/
 **LLM 重排（listwise）**：见 [RERANK_LLM_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_LLM_REPORT.md)，决策见 ADR-009。用**现有对话模型**（非专用 reranker）对 Top-20 候选输出排列，严格校验完整排列、非法即回退。会计 NDCG@4 0.862 → 0.920、售后 0.839 → 0.988，两库 `mean_first_hit_slot` 都变成 **1.000**。归因显示 `not_promoted` 与 `broken` 均为 0（提升确来自重排），会计剩余 5 题是 `never_retrieved`（候选池无金标签，重排无解）。**代价：每题 17–18 秒**。
 
 **换阿里云 Embedding 后的三方对照**：见 [RERANK_PROVIDER_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_PROVIDER_REPORT.md)。Embedding 换成 `qwen3.7-text-embedding-flash` 后两库都改善（售后 recall 0.810 → 0.976，会计 0.856 → 0.893）。**专用 rerank `qwen3.7-text-rerank` 与 LLM 重排质量接近但快一个数量级**：会计 NDCG 0.9193 vs 0.9152、耗时 87.2s vs 1534.3s（快约 17.6 倍）；售后专用略差（0.9664 vs 0.9880），差异只出现在 2 道「多实体对比」题上——推测专用 rerank 缺少「整份候选是否覆盖问题全部实体」的全局视角（**未验证**）。专用端点输出分数，同一输入下**可复现**；LLM 重排两次跑出的排列不同（NDCG 0.9197/0.9152）。**仍未接入产品默认路径**。
+
+**人工审阅（已完成 20 题）**：见 [HUMAN_REVIEW_REPORT.md](../experiments/rag-baseline/evaluation/HUMAN_REVIEW_REPORT.md)。这是项目**第一次真正完成人工审阅**——此前所有答案质量数字都来自不稳定的助手初审。审阅者逐题核对全部 20 题答案后确认评分。结果：两库要点完整性 **9/10 = 0.90**、引用忠实性 **10/10 = 1.00**、行为匹配 **10/10 = 1.00**，**阻断缺陷 0**。**与助手初审仅 1 处分歧**（售后 Q058，助手偏严），说明助手评分作为批量筛查可用、但不能当验收结论。**限制必须一起读**：审阅者是项目所有者、**不是独立领域审阅者**（`reviewer_is_independent = false`），评分由 AI 领队按标准给出并经所有者确认，样本为 20 题定向诊断选样、**不估计总体准确率**，且只在开发集上做。因此准确表述是"**开发集诊断结果优于预期**"，不是"验收通过"。
 
 **生成侧答案审阅（助手初审 + 领队判断）**：见 [ANSWER_QUALITY_REPORT.md](../experiments/rag-baseline/evaluation/ANSWER_QUALITY_REPORT.md)，标准见 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)。20 题预声明样本：自动引用检查两库 **10/10 通过**、阻断缺陷 0；要点完整性满分率仅约 0.5，错误标签以 `retrieval_missing` 为主。**两个限制必须一起读**：① 同一批答案两次评审分数不同，**评审自身不稳定**，与标准「不得用 LLM 自评分代替语义评分」一致；② 样本是定向诊断选样，**不估计总体准确率**，`human_reviewed` 为 0。领队判断经所有者逐题确认，但属自评而非独立签署。
 

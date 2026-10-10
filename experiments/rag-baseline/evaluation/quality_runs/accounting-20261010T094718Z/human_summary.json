@@ -1,0 +1,50 @@
+{
+  "human_reviewed": 10,
+  "questions": 10,
+  "human_full_marks": {
+    "key_points": {
+      "numerator": 9,
+      "denominator": 10,
+      "rate": 0.9
+    },
+    "citation_faithfulness": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1.0
+    },
+    "behavior_match": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1.0
+    }
+  },
+  "human_error_labels": {
+    "retrieval_missing": 1
+  },
+  "agreement_with_assistant": {
+    "key_points": {
+      "numerator": 9,
+      "denominator": 9,
+      "rate": 1.0
+    },
+    "citation_faithfulness": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1.0
+    },
+    "behavior_match": {
+      "numerator": 10,
+      "denominator": 10,
+      "rate": 1.0
+    }
+  },
+  "disagreements": [],
+  "provenance": {
+    "reviewer": "project owner",
+    "reviewer_is_independent": false,
+    "basis": "owner reviewed the answers presented in the session and confirmed them; scores were assigned by the AI lead applying QUALITY_RUBRIC.md and accepted by the owner, except the four items the owner was asked to adjudicate explicitly",
+    "sample": "20-question predeclared diagnostic sample (not a random sample)",
+    "estimates_population": false
+  },
+  "note": "人工评分（项目所有者确认）与助手初审分开存储；一致性只说明两者是否一致，不构成准确率。样本为定向诊断选样，不估计总体准确率。"
+}

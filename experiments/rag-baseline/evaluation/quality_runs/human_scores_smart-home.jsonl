@@ -1,0 +1,10 @@
+{"question_id": "Q008", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "同账号恢复、无需重配、2米内蓝牙重连三点全覆盖且有引用。"}
+{"question_id": "Q040", "key_points": 1, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": ["retrieval_missing"], "note": "X2 与 G2 结论正确；C1 称片段不足以确认。要点覆盖 3/4，缺 C1 仅 2.4GHz。"}
+{"question_id": "Q043", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "7 天政策、先排查电量与强制重启、保修例外、App我的→售后服务提交材料四步齐全，均有引用。"}
+{"question_id": "Q047", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "先问型号与目的；正确指出 X2 无物理设置键；各时长均按型号引用。"}
+{"question_id": "Q051", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "先问型号；区分短促连续与长间隔单声，未把防撬报警判为低电量；X2 部分如实说明片段不足。"}
+{"question_id": "Q055", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "拒答并说明理由，未虚构配送状态；末尾指向性建议已自行声明“具体物流信息本次片段无依据”，不属无依据的实质结论。"}
+{"question_id": "Q056", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "明确不能代为开锁，未声称已执行；给出片段支持的临时密码替代方案。"}
+{"question_id": "Q057", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明只有查看方法、无具体版本号，未编造版本。"}
+{"question_id": "Q058", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明无下班时间与电话；所提 24 小时审核与上门告知费用经核对确在引用片段内。"}
+{"question_id": "Q072", "key_points": 2, "citation_faithfulness": 2, "behavior_match": 2, "error_labels": [], "note": "说明片段无尺寸信息，未编造；建议查阅规格页属指向性建议，未对语料作断言。"}

@@ -31,6 +31,7 @@ sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from answer_review import DIMENSIONS, ERROR_LABELS, SEVERITIES
+from eval.alignment import load_passages, normalize_text
 from eval.datasets import load_knowledge_base_dataset
 
 BASELINE = REPO / 'experiments' / 'rag-baseline'
@@ -39,7 +40,7 @@ SAMPLE = BASELINE / 'evaluation' / 'quality_sample.json'
 
 CSV_COLUMNS = [
     'question_id', 'split', 'category', 'expected_action',
-    'question', 'reference_points', 'assistant_answer', 'cited_snippets',
+    'question', 'reference_points', 'assistant_answer', 'cited_snippets', 'evidence_status',
     'assistant_key_points', 'assistant_citation_faithfulness', 'assistant_behavior_match',
     'assistant_error_labels', 'assistant_justification',
 ] + [f'human_{dimension}' for dimension in DIMENSIONS] + ['human_error_labels', 'human_note']
@@ -47,7 +48,7 @@ CSV_COLUMNS = [
 # The sheet people actually fill in: the five answers plus just enough context to
 # judge them. The full column set above is for machines and for the archive.
 FILL_COLUMNS = ['question_id', 'question', 'assistant_answer', 'cited_snippets',
-                'reference_points', 'assistant_summary',
+                'reference_points', 'evidence_status', 'assistant_summary',
                 'human_key_points', 'human_citation_faithfulness', 'human_behavior_match',
                 'human_error_labels', 'human_note']
 
@@ -55,8 +56,9 @@ EXAMPLE_ROW = {
     'question_id': '（示例，请勿修改这一行）',
     'question': '问题原文',
     'assistant_answer': '模型回答',
-    'cited_snippets': '本次引用的片段',
-    'reference_points': '数据集标注的参考要点',
+    'cited_snippets': '本次实际引用的片段',
+    'reference_points': '数据集标注的参考要点（完整性就对照它）',
+    'evidence_status': '本次上下文里是否含参考要点所在原文（用于区分"检索没给到"与"答得不好"）',
     'assistant_summary': '助手初审：完整性 2 / 引用忠实性 2 / 行为匹配 2',
     'human_key_points': '2',
     'human_citation_faithfulness': '1',
@@ -100,15 +102,43 @@ def snippet_block(citations):
     return '\n'.join(lines).strip()
 
 
+def evidence_status(record, reference_texts):
+    """Whether the passages the answer needed were actually in front of it.
+
+    This is the distinction the rubric asks for and a reader cannot make on their
+    own: a missing key point is a *retrieval* finding when the labelled text was
+    never in the context, and a *generation* finding when it was there and the
+    answer still omitted it.
+    """
+    if not reference_texts:
+        return '该题无标注要点（澄清/拒答类）'
+    cited = '\n'.join(citation.get('content') or '' for citation in record.get('citations') or [])
+    flat_cited = normalize_text(cited)
+    present = []
+    for identifier, text in reference_texts.items():
+        if normalize_text(text) and normalize_text(text) in flat_cited:
+            present.append(identifier)
+    if len(present) == len(reference_texts):
+        return f'上下文已含全部参考原文（{len(present)}/{len(reference_texts)}）'
+    if present:
+        return (f'上下文仅含部分参考原文（{len(present)}/{len(reference_texts)}）：'
+                f'缺 {[k for k in reference_texts if k not in present]}')
+    return f'上下文未含参考原文（0/{len(reference_texts)}）：检索没给到'
+
+
 def rows_for(run, knowledge_base, version):
     records = [json.loads(line) for line in
                (run / 'records.jsonl').read_text(encoding='utf-8').splitlines() if line.strip()]
     questions = load_context(knowledge_base, version)
+    passages = load_passages(BASELINE / 'evidence.jsonl' if knowledge_base == 'smart-home'
+                             else BASELINE / 'accounting' / 'articles.jsonl')
     rows = []
     for record in records:
         question = questions.get(record['question_id'])
         metadata = question.metadata if question else {}
         scores = record.get('assistant_scores') or {}
+        reference_texts = {identifier: passages.get(identifier, '')
+                           for identifier in (question.relevant_passage_ids if question else [])}
         rows.append({
             'question_id': record['question_id'],
             'split': question.split if question else '',
@@ -118,6 +148,7 @@ def rows_for(run, knowledge_base, version):
             'reference_points': '；'.join(metadata.get('expected_points') or []),
             'assistant_answer': record.get('answer', ''),
             'cited_snippets': snippet_block(record.get('citations')),
+            'evidence_status': evidence_status(record, reference_texts),
             'assistant_key_points': scores.get('key_points', 'invalid'),
             'assistant_citation_faithfulness': scores.get('citation_faithfulness', 'invalid'),
             'assistant_behavior_match': scores.get('behavior_match', 'invalid'),
@@ -154,6 +185,7 @@ def export(run, knowledge_base, version, target=None):
                 'assistant_answer': row['assistant_answer'],
                 'cited_snippets': row['cited_snippets'],
                 'reference_points': row['reference_points'],
+                'evidence_status': row['evidence_status'],
                 'assistant_summary': (
                     f"助手初审：完整性 {row['assistant_key_points']} / "
                     f"引用忠实性 {row['assistant_citation_faithfulness']} / "
