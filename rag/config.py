@@ -28,6 +28,12 @@ class Config:
     # Off by default: it was not shown to improve answers, and it makes the
     # answer-quality judge unreliable by lengthening the cited snippets.
     context_radius: int = 0
+    # Vector backend. 'faiss' is the default because it is the only one that
+    # builds reliably here — Chroma's HNSW crashes this interpreter above about
+    # 96 vectors at 1024 dimensions, so the product's own index could not be
+    # built at all. Both rank identically (measured), so this is a deployment
+    # choice, not a quality one; 'chroma' remains available.
+    vector_backend: str = 'faiss'
     # Retrieve this deep, then rerank the first ``rerank_pool`` and keep top_k.
     # 0 means "no deeper than top_k". Measured effect of 50/20 on the diagnostic
     # sample: answer completeness 7/10 -> 9/10 (accounting), 6/9 -> 9/9
@@ -96,6 +102,7 @@ def load_config() -> Config:
         rerank_api_key=os.getenv("RERANK_API_KEY", ""),
         rerank_model=os.getenv("RERANK_MODEL", ""),
         context_radius=int(os.getenv("RAG_CONTEXT_RADIUS", "0")),
+        vector_backend=os.getenv("RAG_VECTOR_BACKEND", "faiss"),
         retrieval_depth=int(os.getenv("RAG_RETRIEVAL_DEPTH", "0")),
         rerank_pool=int(os.getenv("RAG_RERANK_POOL", "0")),
     )

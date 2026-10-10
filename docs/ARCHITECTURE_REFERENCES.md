@@ -136,6 +136,22 @@ ADR-006 验证结果见 [COMPACT_REPORT.md](../experiments/rag-baseline/evaluati
 
 **验证方式：** 5 项脚手架测试通过；本机全套 91 项通过（`pytest tests` 去掉需原生 Chroma 的 11 项）。ROADMAP 的清理记录同时列出本轮删除的本地产物与"无可删死代码"的核查结果（`context_structure.py`、`enumerate_sources`、旧单库路径均仍被引用）。
 
+### ADR-010：向量后端改为可切换，默认 FAISS 而非 Chroma
+
+2026-10-11。产品此前的默认后端是 Chroma（`rag.kb_service.ChromaVectors`），FAISS 实现被放在 `eval/backends/` 并明确标注「不是产品后端」，由 [tests/test_eval_scaffold.py](../tests/test_eval_scaffold.py) 的分层测试保证 `rag` 不导入 `eval`。
+
+**问题：** 本机 Chroma 的 HNSW 在约 **96 个 1024 维向量**以上会让解释器崩溃（hnswlib 与 chromadb 1.x 表现相同），而会计语料有 **866 个片段**——**产品自己的索引在本机根本建不起来**，`chroma_db/` 下从未出现过产品的 `active.json`。此前只有评测路径（用 FAISS）能跑，验收脚本则注入内存后端，等于**产品的真实检索路径从未被验证**。
+
+**决策：** 新增 [rag/backends.py](../rag/backends.py)，把后端变成 `add` / `search` / `count` / `flush` 四个方法的可替换实现，由 `RAG_VECTOR_BACKEND` 选择，**默认 `faiss`**；Chroma 抽到 [rag/chroma_backend.py](../rag/chroma_backend.py) 作为可选部署。`eval/backends/faiss_store.py` **一行未动**——`eval` 导入 `rag` 是允许的方向，分层规则本身没有放宽。
+
+**原因：** 换后端最大的风险是**静默改变检索结果**。动手前先测了排序等值：1024 维、40 个向量下，两个后端返回**完全相同的顺序与分数**（差 < 5e-7），且 Chroma 返回值同样是 `1 - 余弦相似度`，与 FAISS 后端的口径一致。等值成立，才把默认切过去。选择 FAISS 的直接理由是它**精确**（`IndexFlatIP`，5000×1024 建索引 0.013 秒），因此查询可复现，评测数字直接描述产品；保留 Chroma 是因为近似索引在大规模语料上仍有价值，这个取舍不该由本轮写死。
+
+**取舍：** `IndexFlatIP` 是暴力精确检索，成本随片段数线性增长；本项目 866 片完全够用，但**大语料未测**，所以做成开关而非硬替换。分层关系从"`rag` 不许导入 `eval`"变成"两者共用一个产品实现"，`eval` 变成 `rag` 的消费者之一。
+
+**顺带修掉一个被 Chroma 掩盖的真 bug：** `build()` **从未调用 `backend.flush()`**。Chroma 每次 `add()` 立即落盘，其 `flush` 是空实现，所以这个缺失一直没暴露；FAISS 把索引留在内存直到 `flush`，于是发布出的 generation **只有 `manifest.json`**，每次查询都返回"本次检索片段不足以回答"——不报错，只是永远答不出来。修法是发布前显式 `flush()`。同一类问题还波及 `InMemoryVectors`（缺 `flush` 导致 6 项测试失败），已补齐接口。
+
+**验证方式：** 15 项后端测试（含"未知后端必须报错而不是静默回落""导入产品包不得导入 chromadb""未构建的索引返回空而不是抛错"）与 8 项构建持久化测试（含"失败的发布不得改动指针""重启后检索顺序一致"）。**产品路径首次在本机端到端跑通**：注册 → 导入会计语料 59 份文档 / **866 片段** → 建索引（60.3 秒）→ 检索返回 4 条 → 生成并给出引用 → 回读原文 2254 字。本机全套 **456 项通过**，第三语料验收 10/10。
+
 ### ADR-009：重排先用现有对话模型验证收益，暂不引入专用 reranker
 
 2026-10-09，在 [llm_rerank.py](../experiments/rag-baseline/evaluation/llm_rerank.py) 实现 listwise 重排：把候选池（默认 Top-20）放进 prompt，让 **配置里已有的对话模型**（`deepseek-chat`）输出候选编号的排列，按该排列重排候选头，未进入池的候选保持原位。结果见 [RERANK_LLM_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_LLM_REPORT.md)。

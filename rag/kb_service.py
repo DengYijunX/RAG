@@ -21,6 +21,8 @@ import json
 import math
 from pathlib import Path
 
+from rag.backends import build_backend
+from rag.chroma_backend import ChromaVectors
 from rag.context import expand_hits
 from rag.generation import load_chunk_records
 from rag.importer import chunking_config
@@ -111,6 +113,16 @@ class InMemoryVectors:
             self.rows.append({'id': identifier, 'vector': list(vectors[index]),
                               'document': documents[index], 'metadata': dict(metadatas[index])})
 
+    def flush(self):
+        """No-op: rows are already in the shared mapping.
+
+        Present because ``build()`` flushes every backend before publishing. A
+        missing method here made six tests fail with an ``AttributeError`` that
+        surfaced as "建立索引失败", which is exactly the interface mismatch this
+        signature prevents.
+        """
+        return self.directory
+
     def search(self, vector, limit):
         def cosine(other):
             dot = sum(a * b for a, b in zip(vector, other['vector']))
@@ -126,55 +138,18 @@ class InMemoryVectors:
         return len(self.rows)
 
 
-class ChromaVectors:
-    """Chroma collection bound to one generation directory."""
-
-    def __init__(self, directory):
-        self.directory = Path(directory)
-
-    def add(self, ids, vectors, documents, metadatas):
-        collection = self._collection(create=True)
-        collection.add(ids=list(ids), embeddings=[list(v) for v in vectors],
-                       documents=list(documents), metadatas=[dict(m) for m in metadatas])
-
-    def search(self, vector, limit):
-        collection = self._collection(create=False)
-        if collection.count() == 0:
-            return []
-        result = collection.query(query_embeddings=[list(vector)],
-                                  n_results=min(limit, collection.count()), include=['distances'])
-        output = []
-        for position, identifier in enumerate(result['ids'][0]):
-            metadata = (result['metadatas'][0][position] if result.get('metadatas') else {}) or {}
-            document = result['documents'][0][position] if result.get('documents') else ''
-            distance = result['distances'][0][position] if result.get('distances') else None
-            output.append({'id': identifier, 'content': document,
-                           'source': metadata.get('source', ''), 'distance': distance})
-        return output
-
-    def count(self):
-        return self._collection(create=False).count()
-
-    def _collection(self, create):
-        import chromadb
-        from chromadb.config import Settings
-
-        client = chromadb.PersistentClient(path=str(self.directory),
-                                           settings=Settings(anonymized_telemetry=False))
-        if create:
-            return client.get_or_create_collection('documents', embedding_function=None,
-                                                   metadata={'hnsw:space': 'cosine'})
-        return client.get_collection('documents', embedding_function=None)
-
-
 class KnowledgeBaseService:
     """Registry plus per-base storage; all model access goes through config."""
 
     def __init__(self, config, registry=None, storage_root=None, vector_backend=None):
         self.config = config
+        # The backend is chosen from configuration; a FAISS deployment never
+        # imports chromadb. An explicit factory still wins, which is how tests
+        # and the third-corpus acceptance check run without a native index.
+        self.vector_backend = vector_backend or (
+            lambda directory: build_backend(config.vector_backend, directory))
         self.storage_root = Path(storage_root or (Path(config.persist_dir).resolve() / 'knowledge'))
         self.registry = registry or Registry(self.storage_root)
-        self.vector_backend = vector_backend or ChromaVectors
 
     # ---- storage -----------------------------------------------------------
     def base_dir(self, kb_id):
@@ -349,6 +324,12 @@ class KnowledgeBaseService:
             count = backend.count()
             if count != len(manifest['chunks']):
                 raise BuildFailed('索引片段数与导入清单不一致。')
+            # Persist before publishing. This call was missing: Chroma writes on
+            # every add() so its flush is a no-op and nothing showed up, but the
+            # FAISS backend keeps the index in memory until flush, so the
+            # published generation held only its manifest and every query
+            # answered "insufficient evidence".
+            backend.flush()
         except Exception as exc:
             # The published pointer is untouched, so the previous index keeps
             # serving; drop the half-built directory instead of leaving it.
