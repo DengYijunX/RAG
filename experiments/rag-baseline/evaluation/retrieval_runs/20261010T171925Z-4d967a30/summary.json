@@ -1,0 +1,39 @@
+{
+  "task_id": "20261010T171925Z-4d967a30",
+  "knowledge_base": "accounting",
+  "dataset": "v1/test:rerank_specialized",
+  "split": "test",
+  "k": 4,
+  "metrics": {
+    "k": 4,
+    "questions": 54,
+    "recall@k": 0.9259259259259259,
+    "precision@k": 0.9259259259259259,
+    "hit_rate@k": 0.9259259259259259,
+    "mrr": 0.9259259259259259,
+    "map": 0.9259259259259259,
+    "ndcg@k": 0.9259259259259259,
+    "recall_in_top_k": 0.8518518518518519,
+    "precision_in_top_k": 0.28703703703703703,
+    "ndcg_in_top_k": 0.8774657734966275,
+    "hit_rate_in_top_k": 0.9259259259259259,
+    "mean_first_hit_slot": 3.52,
+    "mrr_first_hit": 0.862430457668553,
+    "scored": 54,
+    "hits": 2950,
+    "unresolved_hits": 2879,
+    "resolution_coverage": 0.024067796610169445,
+    "unlabelled_questions": 5
+  },
+  "configuration": {
+    "k": 4,
+    "split": "test",
+    "dataset": "v1/test:rerank_specialized",
+    "knowledge_base": "accounting",
+    "questions": 59,
+    "resolver": true
+  },
+  "questions": 59,
+  "failures": 0,
+  "output_dir": ""
+}

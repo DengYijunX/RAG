@@ -264,6 +264,9 @@ def main(argv=None):
     parser.add_argument('--kb', choices=['smart-home', 'accounting'], required=True)
     parser.add_argument('--limit', type=int, default=None)
     parser.add_argument('--sample', default=str(SAMPLE))
+    parser.add_argument('--split', default=None,
+                        help='按抽分选全部题目（如 test）；给定时忽略预声明样本')
+    parser.add_argument('--version', default=None, help='数据集版本，默认样本自带或 v2')
     parser.add_argument('--context-radius', type=int, default=None,
                         help='邻段扩展半径；缺省用配置 RAG_CONTEXT_RADIUS，0 表示关闭')
     parser.add_argument('--depth', type=int, default=0,
@@ -286,17 +289,27 @@ def main(argv=None):
         from specialized_rerank import SpecializedReranker
 
         reranker = SpecializedReranker(config)
-    sample = load_sample(args.sample)
-    requested = sample['knowledge_bases'][args.kb]
-    dataset_version = sample.get('dataset_version', 'v2')
-    dataset = load_knowledge_base_dataset(BASELINE, args.kb, version=dataset_version)
-    lookup = {question.id: question for question in dataset.questions}
-    missing = [key for key in requested if key not in lookup]
-    if missing:
-        raise SystemExit(f'样本题目不在 {dataset_version} 数据集中：{missing}')
-    selected = [lookup[key] for key in requested]
-    if any(question.split != 'dev' for question in selected):
-        raise SystemExit('样本包含非 dev 题目')
+    if args.split:
+        # A whole split, for the held-out run. The predeclared sample is dev-only
+        # by design, so it cannot express "run everything in test".
+        dataset_version = args.version or 'v2'
+        dataset = load_knowledge_base_dataset(BASELINE, args.kb, version=dataset_version,
+                                             split=args.split)
+        selected = list(dataset.questions)
+        if not selected:
+            raise SystemExit(f'{args.kb} 在 {dataset_version}/{args.split} 下没有题目')
+    else:
+        sample = load_sample(args.sample)
+        requested = sample['knowledge_bases'][args.kb]
+        dataset_version = args.version or sample.get('dataset_version', 'v2')
+        dataset = load_knowledge_base_dataset(BASELINE, args.kb, version=dataset_version)
+        lookup = {question.id: question for question in dataset.questions}
+        missing = [key for key in requested if key not in lookup]
+        if missing:
+            raise SystemExit(f'样本题目不在 {dataset_version} 数据集中：{missing}')
+        selected = [lookup[key] for key in requested]
+        if any(question.split != 'dev' for question in selected):
+            raise SystemExit('样本包含非 dev 题目')
     if args.limit:
         selected = selected[:args.limit]
 

@@ -1,0 +1,45 @@
+{
+  "task_id": "20261010T171707Z-4d967a30",
+  "knowledge_base": "accounting",
+  "dataset": "v1/test",
+  "split": "test",
+  "k": 4,
+  "metrics": {
+    "k": 4,
+    "questions": 54,
+    "recall@k": 0.8333333333333334,
+    "precision@k": 0.8518518518518519,
+    "hit_rate@k": 0.8518518518518519,
+    "mrr": 0.8518518518518519,
+    "map": 0.8333333333333334,
+    "ndcg@k": 0.8375239701024244,
+    "recall_in_top_k": 0.7407407407407407,
+    "precision_in_top_k": 0.24537037037037038,
+    "ndcg_in_top_k": 0.704126456960831,
+    "hit_rate_in_top_k": 0.8518518518518519,
+    "mean_first_hit_slot": 1.7173913043478262,
+    "mrr_first_hit": 0.6886243386243386,
+    "scored": 54,
+    "hits": 590,
+    "unresolved_hits": 529,
+    "resolution_coverage": 0.10338983050847461,
+    "unlabelled_questions": 5
+  },
+  "configuration": {
+    "k": 4,
+    "split": "test",
+    "dataset": "v1/test",
+    "knowledge_base": "accounting",
+    "questions": 59,
+    "resolver": true,
+    "chunking": {
+      "chunk_size": 500,
+      "chunk_overlap": 50,
+      "structure_aware": true,
+      "chunks": 866
+    }
+  },
+  "questions": 59,
+  "failures": 0,
+  "output_dir": ""
+}

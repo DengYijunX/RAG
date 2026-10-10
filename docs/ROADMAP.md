@@ -64,7 +64,7 @@ RAG/
 | 3 | 混合检索与融合 | 实验：`hybrid_retrieval.py`、`retrieval_modes_experiment.py` | 仅实验 | BM25、RRF 未进产品路径 |
 | 4 | Rerank 与上下文 | [rag/rerank.py](../rag/rerank.py)（实现）、`RAG_RERANK_POOL`（开关，默认关） | **已实现，默认关闭** | 阈值、MMR 去重未实现；深池+重排未设为默认（生成侧已验证受益，待决定） |
 | 5 | 生成与引用 | [rag/kb_service.py](../rag/kb_service.py)（`generate` / `citations`） | 已实现 | 只有固定提示词；Faithfulness 只测过助手初审 |
-| 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` / `human_review.py` | **已实现（检索侧 + 生成侧初审 + 人工审阅）** | 保留测试集未跑；审阅者为项目所有者而非独立领域审阅者；评审自身不稳定 |
+| 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` / `human_review.py` | **已实现（检索侧 + 生成侧初审 + 人工审阅 + 保留集）** | **保留集已跑过，v1 test 此后不再是保留样本**；审阅者为项目所有者而非独立领域审阅者；评审自身不稳定 |
 | 7 | 消融与工程优化 | `experiments/**/*_REPORT.md` | 已实验 | 未固化为可一键复跑的矩阵；延迟/成本未系统记录 |
 
 ---
@@ -91,6 +91,8 @@ RAG/
 **换阿里云 Embedding 后的三方对照**：见 [RERANK_PROVIDER_REPORT.md](../experiments/rag-baseline/evaluation/RERANK_PROVIDER_REPORT.md)。Embedding 换成 `qwen3.7-text-embedding-flash` 后两库都改善（售后 recall 0.810 → 0.976，会计 0.856 → 0.893）。**专用 rerank `qwen3.7-text-rerank` 与 LLM 重排质量接近但快一个数量级**：会计 NDCG 0.9193 vs 0.9152、耗时 87.2s vs 1534.3s（快约 17.6 倍）；售后专用略差（0.9664 vs 0.9880），差异只出现在 2 道「多实体对比」题上——推测专用 rerank 缺少「整份候选是否覆盖问题全部实体」的全局视角（**未验证**）。专用端点输出分数，同一输入下**可复现**；LLM 重排两次跑出的排列不同（NDCG 0.9197/0.9152）。**仍未接入产品默认路径**。
 
 **人工审阅（已完成 20 题）**：见 [HUMAN_REVIEW_REPORT.md](../experiments/rag-baseline/evaluation/HUMAN_REVIEW_REPORT.md)。这是项目**第一次真正完成人工审阅**——此前所有答案质量数字都来自不稳定的助手初审。审阅者逐题核对全部 20 题答案后确认评分。结果：两库要点完整性 **9/10 = 0.90**、引用忠实性 **10/10 = 1.00**、行为匹配 **10/10 = 1.00**，**阻断缺陷 0**。**与助手初审仅 1 处分歧**（售后 Q058，助手偏严），说明助手评分作为批量筛查可用、但不能当验收结论。**限制必须一起读**：审阅者是项目所有者、**不是独立领域审阅者**（`reviewer_is_independent = false`），评分由 AI 领队按标准给出并经所有者确认，样本为 20 题定向诊断选样、**不估计总体准确率**，且只在开发集上做。因此准确表述是"**开发集诊断结果优于预期**"，不是"验收通过"。
+
+**保留测试集（v1 test，首次在未调参数据上验证）**：见 [HELDOUT_TEST_REPORT.md](../experiments/rag-baseline/evaluation/HELDOUT_TEST_REPORT.md)。**开发集到保留集有明显落差，且方法排序发生反转**：纯向量在开发集看似最好（售后 0.9762 / 会计 0.9378），在保留集却是最差（**0.7237 / 0.7407**）；深池+专用重排在两集上都最好（**0.8684 / 0.8519**）。已排除数据问题——标签文本全部存在、可达率两集相当（售后 100% vs 94.7%，会计 98.5% vs 96.3%）。生成侧（79 题，推荐配置）：售后完整性 **0.947**、引用忠实性 **1.000**、行为匹配 **1.000**、错误标签 0；会计完整性 **0.807**、引用忠实性 **1.000**、行为匹配 **0.983**、`retrieval_missing` 9。**阻断缺陷两库均为 0。** 会计那 8 道未满分题逐题核对为**检索没给到**（标注原文从未进入上下文），非答题侧问题。**按标准，v1 test 79 题此后不得再用于调参，后续开发需新划分保留样本。**
 
 **生成侧答案审阅（助手初审 + 领队判断）**：见 [ANSWER_QUALITY_REPORT.md](../experiments/rag-baseline/evaluation/ANSWER_QUALITY_REPORT.md)，标准见 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)。20 题预声明样本：自动引用检查两库 **10/10 通过**、阻断缺陷 0；要点完整性满分率仅约 0.5，错误标签以 `retrieval_missing` 为主。**两个限制必须一起读**：① 同一批答案两次评审分数不同，**评审自身不稳定**，与标准「不得用 LLM 自评分代替语义评分」一致；② 样本是定向诊断选样，**不估计总体准确率**，`human_reviewed` 为 0。领队判断经所有者逐题确认，但属自评而非独立签署。
 

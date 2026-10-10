@@ -1,0 +1,45 @@
+{
+  "task_id": "20261010T171640Z-4d967a30",
+  "knowledge_base": "smart-home",
+  "dataset": "v1/test",
+  "split": "test",
+  "k": 4,
+  "metrics": {
+    "k": 4,
+    "questions": 19,
+    "recall@k": 0.881578947368421,
+    "precision@k": 0.9473684210526315,
+    "hit_rate@k": 0.9473684210526315,
+    "mrr": 0.9473684210526315,
+    "map": 0.881578947368421,
+    "ndcg@k": 0.8977982552241999,
+    "recall_in_top_k": 0.7236842105263158,
+    "precision_in_top_k": 0.25,
+    "ndcg_in_top_k": 0.7263401761707261,
+    "hit_rate_in_top_k": 0.9473684210526315,
+    "mean_first_hit_slot": 1.6666666666666667,
+    "mrr_first_hit": 0.8250626566416039,
+    "scored": 19,
+    "hits": 200,
+    "unresolved_hits": 175,
+    "resolution_coverage": 0.125,
+    "unlabelled_questions": 1
+  },
+  "configuration": {
+    "k": 4,
+    "split": "test",
+    "dataset": "v1/test",
+    "knowledge_base": "smart-home",
+    "questions": 20,
+    "resolver": true,
+    "chunking": {
+      "chunk_size": 500,
+      "chunk_overlap": 50,
+      "structure_aware": true,
+      "chunks": 26
+    }
+  },
+  "questions": 20,
+  "failures": 0,
+  "output_dir": ""
+}

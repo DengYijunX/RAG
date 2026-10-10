@@ -1,0 +1,51 @@
+{
+  "knowledge_base": "accounting",
+  "dataset_version": "v1",
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "generation_model": "deepseek-v4-flash",
+  "questions": 59,
+  "assistant_reviewed": 59,
+  "assistant_invalid": 0,
+  "automatic_checks_passed": 59,
+  "full_marks": {
+    "key_points": {
+      "numerator": 46,
+      "denominator": 57,
+      "rate": 0.8070175438596491
+    },
+    "citation_faithfulness": {
+      "numerator": 57,
+      "denominator": 57,
+      "rate": 1.0
+    },
+    "behavior_match": {
+      "numerator": 58,
+      "denominator": 59,
+      "rate": 0.9830508474576272
+    }
+  },
+  "error_labels": {
+    "retrieval_missing": 9
+  },
+  "human_reviewed": 0,
+  "note": "助手初审，不是人工审阅；样本为定向诊断选样，不估计总体准确率、不计算置信区间。自动检查只验证引用形式，不验证语义支持。",
+  "context_radius": 0,
+  "retrieval_depth": 50,
+  "reranked": true,
+  "rerank_pool": 20,
+  "rerank_stats": {
+    "calls": 59,
+    "failures": 0,
+    "seconds": 66.35
+  },
+  "average_context_chars": 391,
+  "expanded_citations": 0,
+  "judge_stats": {
+    "calls": 59,
+    "invalid": 0,
+    "invalid_rate": 0.0,
+    "prompt_tokens": 102399,
+    "completion_tokens": 46479,
+    "seconds": 287.22
+  }
+}

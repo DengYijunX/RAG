@@ -1,0 +1,49 @@
+{
+  "knowledge_base": "smart-home",
+  "dataset_version": "v1",
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "generation_model": "deepseek-v4-flash",
+  "questions": 20,
+  "assistant_reviewed": 20,
+  "assistant_invalid": 0,
+  "automatic_checks_passed": 20,
+  "full_marks": {
+    "key_points": {
+      "numerator": 18,
+      "denominator": 19,
+      "rate": 0.9473684210526315
+    },
+    "citation_faithfulness": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    },
+    "behavior_match": {
+      "numerator": 20,
+      "denominator": 20,
+      "rate": 1.0
+    }
+  },
+  "error_labels": {},
+  "human_reviewed": 0,
+  "note": "助手初审，不是人工审阅；样本为定向诊断选样，不估计总体准确率、不计算置信区间。自动检查只验证引用形式，不验证语义支持。",
+  "context_radius": 0,
+  "retrieval_depth": 50,
+  "reranked": true,
+  "rerank_pool": 20,
+  "rerank_stats": {
+    "calls": 20,
+    "failures": 1,
+    "seconds": 41.59
+  },
+  "average_context_chars": 436,
+  "expanded_citations": 0,
+  "judge_stats": {
+    "calls": 20,
+    "invalid": 0,
+    "invalid_rate": 0.0,
+    "prompt_tokens": 38350,
+    "completion_tokens": 15380,
+    "seconds": 91.62
+  }
+}

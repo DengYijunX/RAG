@@ -1,0 +1,95 @@
+{
+  "knowledge_base": "accounting",
+  "dataset": "v1/test",
+  "k": 4,
+  "depth": 50,
+  "rerank_pool": 20,
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "modes": {
+    "hybrid": {
+      "task_id": "20261010T171924Z-4d967a30",
+      "knowledge_base": "accounting",
+      "dataset": "v1/test:hybrid",
+      "split": "test",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 54,
+        "recall@k": 0.9259259259259259,
+        "precision@k": 0.9259259259259259,
+        "hit_rate@k": 0.9259259259259259,
+        "mrr": 0.9259259259259259,
+        "map": 0.9259259259259259,
+        "ndcg@k": 0.9259259259259259,
+        "recall_in_top_k": 0.7037037037037037,
+        "precision_in_top_k": 0.2361111111111111,
+        "ndcg_in_top_k": 0.6860137201643206,
+        "hit_rate_in_top_k": 0.9259259259259259,
+        "mean_first_hit_slot": 4.72,
+        "mrr_first_hit": 0.7021256552584874,
+        "scored": 54,
+        "hits": 2950,
+        "unresolved_hits": 2879,
+        "resolution_coverage": 0.024067796610169445,
+        "unlabelled_questions": 5
+      },
+      "configuration": {
+        "k": 4,
+        "split": "test",
+        "dataset": "v1/test:hybrid",
+        "knowledge_base": "accounting",
+        "questions": 59,
+        "resolver": true
+      },
+      "questions": 59,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261010T171924Z-4d967a30",
+      "seconds": 0.9617631435394287
+    },
+    "rerank_specialized": {
+      "task_id": "20261010T171925Z-4d967a30",
+      "knowledge_base": "accounting",
+      "dataset": "v1/test:rerank_specialized",
+      "split": "test",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 54,
+        "recall@k": 0.9259259259259259,
+        "precision@k": 0.9259259259259259,
+        "hit_rate@k": 0.9259259259259259,
+        "mrr": 0.9259259259259259,
+        "map": 0.9259259259259259,
+        "ndcg@k": 0.9259259259259259,
+        "recall_in_top_k": 0.8518518518518519,
+        "precision_in_top_k": 0.28703703703703703,
+        "ndcg_in_top_k": 0.8774657734966275,
+        "hit_rate_in_top_k": 0.9259259259259259,
+        "mean_first_hit_slot": 3.52,
+        "mrr_first_hit": 0.862430457668553,
+        "scored": 54,
+        "hits": 2950,
+        "unresolved_hits": 2879,
+        "resolution_coverage": 0.024067796610169445,
+        "unlabelled_questions": 5
+      },
+      "configuration": {
+        "k": 4,
+        "split": "test",
+        "dataset": "v1/test:rerank_specialized",
+        "knowledge_base": "accounting",
+        "questions": 59,
+        "resolver": true
+      },
+      "questions": 59,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261010T171925Z-4d967a30",
+      "seconds": 66.18366646766663
+    },
+    "rerank_specialized_stats": {
+      "calls": 59,
+      "failures": 0,
+      "seconds": 65.47
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "knowledge_base": "smart-home",
+  "dataset": "v1/test",
+  "k": 4,
+  "depth": 50,
+  "rerank_pool": 20,
+  "embedding_model": "qwen3.7-text-embedding-flash",
+  "modes": {
+    "hybrid": {
+      "task_id": "20261010T171842Z-4d967a30",
+      "knowledge_base": "smart-home",
+      "dataset": "v1/test:hybrid",
+      "split": "test",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 19,
+        "recall@k": 0.881578947368421,
+        "precision@k": 0.9473684210526315,
+        "hit_rate@k": 0.9473684210526315,
+        "mrr": 0.9473684210526315,
+        "map": 0.881578947368421,
+        "ndcg@k": 0.8977982552241999,
+        "recall_in_top_k": 0.868421052631579,
+        "precision_in_top_k": 0.3157894736842105,
+        "ndcg_in_top_k": 0.8506324887964309,
+        "hit_rate_in_top_k": 0.9473684210526315,
+        "mean_first_hit_slot": 1.1111111111111112,
+        "mrr_first_hit": 0.9122807017543859,
+        "scored": 19,
+        "hits": 520,
+        "unresolved_hits": 495,
+        "resolution_coverage": 0.04807692307692313,
+        "unlabelled_questions": 1
+      },
+      "configuration": {
+        "k": 4,
+        "split": "test",
+        "dataset": "v1/test:hybrid",
+        "knowledge_base": "smart-home",
+        "questions": 20,
+        "resolver": true
+      },
+      "questions": 20,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261010T171842Z-4d967a30",
+      "seconds": 0.33230018615722656
+    },
+    "rerank_specialized": {
+      "task_id": "20261010T171842Z-4d967a30",
+      "knowledge_base": "smart-home",
+      "dataset": "v1/test:rerank_specialized",
+      "split": "test",
+      "k": 4,
+      "metrics": {
+        "k": 4,
+        "questions": 19,
+        "recall@k": 0.881578947368421,
+        "precision@k": 0.9473684210526315,
+        "hit_rate@k": 0.9473684210526315,
+        "mrr": 0.9473684210526315,
+        "map": 0.881578947368421,
+        "ndcg@k": 0.8977982552241999,
+        "recall_in_top_k": 0.868421052631579,
+        "precision_in_top_k": 0.3157894736842105,
+        "ndcg_in_top_k": 0.8806097499824873,
+        "hit_rate_in_top_k": 0.9473684210526315,
+        "mean_first_hit_slot": 1.0,
+        "mrr_first_hit": 0.9473684210526315,
+        "scored": 19,
+        "hits": 520,
+        "unresolved_hits": 495,
+        "resolution_coverage": 0.04807692307692313,
+        "unlabelled_questions": 1
+      },
+      "configuration": {
+        "k": 4,
+        "split": "test",
+        "dataset": "v1/test:rerank_specialized",
+        "knowledge_base": "smart-home",
+        "questions": 20,
+        "resolver": true
+      },
+      "questions": 20,
+      "failures": 0,
+      "output_dir": "C:\\Users\\AD钙\\Desktop\\Projects\\RAG\\experiments\\rag-baseline\\evaluation\\retrieval_runs\\20261010T171842Z-4d967a30-2",
+      "seconds": 39.28667998313904
+    },
+    "rerank_specialized_stats": {
+      "calls": 20,
+      "failures": 1,
+      "seconds": 39.22
+    }
+  }
+}
