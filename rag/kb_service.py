@@ -23,7 +23,9 @@ from pathlib import Path
 
 from rag.context import expand_hits
 from rag.generation import load_chunk_records
+from rag.importer import chunking_config
 from rag.rerank import rerank_hits
+from rag.structural_split import VERSION as CHUNKING_VERSION
 
 # The generation instruction is part of the product's answer contract, not an
 # experiment detail, so it lives here and the review harness reads it rather than
@@ -259,7 +261,19 @@ class KnowledgeBaseService:
                 'embedding_url': self.config.embedding_base_url,
                 'chunk_size': self.config.chunk_size,
                 'chunk_overlap': self.config.chunk_overlap,
+                # The chunking algorithm itself, not just its knobs: a new
+                # boundary rule produces a different chunk set from the same
+                # size and overlap.
+                'chunking_version': CHUNKING_VERSION,
                 'distance': 'cosine'}
+
+    def import_is_current(self, kb_id):
+        """Whether the existing import was made by the current chunker."""
+        manifest = self._imports(kb_id)
+        if manifest is None:
+            return False
+        recorded = manifest.get('chunking') or {}
+        return recorded == chunking_config(self.config.chunk_size, self.config.chunk_overlap)
 
     def active(self, kb_id):
         pointer = self.base_dir(kb_id) / 'active.json'

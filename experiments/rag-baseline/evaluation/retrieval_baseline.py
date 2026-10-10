@@ -78,9 +78,12 @@ class EmbeddingCache:
     invalidated it; it did not — that is what this guards against.)
     """
 
-    def __init__(self, path, fingerprint):
+    def __init__(self, path, fingerprint, config=None):
         self.path = Path(path)
         self.fingerprint = dict(fingerprint)
+        # Carried so index reuse can compare the chunking configuration without
+        # re-reading the environment; the cache is already per knowledge base.
+        self.config = config
         self.entries = {}
         self.discarded_reason = ''
         if self.path.exists():
@@ -131,29 +134,62 @@ def embedding_fingerprint(config):
             'dimensions': None}
 
 
+def chunking_fingerprint(config, chunks=None):
+    """What the chunk set depends on: the size, the overlap, the splitter, and the result.
+
+    Without this, a chunker change is invisible to the reuse check: the published
+    generation still has the right embedding model, so it gets reused, and the new
+    chunking silently does nothing. That is exactly what happened when structural
+    chunking became the default — the corpus produced 866 chunks while the index
+    kept serving 749, and the metrics came out identical to the old baseline.
+
+    ``chunks`` is the actual chunk count when it is known. Recording it also
+    catches an index built from a different chunk set under an unchanged
+    configuration.
+    """
+    fingerprint = {'chunk_size': config.chunk_size, 'chunk_overlap': config.chunk_overlap,
+                   'structure_aware': True}
+    if chunks is not None:
+        fingerprint['chunks'] = chunks
+    return fingerprint
+
+
 def build_index(service, kb_id, cache, rebuild=False):
     """Publish a FAISS index for one knowledge base, reusing a previous build.
 
     A previous generation is reused only when it was built with the same
-    embedding provider. Without that check a model switch would keep serving
-    vectors from the old model, and every retrieval number would be wrong
-    without anything looking broken.
+    embedding provider **and** the same chunking. Without the second check a
+    chunker change would keep serving the old chunk set, and every retrieval
+    number would be wrong without anything looking broken: after structural
+    chunking became the default the corpus produced 866 chunks while the index
+    kept serving 749, and the metrics came out identical to the old baseline.
     """
+    chunks = service._chunks(kb_id)
+    # The fingerprint describes the configuration; the result of that
+    # configuration is the chunk set itself. Comparing the count too is what
+    # catches an index built from a *different* chunk set under the same config —
+    # after the import was redone with 866 chunks, the index still held the 749
+    # from before, and the reuse check saw identical configuration and said OK.
+    chunking = {**chunking_fingerprint(cache.config), 'chunks': len(chunks)}
     pointer = service.base_dir(kb_id) / 'active.eval.json'
     if pointer.exists() and not rebuild:
         info = json.loads(pointer.read_text(encoding='utf-8'))
         previous = info.get('embedding') or {}
         same_model = (previous.get('model') == cache.fingerprint['model']
                       and previous.get('base_url') == cache.fingerprint['base_url'])
+        previous_chunking = info.get('chunking') or {}
+        same_chunking = previous_chunking == chunking
         if not same_model:
             print(f'  已有索引由 {previous.get("model", "未知模型")} 建立，与当前 '
                   f'{cache.fingerprint["model"]} 不同，重建', flush=True)
+        elif not same_chunking:
+            print(f'  已有索引的切片 {previous_chunking or "未记录"} 与当前 {chunking} '
+                  f'不同，重建', flush=True)
         elif (service.base_dir(kb_id) / info['generation']).is_dir():
             print(f'  复用已有索引 generation={info["generation"]} chunks={info["chunks"]} '
                   f'model={previous.get("model")}', flush=True)
             return info
 
-    chunks = service._chunks(kb_id)
     print(f'  建立新索引：{len(chunks)} 个片段，未命中缓存的部分会真实调用 Embedding', flush=True)
     vectors = cache.vectors(service, [chunk['content'] for chunk in chunks])
     cache.save()
@@ -168,7 +204,8 @@ def build_index(service, kb_id, cache, rebuild=False):
     store.flush()
     info = {'generation': generation, 'chunks': store.count(),
             'dimensions': len(vectors[0]), 'documents': len(service.documents(kb_id)),
-            'embedding': {**cache.fingerprint, 'dimensions': len(vectors[0])}}
+            'embedding': {**cache.fingerprint, 'dimensions': len(vectors[0])},
+            'chunking': chunking}
     pointer.write_text(json.dumps(info, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'  索引完成 generation={generation} chunks={info["chunks"]} dim={info["dimensions"]} '
           f'model={cache.fingerprint["model"]}', flush=True)
@@ -236,7 +273,10 @@ def main(argv=None):
         kb_id = base.id
         print(f'注册知识库 {kb_id}', flush=True)
 
-    if service._imports(kb_id) is None or args.rebuild:
+    if service._imports(kb_id) is None or args.rebuild or not service.import_is_current(kb_id):
+        if service._imports(kb_id) is not None and not args.rebuild:
+            recorded = (service._imports(kb_id) or {}).get('chunking') or {}
+            print(f'  已导入清单的切片配置 {recorded or "未记录"} 与当前不同，重新导入', flush=True)
         print('导入语料…', flush=True)
         report = service.import_sources(kb_id, corpus['directory'])
         print(f'  导入 {len(report.documents)} 份文档 / {len(report.chunks)} 片段'
@@ -245,7 +285,7 @@ def main(argv=None):
         print(f'复用已导入清单：{len(service.documents(kb_id))} 份文档', flush=True)
 
     cache = EmbeddingCache(STORAGE / kb_id / 'embedding-cache.json',
-                           embedding_fingerprint(config))
+                           embedding_fingerprint(config), config=config)
     if cache.discarded_reason:
         print(f'Embedding 缓存不可用（{cache.discarded_reason}），将重新向量化全部片段',
               flush=True)
@@ -264,7 +304,8 @@ def main(argv=None):
     result = run_evaluation(questions.questions, retrieve, knowledge_base=args.kb,
                             dataset=f'{args.version}/{args.split}', split=args.split or 'all',
                             k=args.k, resolver=resolver, output_dir=ARTIFACTS,
-                            max_questions=args.limit)
+                            max_questions=args.limit,
+                            chunking=info.get('chunking'))
     cache.save()
 
     summary = result.summary()

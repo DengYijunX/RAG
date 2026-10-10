@@ -1,18 +1,18 @@
 {
-  "task_id": "20261010T090600Z-8a17302d",
+  "task_id": "20261010T092818Z-8a17302d",
   "knowledge_base": "smart-home",
-  "dataset": "smart-home:v1:questions",
+  "dataset": "v1/dev",
   "split": "dev",
   "k": 4,
   "metrics": {
     "k": 4,
     "questions": 35,
-    "recall@k": 0.9761904761904763,
+    "recall@k": 0.9928571428571429,
     "precision@k": 1.0,
     "hit_rate@k": 1.0,
     "mrr": 1.0,
-    "map": 0.9761904761904763,
-    "ndcg@k": 0.9829155164491843,
+    "map": 0.9928571428571429,
+    "ndcg@k": 0.9951963561065396,
     "recall_in_top_k": 0.9761904761904763,
     "precision_in_top_k": 0.30714285714285716,
     "ndcg_in_top_k": 0.8946726612488837,
@@ -20,26 +20,26 @@
     "mean_first_hit_slot": 1.2285714285714286,
     "mrr_first_hit": 0.9047619047619047,
     "scored": 35,
-    "hits": 160,
-    "unresolved_hits": 117,
-    "resolution_coverage": 0.26875000000000004,
+    "hits": 400,
+    "unresolved_hits": 355,
+    "resolution_coverage": 0.11250000000000004,
     "unlabelled_questions": 5
   },
   "configuration": {
     "k": 4,
     "split": "dev",
-    "dataset": "smart-home:v1:questions",
+    "dataset": "v1/dev",
     "knowledge_base": "smart-home",
     "questions": 40,
-    "resolver": true
+    "resolver": true,
+    "chunking": {
+      "chunk_size": 500,
+      "chunk_overlap": 50,
+      "structure_aware": true,
+      "chunks": 26
+    }
   },
   "questions": 40,
   "failures": 0,
-  "output_dir": "",
-  "chunking": {
-    "variant": "structure500",
-    "chunk_size": 500,
-    "structure_aware": true
-  },
-  "chunking_source": "stamped_from_session_record"
+  "output_dir": ""
 }

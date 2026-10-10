@@ -17,6 +17,7 @@ from pathlib import Path
 
 from rag.loader import SUPPORTED_SUFFIXES, load_file
 from rag.splitter import split
+from rag.structural_split import VERSION as CHUNKING_VERSION
 from rag.structural_split import split_text
 from rag.structure import locate_chunks, parse_structure
 
@@ -47,9 +48,12 @@ class ImportReport:
     documents: list = field(default_factory=list)
     chunks: list = field(default_factory=list)
     skipped: list = field(default_factory=list)
+    #: Identity of the chunking that produced ``chunks``.
+    chunking: dict = field(default_factory=dict)
 
     def as_dict(self):
         return {'manifest_version': MANIFEST_VERSION,
+                'chunking': self.chunking,
                 'documents': [asdict(d) if is_dataclass(d) else d for d in self.documents],
                 'chunks': self.chunks,
                 'skipped': self.skipped,
@@ -173,7 +177,21 @@ def _pdf_pages(path):
         return None
 
 
-def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pattern='**/*'):
+def chunking_config(chunk_size, chunk_overlap, structure_aware=True):
+    """Identity of the chunking that produced a chunk set.
+
+    Recorded in the import manifest so a consumer can tell whether an existing
+    import was made by the current chunker. Without it, changing the chunker
+    leaves the old manifest in place and every downstream step keeps using the
+    old chunks while believing it is current — which is what happened when
+    structural chunking became the default.
+    """
+    return {'version': CHUNKING_VERSION, 'chunk_size': chunk_size,
+            'chunk_overlap': chunk_overlap, 'structure_aware': bool(structure_aware)}
+
+
+def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pattern='**/*',
+                     structure_aware=True):
     """Parse a directory into document records and located chunks.
 
     Every file the directory yields ends up either in ``documents`` or in
@@ -182,6 +200,7 @@ def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pa
     none of them abort the import of the remaining files.
     """
     report = ImportReport()
+    report.chunking = chunking_config(chunk_size, chunk_overlap, structure_aware)
     directory = Path(directory).resolve()
     sources, unsupported = scan_sources(directory, glob_pattern)
     report.skipped.extend(unsupported)
@@ -201,7 +220,8 @@ def import_documents(kb_id, directory, chunk_size=500, chunk_overlap=50, glob_pa
             else:
                 _apply_document(record, loaded.content, document_id, chunk_size, chunk_overlap,
                                 source.media_type)
-            chunks = _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap)
+            chunks = _chunks_for(document, record, kb_id, document_id, chunk_size, chunk_overlap,
+                                 structure_aware)
         except Exception as exc:
             report.skipped.append({'source': source.relative, 'reason': type(exc).__name__})
             continue

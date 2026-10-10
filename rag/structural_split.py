@@ -34,6 +34,13 @@ class StructuralSplit:
     boundaries: int = 0
 
 
+#: Version of the chunking algorithm. Bump it whenever the boundaries a chunk
+#: may fall on change, so an import made by an older algorithm is not reused:
+#: a chunk-set change invalidates both the import manifest and any index built
+#: from it, and reusing either would silently serve the old chunking.
+VERSION = 'structural-1'
+
+
 def has_headings(text):
     return bool(ATX.search(text or ''))
 

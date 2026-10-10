@@ -63,13 +63,19 @@ def _digest(value):
 
 
 def run_evaluation(questions, retrieve, *, knowledge_base='', dataset='', split='',
-                   k=5, resolver=None, output_dir=None, max_questions=None):
+                   k=5, resolver=None, output_dir=None, max_questions=None, chunking=None):
     """Run a retrieval-only evaluation and optionally persist its artefacts.
 
     ``questions`` is an iterable of ``eval.datasets.Question``; ``retrieve`` is
     ``question -> ranked hits`` where a hit carries ``id`` and ``content``.
     ``resolver`` maps hits to dataset passage ids; without one, hits must carry
     a ``passage_id`` themselves.
+
+    ``chunking`` records which chunker produced the index being scored. Without
+    it a run cannot be told apart from one made by a different chunker: during
+    the structural-chunking work several runs shared a timestamp-only directory
+    name while the chunks underneath changed, and nothing in the artefacts said
+    which chunking each had used.
     """
     questions = list(questions)
     if max_questions is not None:
@@ -123,7 +129,8 @@ def run_evaluation(questions, retrieve, *, knowledge_base='', dataset='', split=
     result = EvaluationResult(
         task_id=task_id, knowledge_base=knowledge_base, dataset=dataset, split=split, k=k,
         configuration={'k': k, 'split': split, 'dataset': dataset, 'knowledge_base': knowledge_base,
-                       'questions': len(questions), 'resolver': bool(resolver)},
+                       'questions': len(questions), 'resolver': bool(resolver),
+                       **({'chunking': chunking} if chunking else {})},
         metrics={**summary, **slot_summary,
                  'hits': hit_total, 'unresolved_hits': unresolved_total,
                  'resolution_coverage': (1 - unresolved_total / hit_total) if hit_total else None,
