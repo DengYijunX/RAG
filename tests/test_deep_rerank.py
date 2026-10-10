@@ -137,9 +137,36 @@ def test_env_variables_are_read(monkeypatch):
     assert loaded.deep_rerank_enabled == loaded.rerank_configured
 
 
-def test_defaults_are_off(monkeypatch):
+def test_code_defaults_are_off(monkeypatch):
+    """The switches are off unless something enables them.
+
+    ``load_config`` reads ``.env``, so clearing the environment is not enough: a
+    developer whose ``.env`` enables the pool would see this pass for the wrong
+    reason, or fail for one. ``load_dotenv`` is stubbed out so the assertions are
+    about the code's defaults, not about the local file.
+    """
     for name in ('RAG_RETRIEVAL_DEPTH', 'RAG_RERANK_POOL', 'RAG_CONTEXT_RADIUS'):
         monkeypatch.delenv(name, raising=False)
+    monkeypatch.setattr('rag.config.load_dotenv', lambda *args, **kwargs: False)
     loaded = load_config()
     assert loaded.retrieval_depth == 0 and loaded.rerank_pool == 0
     assert loaded.deep_rerank_enabled is False
+    assert loaded.context_radius == 0
+
+
+def test_the_pool_is_enabled_by_configuration(monkeypatch):
+    """The switches must actually turn the feature on; off-by-default alone is not enough."""
+    monkeypatch.setattr('rag.config.load_dotenv', lambda *args, **kwargs: False)
+    monkeypatch.setenv('RAG_RETRIEVAL_DEPTH', '50')
+    monkeypatch.setenv('RAG_RERANK_POOL', '20')
+    loaded = load_config()
+    assert loaded.retrieval_depth == 50
+    assert loaded.rerank_pool == 20
+    assert loaded.deep_rerank_enabled is loaded.rerank_configured
+
+
+def test_the_backend_default_is_faiss(monkeypatch):
+    """See docs/ARCHITECTURE_REFERENCES.md ADR-010 for why."""
+    monkeypatch.delenv('RAG_VECTOR_BACKEND', raising=False)
+    monkeypatch.setattr('rag.config.load_dotenv', lambda *args, **kwargs: False)
+    assert load_config().vector_backend == 'faiss'
