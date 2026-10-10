@@ -8,3 +8,5 @@ chroma_db/
 .pytest_cache/
 .pytest-tmp/
 .dsh-acl-recovery/
+tmp*/
+pytest-of-*/
