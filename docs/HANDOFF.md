@@ -1,6 +1,31 @@
-# 新会话交接（2026-10-09 晚，通用知识库注册与导入）
+# 新会话交接
 
-## 当前模型与服务商配置（2026-10-09 晚实测自 `.env`）
+## 现在怎么把产品跑起来（2026-10-11 实测通过）
+
+**本机首次跑通产品全链路**，依赖三项配置（已写入 `.env`）：
+
+```
+RAG_VECTOR_BACKEND=faiss      # 默认；Chroma 的 HNSW 在本机约 96 个 1024 维向量即崩
+RAG_RETRIEVAL_DEPTH=50        # 先取 50 个候选
+RAG_RERANK_POOL=20            # 用专用 rerank 给前 20 个排序，再取 TOP_K=4
+```
+
+建一个知识库（会真实调用 Embedding）：
+
+```powershell
+.venv\Scripts\python.exe -m rag.kb_service create accounting
+.venv\Scripts\python.exe -m rag.kb_service import accounting experiments\rag-baseline\accounting\markdown
+.venv\Scripts\python.exe -m rag.kb_service index accounting
+.venv\Scripts\python.exe -m rag.kb_service ask accounting "《企业会计准则第14号——收入（2017）》第四条的核心表述是什么？"
+```
+
+会计语料实测：**59 份文档 / 866 片段 / 建索引 55 秒**；单题耗时 5–13 秒（重排约 0.8 秒，其余为生成）。
+
+**索引不随代码提交**（`chroma_db/` 被忽略），换机器需按上面重建。若签名不匹配，`service.active()` 会报"文档或模型配置已变化"，重新 `index` 即可。
+
+**改切片方式会使导入与索引同时失效**：`ImportReport` 记录切片身份、`active.eval.json` / 签名记录片数与算法版本，不匹配即重新导入并重建。这条是补上的——此前改了切片却继续用旧数据，指标一模一样才发现。
+
+## 当前模型与服务商配置（2026-10-10 实测自 `.env`）
 
 | 用途 | 提供方 | 模型 |
 | --- | --- | --- |
