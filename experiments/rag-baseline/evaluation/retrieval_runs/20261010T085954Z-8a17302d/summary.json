@@ -35,5 +35,11 @@
   },
   "questions": 82,
   "failures": 0,
-  "output_dir": ""
+  "output_dir": "",
+  "chunking": {
+    "variant": "structure500",
+    "chunk_size": 500,
+    "structure_aware": true
+  },
+  "chunking_source": "stamped_from_session_record"
 }
