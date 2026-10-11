@@ -1,0 +1,42 @@
+{
+  "product_knowledge_base": "accounting-3b25f66a",
+  "corpus": "accounting",
+  "dataset": "v1/test",
+  "questions": 59,
+  "vector_backend": "faiss",
+  "retrieval_depth": 50,
+  "rerank_pool": 20,
+  "deep_rerank_enabled": true,
+  "assistant_reviewed": 59,
+  "automatic_checks_passed": 59,
+  "full_marks": {
+    "key_points": {
+      "numerator": 43,
+      "denominator": 57,
+      "rate": 0.7543859649122807
+    },
+    "citation_faithfulness": {
+      "numerator": 56,
+      "denominator": 57,
+      "rate": 0.9824561403508771
+    },
+    "behavior_match": {
+      "numerator": 58,
+      "denominator": 59,
+      "rate": 0.9830508474576272
+    }
+  },
+  "error_labels": {
+    "retrieval_missing": 10,
+    "missing_clarification": 1
+  },
+  "judge_stats": {
+    "calls": 59,
+    "invalid": 0,
+    "invalid_rate": 0.0,
+    "prompt_tokens": 102429,
+    "completion_tokens": 53310,
+    "seconds": 300.35
+  },
+  "note": "产品路径（非评测脚本）生成的答案；评分仍是助手初审，未经人工审阅。样本为 v1 test 全量，按标准此后不得再用于调参。"
+}

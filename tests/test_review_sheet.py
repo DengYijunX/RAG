@@ -8,8 +8,8 @@ import json
 
 import pytest
 
-from review_sheet import (CSV_COLUMNS, EXAMPLE_ROW, FILL_COLUMNS, export, import_sheet,
-                          parse_score, rows_for)
+from review_sheet import (CSV_COLUMNS, EXAMPLE_ROW, FILL_COLUMNS, evidence_status, export,
+                          import_sheet, parse_score, passage_sources, rows_for)
 
 
 class StubQuestion:
@@ -231,3 +231,57 @@ def test_rows_for_marks_invalid_assistant_scores(tmp_path, monkeypatch):
                         lambda kb, version: stub_context(('Q1',)))
     rows = rows_for(run, 'smart-home', 'v2')
     assert rows[0]['assistant_key_points'] == 'invalid'
+
+
+# --- evidence status: the text alone is not enough, the file must match too ----
+
+PASSAGES = {'CAS-37-2017-A008': '第八条 金融负债，是指企业符合下列条件之一的负债。',
+            'CAS-09-2014-A002': '第二条 职工薪酬，是指企业为获得职工提供的服务而给予的报酬。'}
+
+
+def cited(source, content):
+    return {'citations': [{'citation': 1, 'source': source, 'content': content}]}
+
+
+def test_evidence_present_when_text_and_source_agree():
+    status = evidence_status(cited('CAS-37-2017.md', PASSAGES['CAS-37-2017-A008']),
+                             {'CAS-37-2017-A008': PASSAGES['CAS-37-2017-A008']},
+                             PASSAGES, passage_sources(PASSAGES))
+    assert status.startswith('上下文已含全部')
+
+
+def test_identical_text_from_the_wrong_version_is_not_evidence():
+    """CAS-37 第八条 is word-for-word identical in the 2014 and 2017 versions.
+
+    Matching text alone reports the evidence as present when the retrieved chunk
+    came from the wrong year, which is exactly the mistake these questions test
+    for. Measured case: ACC-Q045 was scored "evidence present" while the citation
+    was CAS-37-2014.md and the label was CAS-37-2017-A008.
+    """
+    status = evidence_status(cited('CAS-37-2014.md', PASSAGES['CAS-37-2017-A008']),
+                             {'CAS-37-2017-A008': PASSAGES['CAS-37-2017-A008']},
+                             PASSAGES, passage_sources(PASSAGES))
+    assert '错误版本' in status and 'CAS-37-2014.md' in status
+
+
+def test_without_provenance_only_the_text_is_checked():
+    """Callers that cannot supply sources still get the weaker check, not a crash."""
+    status = evidence_status(cited('anything.md', PASSAGES['CAS-09-2014-A002']),
+                             {'CAS-09-2014-A002': PASSAGES['CAS-09-2014-A002']})
+    assert status.startswith('上下文已含全部')
+
+
+def test_missing_text_is_reported_as_a_retrieval_problem():
+    status = evidence_status(cited('CAS-37-2017.md', '别的条文'),
+                             {'CAS-37-2017-A008': PASSAGES['CAS-37-2017-A008']},
+                             PASSAGES, passage_sources(PASSAGES))
+    assert '检索没给到' in status
+
+
+def test_questions_without_labels_say_so():
+    assert evidence_status(cited('a.md', 'x'), {}).startswith('该题无标注要点')
+
+
+def test_passage_sources_maps_the_id_prefix_to_the_file():
+    assert passage_sources({'CAS-37-2017-A008': 'x'}) == {'CAS-37-2017-A008': 'CAS-37-2017.md'}
+    assert passage_sources({'D3-S03': 'x'}) == {'D3-S03': 'D3-S03.md'}

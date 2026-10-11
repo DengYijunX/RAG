@@ -154,10 +154,12 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description='录入人工评审并与助手初审核对')
     parser.add_argument('--run', required=True, help='运行目录名')
     parser.add_argument('--scores', required=True, help='JSONL 评分文件')
+    parser.add_argument('--runs-dir', default=str(RUNS),
+                        help='运行产物的父目录（默认 quality_runs；产品路径运行在 product_runs）')
     parser.add_argument('--out', default=None, help='汇总输出路径（默认写入运行目录）')
     args = parser.parse_args(argv)
 
-    run = RUNS / args.run
+    run = Path(args.runs_dir) / args.run
     if not run.is_dir():
         raise SystemExit(f'找不到运行目录：{run}')
     entries = load_scores(args.scores)

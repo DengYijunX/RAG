@@ -102,28 +102,65 @@ def snippet_block(citations):
     return '\n'.join(lines).strip()
 
 
-def evidence_status(record, reference_texts):
+def evidence_status(record, reference_texts, passages=None, source_of=None):
     """Whether the passages the answer needed were actually in front of it.
 
     This is the distinction the rubric asks for and a reader cannot make on their
     own: a missing key point is a *retrieval* finding when the labelled text was
     never in the context, and a *generation* finding when it was there and the
     answer still omitted it.
+
+    Provenance matters as much as the text. The corpus holds several versions of
+    the same standard and some articles are **word-for-word identical** across
+    them — CAS-37-2014 第八条 and CAS-37-2017 第八条, for instance. Matching text
+    alone therefore reports "evidence present" when the retrieved chunk came from
+    the wrong year, which is exactly the mistake the questions test for. When
+    ``passages`` and ``source_of`` are supplied the file name is checked too.
     """
     if not reference_texts:
         return '该题无标注要点（澄清/拒答类）'
-    cited = '\n'.join(citation.get('content') or '' for citation in record.get('citations') or [])
-    flat_cited = normalize_text(cited)
-    present = []
+    citations = record.get('citations') or []
+    present, wrong_version = [], []
     for identifier, text in reference_texts.items():
-        if normalize_text(text) and normalize_text(text) in flat_cited:
+        wanted = normalize_text(text)
+        if not wanted:
+            continue
+        in_cited = [citation for citation in citations
+                    if wanted in normalize_text(citation.get('content') or '')]
+        if not in_cited:
+            continue
+        expected_source = (source_of or {}).get(identifier)
+        if expected_source and passages is not None:
+            if any(citation.get('source') == expected_source for citation in in_cited):
+                present.append(identifier)
+            else:
+                wrong_version.append(
+                    (identifier, sorted({citation.get('source') for citation in in_cited})))
+        else:
             present.append(identifier)
-    if len(present) == len(reference_texts):
-        return f'上下文已含全部参考原文（{len(present)}/{len(reference_texts)}）'
+    total = len([text for text in reference_texts.values() if normalize_text(text)])
+    if wrong_version:
+        detail = '；'.join(f'{identifier} 只出现在 {sources}' for identifier, sources in wrong_version)
+        return f'上下文含该文本但来自错误版本（{detail}）：等于检索没给到'
+    if len(present) == total:
+        return f'上下文已含全部参考原文（{len(present)}/{total}）'
     if present:
-        return (f'上下文仅含部分参考原文（{len(present)}/{len(reference_texts)}）：'
-                f'缺 {[k for k in reference_texts if k not in present]}')
-    return f'上下文未含参考原文（0/{len(reference_texts)}）：检索没给到'
+        missing = [key for key in reference_texts if key not in present]
+        return f'上下文仅含部分参考原文（{len(present)}/{total}）：缺 {missing}'
+    return f'上下文未含参考原文（0/{total}）：检索没给到'
+
+
+def passage_sources(passages):
+    """Map a dataset passage id to the file it was extracted from.
+
+    The id prefix is the file stem (``CAS-37-2017-A008`` -> ``CAS-37-2017``), which
+    is how the corpus names its documents.
+    """
+    sources = {}
+    for identifier in passages:
+        stem = identifier.rsplit('-A', 1)[0] if '-A' in identifier else identifier
+        sources[identifier] = f'{stem}.md'
+    return sources
 
 
 def rows_for(run, knowledge_base, version):
@@ -148,7 +185,8 @@ def rows_for(run, knowledge_base, version):
             'reference_points': '；'.join(metadata.get('expected_points') or []),
             'assistant_answer': record.get('answer', ''),
             'cited_snippets': snippet_block(record.get('citations')),
-            'evidence_status': evidence_status(record, reference_texts),
+            'evidence_status': evidence_status(record, reference_texts, passages,
+                                               passage_sources(passages)),
             'assistant_key_points': scores.get('key_points', 'invalid'),
             'assistant_citation_faithfulness': scores.get('citation_faithfulness', 'invalid'),
             'assistant_behavior_match': scores.get('behavior_match', 'invalid'),
