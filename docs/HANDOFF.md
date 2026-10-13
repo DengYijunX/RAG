@@ -1,162 +1,194 @@
-# 新会话交接
+# 新会话交接（2026-10-13）
 
-## 现在怎么把产品跑起来（2026-10-11 实测通过）
+分支 `work`，最新提交 `4fe225a`，**本地与远端一致**（`origin/work` = `https://github.com/DengYijunX/RAG.git`）。`work` 领先 `origin/main` 71 个提交，**未合并**。
 
-**本机首次跑通产品全链路**，依赖三项配置（已写入 `.env`）：
+先读 [ROADMAP.md](ROADMAP.md)（七步路线 + 模块状态 + 各轮结论）与 [ARCHITECTURE_REFERENCES.md](ARCHITECTURE_REFERENCES.md)（ADR-001~010 的决策与取舍）。本文件只讲**怎么跑、当前处于什么状态、下一步该做什么**。
+
+---
+
+## 一、项目是什么
+
+可演示、可复现的**通用 RAG**。智能家居售后与企业会计准则只是两套**评测夹具**，不是产品边界——通用流程不得依赖固定知识库 ID、产品型号、准则名称或评测答案，新语料必须走导入流程接入、无需改源码（第三语料验收即为此）。
+
+分层：`rag/` 产品运行时；`eval/` 评测框架（**可以**导入 `rag`，`rag` **不得**导入 `eval`，有测试强制）；`experiments/` 保留实验证据；`tests/` 464 项。
+
+---
+
+## 二、怎么把产品跑起来
+
+三项配置（已写入 `.env`，`RAG_*` 为 2026-10-11 新增）：
 
 ```
 RAG_VECTOR_BACKEND=faiss      # 默认；Chroma 的 HNSW 在本机约 96 个 1024 维向量即崩
 RAG_RETRIEVAL_DEPTH=50        # 先取 50 个候选
 RAG_RERANK_POOL=20            # 用专用 rerank 给前 20 个排序，再取 TOP_K=4
+RAG_CONTEXT_RADIUS=0          # 邻段扩展；实测未被证明有益，保持关闭
 ```
 
-建一个知识库（会真实调用 Embedding）：
-
 ```powershell
+# 建知识库（会真实调用 Embedding）
 .venv\Scripts\python.exe -m rag.kb_service create accounting
 .venv\Scripts\python.exe -m rag.kb_service import accounting experiments\rag-baseline\accounting\markdown
 .venv\Scripts\python.exe -m rag.kb_service index accounting
 .venv\Scripts\python.exe -m rag.kb_service ask accounting "《企业会计准则第14号——收入（2017）》第四条的核心表述是什么？"
 ```
 
-会计语料实测：**59 份文档 / 866 片段 / 建索引 55 秒**；单题耗时 5–13 秒（重排约 0.8 秒，其余为生成）。
+实测：会计语料 **59 份文档 / 866 片段 / 建索引 55 秒**；单题 **5–13 秒**（重排约 0.8 秒，其余为生成）。
 
-**索引不随代码提交**（`chroma_db/` 被忽略），换机器需按上面重建。若签名不匹配，`service.active()` 会报"文档或模型配置已变化"，重新 `index` 即可。
+**索引不随代码提交**（`chroma_db/` 被忽略），换机器须按上面重建。签名不匹配时 `service.active()` 会报"文档或模型配置已变化"。
 
-**改切片方式会使导入与索引同时失效**：`ImportReport` 记录切片身份、`active.eval.json` / 签名记录片数与算法版本，不匹配即重新导入并重建。这条是补上的——此前改了切片却继续用旧数据，指标一模一样才发现。
+### 跑测试（本机必须这样跑）
 
-## 当前模型与服务商配置（2026-10-10 实测自 `.env`）
+```powershell
+$env:PYTHONPATH="<仓库>\tools\testenv"
+.venv\Scripts\python.exe -m pytest tests -q -p no:cacheprovider --basetemp="<仓库>\.tmp\x" --ignore=tests/test_knowledge.py
+```
+
+`PYTHONPATH` 指向 `tools/testenv/sitecustomize.py`（把临时目录重定向到工作区内，否则沙箱下不可写）；`--basetemp` 同理。**`tests/test_knowledge.py` 的 11 项因原生 Chroma 不可用长期不运行。**
+
+---
+
+## 三、当前状态：能力齐了，瓶颈在会计的检索召回
+
+七步路线（[ROADMAP.md](ROADMAP.md) 有完整表）：① 解析与切片、② Embedding 与索引、③ 混合检索、④ Rerank、⑤ 生成与引用、⑥ Evaluation、⑦ 消融——**① ② ④ ⑤ ⑥ 已实现或已实验，③ 仅实验**。
+
+### 关键数字（v1 数据集）
+
+| 指标 | 开发集 | 保留集（test） |
+| --- | --- | --- |
+| 售后 检索 recall@4（深池+重排） | 0.9786 | **0.8684** |
+| 会计 检索 recall@4（深池+重排） | 0.9104 | **0.8519** |
+| 售后 答案要点完整性 | 0.947 | **0.947** |
+| 会计 答案要点完整性 | 0.772（产品路径人工审阅） | **0.772** |
+
+### 三个必须记住的结论
+
+**1. 开发集到保留集有明显落差，且方法排序反转。** 开发集上"纯向量最好"（售后 0.9762 / 会计 0.9378）在保留集上却是**最差**（0.7237 / 0.7407）；深池+重排在两集都最好。原因是开发集被反复用于改动，纯向量基线也分享了"熟悉度"。**不要用开发集数字判断方法优劣。**
+
+**2. 会计的缺口是检索侧，不是答题侧。** 产品路径保留集 59 题中，16 道未满分：**10 道"检索没给到"**（5 道原文完全没进上下文、3 道只进一半、**2 道版本错配**），**只有 3 道是答题侧**（证据齐全但没答全），另 5 道无要点题。
+
+**3. 引用忠实性与行为匹配稳，完整性是短板。** 两库保留集上引用忠实性 0.982–1.000、行为匹配 1.000、**阻断缺陷 0**。
+
+### 哪些手段有效、哪些无效（都实测过）
+
+| 手段 | 结论 |
+| --- | --- |
+| 换 Embedding（bge-m3 → qwen3.7） | **有效**，两库都改善 |
+| 结构感知切片 | **有效并已设默认**，会计 recall +4.5pp、售后零影响；令 4 道长期失败题中的 3 道可被检索 |
+| 深池 50 + 专用重排 | **有效并已启用**，保留集比纯向量 +14.5pp / +11.1pp，代价 0.8 秒/题 |
+| hybrid BM25+RRF | **因语料而异**（会计有效、售后反而略差），仅实验 |
+| LLM listwise 重排 | 质量与专用重排接近但**每题 17–18 秒**，已弃用 |
+| 邻段扩展 | **未被证明有益**，默认关闭（曾误判为"诱发编造"，已撤回，见 ADR/报告） |
+| 加大切片到 1000 | 会计更好、售后略降；**未改默认**，属待权衡项 |
+
+---
+
+## 四、下一步（按杠杆排序）
+
+**1. 提高会计的检索召回（最大杠杆）。** 10 道题的标注原文没进前 4，其中 **2 道是"版本错配"**——检索拿到的条文来自错误年份（`CAS-37-2014` 第八条与 `CAS-37-2017` 第八条**逐字相同**）。这提示**纯向量难以区分版本**，方向可能是关键词/元数据过滤或条款级标识，而不只是加深池子。
+
+**2. 复查 v2 标注**（225 题，`draft_needs_domain_review`），作为**新的保留样本**——v1 test 已被观察两轮，按标准不得再用于调参。
+
+**3. 迁移 `rag/knowledge.py`**：两个夹具仍读 `experiments/rag-baseline` 的预生成元数据，会计条号路由是这条旧路径下的领域分支。
+
+**4. 在能跑原生 Chroma 的环境复跑**（Docker/Linux）：产品默认已改 FAISS，Chroma 作为可选后端保留，其真实路径仍未在可用环境验证。
+
+---
+
+## 五、不可遗忘的边界（踩过的坑）
+
+**测量纪律**
+
+- **检索指标改善 ≠ 答案改善**。邻段扩展在检索侧明显改善（完整命中 0.866→0.910），生成侧无收益。每个改动都要生成侧验证。
+- **开发集为"关"的开关，默认值测试必须 stub 掉 `load_dotenv`**，否则断言对象从"代码默认值"漂移成"本机 `.env` 的值"。
+- **判定器自身不稳定**：同一份回答两次评分可差 1 级。单次评审数字是线索，不是结论。
+- **长上下文会让判定器失准**：引用片段变长后它会定位不到法条，报"无依据"（曾因此误判 8 处）。
+- **允许撤回结论，但要留痕**。已撤销的结论（"更多上下文诱发编造"）保留在报告里并写明错在哪一步——错误的方法论比错误的结论更值得记录。
+
+**工程纪律**
+
+- 改动配置必须让下游失效：`ImportReport` 记切片身份、索引签名记片数与算法版本、Embedding 缓存在换模型时拒绝复用。**这三个洞都真的漏过**，症状都是"改了配置而指标一模一样"。
+- 发布前必须 `backend.flush()`：Chroma 每次 `add()` 立即落盘掩盖了这个缺失，换 FAISS 后发布的 generation 只有 manifest，每次查询都答"不足以回答"。
+- **重复定义会静默覆盖**：曾有一个 `query()` 被类里更靠后的同名方法覆盖，改动静默失效。`tests/test_no_shadowed_definitions.py` 用 AST 扫描防止再发生。
+- **判定"有没有证据"要比对来源文件**：同一准则多个年份版本的部分条文逐字相同，只比对文本会把 2014 版当 2017 版。
+
+**协作与边界**
+
+- 小步提交；**默认本地提交，用户明确要求时才 push**；**不自动合并到 main**。
+- 通用流程不得依赖固定知识库 ID、型号、准则名或评测答案。
+- 第三语料验收证明的是**导入与接口契约**，不是答案准确率。
+- **v1 test 79 题此后不得再用于调参**；后续开发需新划分保留样本。
+- 审阅者是**项目所有者而非独立领域审阅者**（`human_review_meta.reviewer_is_independent = false`），这不足以构成独立签署。
+
+---
+
+## 六、模型与服务商配置（实测自 `.env`）
 
 | 用途 | 提供方 | 模型 |
 | --- | --- | --- |
 | Embedding | 阿里云 MaaS（compatible-mode） | `qwen3.7-text-embedding-flash`（1024 维） |
-| Rerank | 阿里云 MaaS（**原生端点 `api/v1/services/rerank/text-rerank/text-rerank`**） | `qwen3.7-text-rerank` |
+| Rerank | 阿里云 MaaS（**原生端点**，不是 compatible-mode） | `qwen3.7-text-rerank` |
 | 生成 / LLM 重排 | DeepSeek | `deepseek-v4-flash` |
 
-**关键坑（已实测）**：embedding 在 `compatible-mode/v1` 下可用，**rerank 在该路径下全部 404**，必须走原生端点。`rag.config.normalize_rerank_url` 会自动转换，三种写法（compatible-mode / 裸主机名 / 完整原生路径）都可用；`rerank_path_probe.py` 可在换地址时定位路径。
+**两个实测坑**：
 
-**另一个坑**：阿里云 Embedding 端点有**批大小上限**（实测 20 被拒，报 `batch size is invalid`），现默认 `EMBEDDING_BATCH_SIZE=10`（`rag/kb_service.py` 的 `embed_batched`）。
+1. Embedding 在 `compatible-mode/v1` 下可用，**rerank 在该路径下全部 404**，必须走 `api/v1/services/rerank/text-rerank/text-rerank`。`rag.config.normalize_rerank_url` 会自动转换；`rerank_path_probe.py` 可定位路径。
+2. 阿里云 Embedding 有**批大小上限**（20 被拒），默认 `EMBEDDING_BATCH_SIZE=10`。
 
-**换 Embedding 的后果**：索引签名含模型与地址，换模型即失效，必须重建。Embedding 缓存也已改为**按模型指纹失效**（旧的无指纹缓存会被拒绝），否则会混用两个模型的向量。每个运行的 `summary.json` 现记录 `embedding_model` 以标明出处。
-
-先跑探针确认两个端点可用与 rerank 的真实响应形态：
+先跑探针确认端点：
 
 ```powershell
 .venv\Scripts\python.exe experiments\rag-baseline\evaluation\provider_probe.py
 ```
 
-## 这一轮做了什么
-
-在 `work` 分支上按 `docs/PROJECT_SCOPE.md` 的下一步顺序，完成「通用知识库注册 + 文档导入」的前四步，并做了第三语料接入验收。小步提交，未 push，未合并 main。
-
-- `rag/registry.py`：持久化知识库注册表（ID/名称/描述/语言/可选扩展），原子写入，不存凭据。
-- `rag/importer.py`：只读文件本身推导文档身份、内容 hash、原文字符区间与 Markdown 标题结构；PDF 不伪造位置；坏文件跳过不阻塞。
-- `rag/kb_service.py`：注册→导入→建索引→问答→查看原文的通用生命周期，向量后端可注入；发布为成功后原子切换，失败保留旧索引；带 CLI（create/list/import/index/ask）。
-- `rag/api.py`：`/knowledge-bases` 创建、`/{kb}/sources` 上传或目录导入、`/{kb}/index`、`/{kb}/query`、`/{kb}/sources/{id}` 查看原文。
-- `rag/static/index.html`：下拉动态读取注册表，新增创建/导入/建索引操作，已无领域硬编码字符串。
-- 测试：registry 11、importer 14、kb_service 14、api 12，本机共 83 项通过（`test_store` 单独 2 项通过；`test_knowledge` 的 11 项因原生向量索引不可用未运行）。
-- 验收：第三语料 `test_docs/third-corpus/`（阳台蔬菜种植，自撰）10/10 通过，见 `docs/THIRD_CORPUS_ACCEPTANCE.md`。
-- 设计出处：`docs/ARCHITECTURE_REFERENCES.md` 的 **ADR-007**（通用注册与导入）与 **ADR-008**（按 WeKnora 路线固定目标结构，评测框架先落占位）。
-- 目标结构与后续路线：**`docs/ROADMAP.md`**（目录树、模块↔位置↔状态对应表、`eval/` 实施进度、清理记录）。新会话先读这份。
-- `eval/` 已实现：数据集读取（`eval/datasets.py`，含 v1/v2 两套与校验）与检索侧指标（`eval/metrics.py`，6 项含手算测试）；执行层 `eval/runner.py` 仍是占位。
-
-## 本轮独立复核后修掉的问题
-
-两位独立审查者（对抗式解耦审查 + 复现验证）查出并已修复：
-
-1. `GET /knowledge-bases` 原先直接拼接 `knowledge.catalog()`，缺少 `experiments/rag-baseline` 时整个首屏请求 500；现在只依赖注册表，缺夹具仍正常返回（有测试）。
-2. 导入会静默丢弃非 md/txt/pdf 文件；现在所有未导入文件都带原因进入 `skipped`，重复上传同名文件报 422，页面显示未导入清单。
-3. PDF「报告页码」原先只是注释与测试名，没有字段；现在页码来自解析器实际页数，无页码时为 `null`。
-4. `lines` 原先按换行数+1 计算，结尾换行会多算一行；改为物理行数。
-5. 构建失败会残留半成品 generation 目录；现在失败即清理。
-6. 检索原先分别读取 active/清单/向量库，存在窄竞态；现在每个 generation 自带片段快照，命中只在该 generation 内解析。
-7. 未知知识库的 `GET .../sources` 原先返回 200 `[]`；现在 404。
-8. 测试里若干近似恒真的断言（空循环、随机 ID 断言、未写入凭据却断言不落盘）已改为可失败的断言。
-
-**本机两个硬限制**，动手前先读 `docs/ENVIRONMENT_WINDOWS.md`：`.venv` 基座已修好（CPython 3.11.15），跑测试必须注入 `tools/testenv/sitecustomize.py` 并加 `--basetemp`；ChromaDB 的原生 hnswlib 在本机崩溃（0xC0000005），本机**无法**跑真实索引与 `tests/test_knowledge.py`。
-
-## 尚未完成（按优先级）
-
-1. **在能跑原生向量索引的环境复跑真实验收**：Docker 或 Linux 主机上 `RAG_ACCEPTANCE_REAL=1` 跑 `acceptance_third_corpus.py`，并跑通 `tests/test_knowledge.py`（749 片段 Chroma 索引）。这是当前最大的未验证缺口。
-2. **迁移既有两个夹具到同一导入流程**：`rag/knowledge.py` 仍读 `experiments/rag-baseline` 的 `evidence.jsonl` / `articles.jsonl`，会计条号路由是这条旧路径下的领域分支。迁移时把「条号/年份」变成显式启用的可选扩展，并保持 ADR-002~006 的实验可复现。
-3. 领域扩展落地：基于导入元数据的精确定位（ADR-007 只预留了 `extensions` 字段）。
-4. 检索增强接入通用路径：邻段扩展、重排、结构提示目前都只在实验脚本里，通用默认路径仍为纯向量 Top-K。
-5. 文档禁用/删除、增量 upsert、Embedding 缓存均未实现。
-
-## 不可遗忘的边界
-
-- 通用流程不得依赖固定知识库 ID、产品型号、准则名称或评测答案；新语料必须走导入流程接入。
-- 第三语料验收证明的是**导入与接口契约**，不是答案准确率；不要把 9/9 写成质量结论。
-- 97 题保留测试仍未执行；不要为了更好结果重复调那九题。
-- 默认本地提交，不 push；不要自动合并到 main。
+**换 Embedding 即索引失效，必须重建**；Embedding 缓存按模型指纹失效。
 
 ---
 
-# 上一轮交接（2026-10-09 早）
+## 七、实验产物地图
 
-## 目标与协作约定
+`experiments/rag-baseline/evaluation/` 下：
 
-项目是可写入简历、可演示和可复现的**通用 RAG**。智能家居售后与企业会计准则只是两套评测夹具，不是固定产品边界。用户要求参考 Tencent/WeKnora 讲清流程、模块输入输出和评测；重要设计需记录具体参考出处与取舍。
+| 目录 | 内容 |
+| --- | --- |
+| `retrieval_runs/` | 检索指标运行（`summary.json` + `samples.jsonl`，记录切片与 embedding 指纹） |
+| `quality_runs/` | 评测脚本的答案与三套评分（`assistant_*` / `human_*` / `lead_*`） |
+| `product_runs/` | **产品路径**的答案与人工评分（2026-10-11 新增） |
+| `context_runs/`、`hybrid_runs/`、`rerank_runs/`、`topk_runs/`、`structure_runs/`、`compact_runs/`、`runs/`、`experiments/`、`provenance/` | 早期实验产物（历史证据，不改写） |
 
-阅读 `AGENTS.md`；小步实现、验证、commit。用户本轮明确要求 push，推送目标为 `origin/work`，远端为 `https://github.com/DengYijunX/RAG.git`。后续默认仍是本地提交，不自动 push。不要自动合并到 main。
+**报告按时间倒序读**：`PRODUCT_REVIEW_REPORT` → `HUMAN_REVIEW_REPORT` → `HELDOUT_TEST_REPORT` → `STRUCTURAL_CHUNKING_REPORT` → `CONTEXT_WIRING_REPORT` → `RERANK_PROVIDER_REPORT` → `PROMPT_CLARIFICATION_REPORT` → `ANSWER_QUALITY_REPORT` → `RETRIEVAL_MODES_REPORT` → 更早的 TOPK/CONTEXT/RERANK/SECTION/COMPACT/HYBRID/STRUCTURE/BASELINE。
 
-## 当前状态
+**评分标准是 [QUALITY_RUBRIC.md](../experiments/rag-baseline/evaluation/QUALITY_RUBRIC.md)**：三维 0/1/2 + 6 类错误标签，动手评分前先读它。
 
-- 工作目录 `/workspace/RAG`，开发分支 `work`。本轮交接前最新功能/实验提交 `5b0fab7`；交接文件另作提交。
-- FastAPI + Chroma + OpenAI 兼容 SDK 已有加载、切片、隔离索引、成功后原子切换、问答与引用原文界面。
-- 现有两库：5份售后文档 / 26片段，59份会计文档 / 749片段。切片为500字符、50重叠。
-- **尚未完成通用化**：`rag/knowledge.py` 仍依赖固定 `BASES`、实验目录、预生成元数据；页面与路由仍有领域硬编码。不要把已有实验工具当作应用默认能力。
-- `rag/structure.py` 已实现原文字符位置、Markdown标题路径、续段及按已选上下文判断章节完整性。只支持保守Markdown子集；加粗行是显式启用的启发式，未知结构保持未知。
-- `rag/context_structure.py` 已将完整审计记录与模型精简视图分离，使用去重目录、短节ID和分块数组；完整请求UTF-8字节预算超限时调用前失败。这不是精确Token预算，默认应用尚未接入。
+---
 
-## 最近完成的评测
+## 八、本机环境限制（动手前必读 [ENVIRONMENT_WINDOWS.md](ENVIRONMENT_WINDOWS.md)）
 
-顺序报告位于 `experiments/rag-baseline/evaluation/`：
+- **Chroma 的原生 hnswlib 在本机崩溃**（约 96 个 1024 维向量即 `0xC0000005`），这是产品后端改为 FAISS 的直接原因；`tests/test_knowledge.py` 因此长期不运行。
+- `.venv` 基座为 CPython 3.11.15（原 Anaconda 基座已删，`pyvenv.cfg` 已重指）。
+- 跑测试必须注入 `tools/testenv/sitecustomize.py` 并加 `--basetemp`（见第二节）。
+- 工作目录含中文用户名，`faiss.write_index` 会失败——已改为 `serialize_index` + Python 写字节。
+- git 不在 PATH：`C:\software\Git\cmd\git.exe`。
 
-1. `TOPK_REPORT.md`：128道dev检索对照，固定九题生成；覆盖提高不等于回答正确。
-2. `CONTEXT_REPORT.md`：固定2000正文字符，邻段扩展会挤掉其他证据，两个语料表现不同。
-3. `RERANK_REPORT.md`：候选重排原型与边界提示；九题必要证据覆盖改善，但仍有续段归属、截断和明显排序开销。
-4. `SECTION_REPORT.md`：原文结构提示，九题18次生成；改善部分归属/截断说明，但输入Token为纯边界提示3.15倍。
-5. **`COMPACT_REPORT.md`（最新）**：相同九题正文与顺序，完整/精简结构提示18次新生成。输入Token 43,807 → 20,907（减少52.3%），最大精简请求10,730字节，小于12,000字节预算。回答仍有边界误读、无依据的条件总数，不宣称质量无损或总体准确率提高。
+---
 
-最新运行：`evaluation/compact_runs/20261007T171547Z-9beed06a`（目录为UTC时间）；计划、请求、回答、用量、hash全部保存。`compact_case_review.jsonl` 是18条助手审阅，人工评分null；`compact_audit.json` 为技术审计。历史原始产物不覆盖。
+## 九、数据集计数（2026-10-09 实测更正）
 
-需保留的失败：
+| 版本 | 语料 | dev | test |
+| --- | --- | --- | --- |
+| v1（已交付，所有实验都用它） | 售后 | 40 | 20 |
+| v1 | 会计 | 82 | 59 |
+| v2（候选，`draft_needs_domain_review`） | 售后 | 43 | 29 |
+| v2 | 会计 | 85 | 68 |
 
-- ACC-Q098：把“当前片段后面还有续段”误解为列表不全，虽然同节合并覆盖已完整。
-- ACC-Q118：只见第五条前四项，两组均提醒截断，却仍猜条件总数为五。事实碰巧与全原文一致，不代表本次引用支持。
-- ACC-Q059：完整结构组把“四类”排成五个并列项；精简组归属正确但概括粒度存在争议。
-- Q043：前一轮漏了电量/强制重启，本轮两组均答全；单次生成波动不能归功于压缩。
+读取用 `load_knowledge_base_dataset(..., version='v1'|'v2')` **显式指定**。文档里旧数字"225 道候选题为 dev128 / test97"与文件不符，已按实测更正。
 
-**数据集计数已在 2026-10-09 实测更正**（原文"225道候选题为dev128 / test97"与文件不符）：
+---
 
-- v1 已交付集：**201 题** = 售后 60（dev 40 / test 20）+ 会计 141（dev 82 / test 59），即 dev **122** / test **79**；已完成的所有实验都用它。
-- v2 复核候选集（`evaluation/v2/`）：**225 题** = 售后 72（dev 43 / test 29）+ 会计 153（dev 85 / test 68），标注仍为 `draft_needs_domain_review`，未冻结、未人工签署。
+# 归档：更早轮次的交接（保留以便追溯）
 
-v2 保留测试未执行；标注仍待领域人工复核。证据覆盖不是答案准确率；不要自动重跑昂贵实验或为了更好结果重复调这九题。读取用 `load_knowledge_base_dataset(..., version='v1'|'v2')` 显式指定。
+以下内容来自 2026-10-09 及更早的交接，**其中部分描述已被后续改动取代**（例如"会计 749 片段"现为 866、"尚未完成通用化"已由 ADR-007 完成、"97 题保留测试未执行"已于 2026-10-10 执行）。保留原文是因为其中的**失败记录**仍是证据。
 
-## 新会话应继续的任务
-
-转向**通用知识库注册与文档导入**，不要只继续九题提示词优化。
-
-1. 检查 `rag/knowledge.py`、`rag/api.py`、`rag/static/index.html` 和现有测试，设计持久化知识库注册表、文档记录及导入接口。
-2. 原文导入生成文档身份、内容hash、原文位置和片段结构，不读取 `evidence.jsonl`、`articles.jsonl` 或gold；先复用已有MD/TXT/PDF加载器，PDF无可靠结构时不伪造位置。
-3. 按知识库隔离索引与来源；保持成功后发布、失败保留旧版本的行为。领域规则作为显式可选扩展。
-4. 页面动态读取知识库。用第三种主题语料走创建→导入→索引→问答→查看原文，验收无需修改源码即可接入；两套现有语料走同一流程作回归。
-5. 分步提交并记录设计来源；完整目标和验收条件见 `docs/PROJECT_SCOPE.md`、`docs/ARCHITECTURE_REFERENCES.md`。通用导入验证与答案质量验收分开。
-
-## 恢复与检查
-
-先读 `docs/CLOUD_STARTUP.md`，复用当前 `.venv` 和匹配索引。该文件中早期测试数量已过时：最近验证为45项应用测试、44项评测工具测试。
-
-```bash
-cd /workspace/RAG
-.venv/bin/python -m pytest tests -q
-.venv/bin/python -m pytest experiments/rag-baseline/evaluation -q
-.venv/bin/python -m rag.knowledge status
-.venv/bin/python experiments/rag-baseline/evaluation/compact_experiment.py --validate-only
-```
-
-Embedding配置为阿里云已授权地址、`qwen3.7-text-embedding-flash`、1024维；生成模型为 `deepseek-chat`。凭据使用环境绑定，不打印、不提交、不复制到交接文本。新环境按启动文档恢复依赖，确认凭据是否已绑定；没有匹配索引时构建会产生真实Embedding调用。
-
-先确认分支：新检出应使用远端 `work`，否则只读 `main` 会看不到本轮进展。同一工作区先检查 `git status`，不要覆盖未提交改动。
+- 独立复核修掉的问题清单（`GET /knowledge-bases` 500、静默丢弃文件、PDF 页码、`lines` 多算一行、失败残留 generation、检索竞态、未知库返回 200、近似恒真断言）——均已修复并有测试。
+- 早期九题提示词实验：`COMPACT_REPORT.md`（输入 Token 43,807 → 20,907）等，其中的**失败案例仍有效**：ACC-Q098 把续段误读为列表不全；ACC-Q118 只见第五条前四项却猜条件总数为五（事实碰巧正确，不代表引用支持）；ACC-Q059 把"四类"排成五个并列项；Q043 单次生成波动不能归功于压缩。
+- 早期环境恢复步骤（`/workspace/RAG` 路径、`docs/CLOUD_STARTUP.md`）已过时，以本文件第二节为准。

@@ -59,10 +59,10 @@ RAG/
 
 | # | WeKnora 路线 | 本项目位置 | 状态 | 离"可信"还差什么 |
 | --- | --- | --- | --- | --- |
-| 1 | 文档解析与 Chunking | [rag/loader.py](../rag/loader.py)、[rag/importer.py](../rag/importer.py)、[rag/splitter.py](../rag/splitter.py)、[rag/structure.py](../rag/structure.py)、[rag/structural_split.py](../rag/structural_split.py) | 已实现，**结构感知切片已是默认** | 解析成功率/表格还原无专项测试；**父文档检索（长节补全）未实现**——这是最后一题 ACC-Q059 的候选解法 |
-| 2 | Embedding 与索引 | [rag/kb_service.py](../rag/kb_service.py)（`vectors` / `build` / `ChromaVectors`） | 已实现，**本机未验证** | 真实 Chroma 路径待 Docker 复跑；模型横向比较未做 |
-| 3 | 混合检索与融合 | 实验：`hybrid_retrieval.py`、`retrieval_modes_experiment.py` | 仅实验 | BM25、RRF 未进产品路径 |
-| 4 | Rerank 与上下文 | [rag/rerank.py](../rag/rerank.py)（实现）、`RAG_RERANK_POOL`（开关，默认关） | **已实现，默认关闭** | 阈值、MMR 去重未实现；深池+重排未设为默认（生成侧已验证受益，待决定） |
+| 1 | 文档解析与 Chunking | [rag/loader.py](../rag/loader.py)、[rag/importer.py](../rag/importer.py)、[rag/splitter.py](../rag/splitter.py)、[rag/structure.py](../rag/structure.py)、[rag/structural_split.py](../rag/structural_split.py) | 已实现，**结构感知切片已是默认** | 解析成功率/表格还原无专项测试；长条文（超过切片上限）仍无法整片容纳 |
+| 2 | Embedding 与索引 | [rag/backends.py](../rag/backends.py)（FAISS 默认 / Chroma 可选）、[rag/kb_service.py](../rag/kb_service.py) | **已实现，产品路径本机已跑通** | Chroma 的真实路径仍未在可用环境验证；模型横向比较未做 |
+| 3 | 混合检索与融合 | 实验：`hybrid_retrieval.py`、`retrieval_modes_experiment.py` | 仅实验 | BM25、RRF 未进产品路径；保留集上按语料不同而结论相反 |
+| 4 | Rerank 与上下文 | [rag/rerank.py](../rag/rerank.py)、`RAG_RETRIEVAL_DEPTH=50` + `RAG_RERANK_POOL=20` | **已实现并启用** | 阈值、MMR 去重未实现；邻段扩展实测未被证明有益，保持关闭 |
 | 5 | 生成与引用 | [rag/kb_service.py](../rag/kb_service.py)（`generate` / `citations`） | 已实现 | 只有固定提示词；Faithfulness 只测过助手初审 |
 | 6 | Evaluation | `eval/` + `answer_review.py` / `answer_quality_review.py` / `human_review.py` | **已实现（检索侧 + 生成侧初审 + 人工审阅 + 保留集）** | **保留集已跑过，v1 test 此后不再是保留样本**；审阅者为项目所有者而非独立领域审阅者；评审自身不稳定 |
 | 7 | 消融与工程优化 | `experiments/**/*_REPORT.md` | 已实验 | 未固化为可一键复跑的矩阵；延迟/成本未系统记录 |
